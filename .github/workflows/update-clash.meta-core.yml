@@ -32,7 +32,7 @@ jobs:
         new_name=(arm64)
         mkdir tmp
         for((i=0;i<7;i++));do
-          wget "${download_url}/${download_tag}/Clash.Meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
+          wget "${download_url}/${download_tag}/Clash.Meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
           chmod +x ./tmp/clash.meta-linux-${new_name[i]}
         done
         rm -fr upx*
