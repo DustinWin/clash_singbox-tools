@@ -1,6 +1,11 @@
-name: Update Clash.Meta Core
+name: Update Meta Core
 on: 
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'tag of Clash Meta, such as Prerelease-Alpha, Prerelease-Beta, v1.11.1'
+        required: true
+        type: string
 env:
   download_tag: ${{ github.event.inputs.tag }}
   download_version: ''
@@ -13,8 +18,10 @@ jobs:
       uses: actions/checkout@main
     - name: Init Dependencies
       run: |
-        wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
-        tar xf upx-4.0.2-amd64_linux.tar.xz
+        wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
+        wget https://github.com/upx/upx/releases/download/v3.93/upx-3.93-amd64_linux.tar.xz
+        tar xf upx-3.96-amd64_linux.tar.xz
+        tar xf upx-3.93-amd64_linux.tar.xz
     - name: Download Core
       run: |
         if [ "${download_tag}" = "Prerelease-Alpha" ] || [ "${download_tag}" = "Prerelease-Beta" ];then
@@ -31,9 +38,9 @@ jobs:
           chmod +x ./tmp/clash-linux-${new_name[i]}
           if [ "${archs[i]}" != "armv5" ];then
             if [[ ${archs[i]} = mips* ]];then
-              ./upx-4.0.2-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
+              ./upx-3.93-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
             else
-              ./upx-4.0.2-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
+              ./upx-3.96-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
             fi
           fi
         done
@@ -49,4 +56,3 @@ jobs:
         git config --global user.email "juewuy@gmail.com" && git config --global user.name "Bot"
         git add . && git commit -m "更新Meta内核至${download_version}" || exit 0
         git push
-        
