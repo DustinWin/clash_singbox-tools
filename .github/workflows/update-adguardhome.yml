@@ -60,4 +60,4 @@ jobs:
       uses: gacts/purge-jsdelivr-cache@v1
       with:
         url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${{ file }}
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome
