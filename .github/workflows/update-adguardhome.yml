@@ -29,7 +29,7 @@ jobs:
         download_version=${download_tag}
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         mkdir -p ./tmp
-        wget "${download_url}/${download_tag}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf -c > ./tmp/
+        wget "${download_url}/${download_tag}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf - -C > ./tmp/
         chmod +x ./tmp/AdGuardHome
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/AdGuardHome
         rm -fr upx*
