@@ -1,4 +1,4 @@
-name: Generate user.yaml
+name: Generate DNS config
 on:
   workflow_dispatch:
   schedule:
@@ -48,9 +48,8 @@ jobs:
           git add . && git commit -m "更新 TrackersList_$(date +%Y%m%d%H%M)" || exit 0
           git push
 
-      - name: Purge jsdelivr CDN
-        run: |
-          cd MyConfig || exit 1
-          for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}/@main/MyConfig/${file}"
-          done
+      - name: Purge jsDelivr CDN cache
+        uses: gacts/purge-jsdelivr-cache@v1
+        with:
+          url: |
+            https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/MyConfig/user.yaml
