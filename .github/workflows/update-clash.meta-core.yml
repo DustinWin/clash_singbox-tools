@@ -1,26 +1,30 @@
-name: Update Meta Core
+name: Update Clash.Meta core
 on: 
   workflow_dispatch:
     inputs:
       tag:
-        description: 'tag of Clash Meta, such as Prerelease-Alpha, v1.14.3'
+        description: 'Input version, such as "Prerelease-Alpha", "v1.14.3"'
         required: true
         type: string
+
 env:
   download_tag: ${{ github.event.inputs.tag }}
   download_version: ''
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+
 jobs:
   Update:
     runs-on: ubuntu-latest
     steps:
     - name: Clone Repository
       uses: actions/checkout@main
-    - name: Init Dependencies
+
+    - name: Download and unzip upx
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
         tar xf upx-4.0.2-amd64_linux.tar.xz
-    - name: Download Core
+
+    - name: Download Clash.Meta core
       run: |
         if [ "${download_tag}" = "Prerelease-Alpha" ];then
           download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
@@ -33,16 +37,21 @@ jobs:
         mkdir tmp
         wget "${download_url}/${download_tag}/Clash.Meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
         chmod +x ./tmp/clash.meta-linux-${new_name[i]}
+
+    - name: Compress Clash.Meta core
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
         rm -fr upx*
-    - name: Update
+
+    - name: Move Clash.Meta core to `Clash.Meta-Core` directory
       run: |
-        mkdir -p ./clash.meta
-        rm -fr ./clash.meta/*
-        cp ./tmp/* ./clash.meta/
+        mkdir -p ./Clash.Meta-Core
+        rm -fr ./Clash.Meta-Core/*
+        cp ./tmp/* ./Clash.Meta-Core/
         rm -fr ./tmp
+
     - name: Commit and push
       run: |
-        git config --global user.email "juewuy@gmail.com" && git config --global user.name "Bot"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Clash.Meta 内核至 ${download_version}" || exit 0
         git push
