@@ -41,7 +41,7 @@ jobs:
         rm -fr ./clash.meta/*
         cp ./tmp/* ./clash.meta/
         rm -fr ./tmp
-        sed -i "s/meta_v=.*/meta_v=$(./clash.meta/clash-linux-amd64 -v 2>/dev/null | sed 's/ linux.*//;s/.* //')/" /version/
+        sed -i "s/meta_v=.*/meta_v=$(./clash.meta/clash-linux-amd64 -v 2>/dev/null | sed 's/ linux.*//;s/.* //')/" ./version
     - name: Commit and push
       run: |
         git config --global user.email "juewuy@gmail.com" && git config --global user.name "Bot"
