@@ -38,6 +38,7 @@ jobs:
         rm -fr upx*
     - name: Update
       run: |
+        mkdir -p ./clash.meta
         rm -fr ./clash.meta/*
         cp ./tmp/* ./clash.meta/
         rm -fr ./tmp
