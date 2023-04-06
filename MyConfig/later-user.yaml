@@ -1,0 +1,15 @@
+  default-nameserver:
+    - tls://1.12.12.12:853
+    - tls://223.5.5.5:853
+    - tls://8.8.8.8:853
+    - tls://1.1.1.1:853
+  nameserver:
+    - 'https://dns.google/dns-query#🪜 国外域名'
+    - https://dns.cloudflare.com/dns-query
+    - https://doh.opendns.com/dns-query
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  nameserver-policy:
+    "geosite:network,microsoft@cn,apple-cn,google-cn,category-games@cn": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
+    "geosite:cn,private,tracker": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
