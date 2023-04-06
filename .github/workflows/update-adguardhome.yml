@@ -56,7 +56,8 @@ jobs:
         git add . && git commit -m "更新 AdGuardHome 至 ${download_version}" || exit 0
         git push
 
-    - uses: gacts/purge-jsdelivr-cache@v1
+    - name: Purge jsDelivr CDN cache
+      uses: gacts/purge-jsdelivr-cache@v1
       with:
         url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${file}
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${{ file }}
