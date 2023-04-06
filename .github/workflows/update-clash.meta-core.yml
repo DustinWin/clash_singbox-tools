@@ -1,11 +1,6 @@
 name: Update Clash.Meta Core
 on: 
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'tag of Clash Meta, such as Prerelease-Alpha, Prerelease-Beta, v1.11.1'
-        required: true
-        type: string
 env:
   download_tag: ${{ github.event.inputs.tag }}
   download_version: ''
