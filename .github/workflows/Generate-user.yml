@@ -25,9 +25,9 @@ jobs:
       - name: Put together user.yaml
         run: |
           mkdir -p ./MyConfig/temp
-          curl -sSL https://raw.githubusercontent.com/DustinWin/Router-Plugins/main/MyConfig/front-user.yaml > ./MyConfig/temp/temp-user.txt
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/front-user.yaml > ./MyConfig/temp/temp-user.txt
           curl -sSL https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all.txt | grep -i "\.[A-Z]" | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | sed "s/^/    - '/;s/$/'/" >> ./MyConfig/temp/temp-user.txt
-          curl -sSL https://raw.githubusercontent.com/DustinWin/Router-Plugins/main/MyConfig/later-user.yaml >> ./MyConfig/temp/temp-user.txt
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/later-user.yaml >> ./MyConfig/temp/temp-user.txt
 
       - name: Create user.yaml
         run: |
