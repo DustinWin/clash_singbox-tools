@@ -1,4 +1,4 @@
-name: Update Clash.Meta core
+name: Update AdGuardHome
 on: 
   workflow_dispatch:
     inputs:
@@ -19,12 +19,12 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Download and unzip upx
+    - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
         tar xf upx-4.0.2-amd64_linux.tar.xz
 
-    - name: Download and compress AdGuardHome
+    - name: Download and compress `AdGuardHome`
       run: |
         download_version=${download_tag}
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
@@ -34,7 +34,7 @@ jobs:
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/AdGuardHome
         rm -fr upx*
 
-    - name: Move Clash.Meta core to `Clash.Meta-Core` directory
+    - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
         mkdir -p ./AdGuardHome
         rm -fr ./AdGuardHome/*
