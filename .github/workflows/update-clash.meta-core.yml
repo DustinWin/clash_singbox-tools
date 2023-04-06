@@ -19,12 +19,12 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Download and unzip upx
+    - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
         tar xf upx-4.0.2-amd64_linux.tar.xz
 
-    - name: Download and compress Clash.Meta core
+    - name: Download and compress `Clash.Meta core`
       run: |
         if [ "${download_tag}" = "Prerelease-Alpha" ];then
           download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
@@ -38,7 +38,7 @@ jobs:
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-arm64
         rm -fr upx*
 
-    - name: Move Clash.Meta core to `Clash.Meta-Core` directory
+    - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
         mkdir -p ./Clash.Meta-Core
         rm -fr ./Clash.Meta-Core/*
