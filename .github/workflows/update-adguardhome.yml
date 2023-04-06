@@ -19,6 +19,14 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
+    - name: Delete old `AdGuardHome`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git rm -f ./AdGuardHome/AdGuardHome
+        git commit -m "Delete old AdGuardHome"
+        git push
+
     - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
@@ -47,3 +55,8 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 AdGuardHome 至 ${download_version}" || exit 0
         git push
+
+    - uses: gacts/purge-jsdelivr-cache@v1
+      with:
+        url: |
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${file}
