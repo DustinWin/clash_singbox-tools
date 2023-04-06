@@ -23,7 +23,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git rm -f ./Clash.Meta-core/clash.meta-linux-arm64
+        git rm -f ./Clash.Meta-Core/clash.meta-linux-arm64
         git commit -m "Delete old Clash.Meta core"
         git push
 
