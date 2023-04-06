@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Input version, such as "v0.108.0-b.32"'
+        description: 'Input version, such as "v0.107.27" or "v0.108.0-b.32"'
         required: true
         type: string
 
