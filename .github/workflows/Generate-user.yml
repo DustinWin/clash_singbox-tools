@@ -1,0 +1,56 @@
+name: Generate user.yaml
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 22 * * *"
+  push:
+    branches:
+      - main
+
+jobs:
+  create-test-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v3
+
+      - name: Delete old `user.yaml`
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git rm -f ./MyConfig/user.yaml
+          git commit -m "Delete old user.yaml"
+          git push
+
+      - name: Put together user.yaml
+        run: |
+          mkdir -p ./MyConfig/temp
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Router-Plugins/main/MyConfig/front-user.yaml > ./MyConfig/temp/temp-user.txt
+          curl -sSL https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all.txt | grep -i "\.[A-Z]" | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | sed "s/^/    - '/;s/$/'/" >> ./MyConfig/temp/temp-user.txt
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Router-Plugins/main/MyConfig/later-user.yaml >> ./MyConfig/temp/temp-user.txt
+
+      - name: Create user.yaml
+        run: |
+          cat ./MyConfig/temp/temp-user.txt > ./MyConfig/temp/user.yaml
+
+      - name: Copy `User.yaml` to `MyConfig` directory
+        run: |
+          cp -f ./MyConfig/temp/user.yaml ./MyConfig/
+
+      - name: Delete `temp` directory
+        run: |
+          rm -rf ./MyConfig/temp
+
+      - name: Commit and push
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "更新 TrackersList_$(date +%Y%m%d%H%M)" || exit 0
+          git push
+
+      - name: Purge jsdelivr CDN
+        run: |
+          cd MyConfig || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}/@main/MyConfig/${file}"
+          done
