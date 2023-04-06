@@ -19,6 +19,14 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
+    - name: Delete old `Clash.Meta core`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git rm -f ./Clash.Meta-core/clash.meta-linux-arm64
+        git commit -m "Delete old Clash.Meta core"
+        git push
+
     - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
@@ -51,3 +59,9 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Clash.Meta 内核至 ${download_version}" || exit 0
         git push
+
+    - name: Purge jsDelivr CDN cache
+      uses: gacts/purge-jsdelivr-cache@v1
+      with:
+        url: |
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-linux-arm64
