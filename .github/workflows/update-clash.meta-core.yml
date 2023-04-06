@@ -24,7 +24,7 @@ jobs:
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
         tar xf upx-4.0.2-amd64_linux.tar.xz
 
-    - name: Download Clash.Meta core
+    - name: Download and compress Clash.Meta core
       run: |
         if [ "${download_tag}" = "Prerelease-Alpha" ];then
           download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
@@ -37,9 +37,6 @@ jobs:
         mkdir tmp
         wget "${download_url}/${download_tag}/Clash.Meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
         chmod +x ./tmp/clash.meta-linux-${new_name[i]}
-
-    - name: Compress Clash.Meta core
-      run: |
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
         rm -fr upx*
 
