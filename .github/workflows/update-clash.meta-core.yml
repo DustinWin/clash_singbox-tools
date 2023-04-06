@@ -39,6 +39,7 @@ jobs:
         chmod +x ./tmp/clash.meta-linux-${new_name[i]}
 
     - name: Compress Clash.Meta core
+      run: |
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
         rm -fr upx*
 
