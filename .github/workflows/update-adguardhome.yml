@@ -1,0 +1,49 @@
+name: Update Clash.Meta core
+on: 
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Input version, such as "v0.108.0-b.32"'
+        required: true
+        type: string
+
+env:
+  download_tag: ${{ github.event.inputs.tag }}
+  download_version: ''
+  download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Download and unzip upx
+      run: |
+        wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
+        tar xf upx-4.0.2-amd64_linux.tar.xz
+
+    - name: Download and compress AdGuardHome
+      run: |
+        download_version=${download_tag}
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
+        mkdir -p ./tmp
+        wget "${download_url}/${download_tag}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf -c > ./tmp/
+        chmod +x ./tmp/AdGuardHome
+        ./upx-4.0.2-amd64_linux/upx --best ./tmp/AdGuardHome
+        rm -fr upx*
+
+    - name: Move Clash.Meta core to `Clash.Meta-Core` directory
+      run: |
+        mkdir -p ./AdGuardHome
+        rm -fr ./AdGuardHome/*
+        cp ./tmp/* ./AdGuardHome/
+        rm -fr ./tmp
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 AdGuardHome 至 ${download_version}" || exit 0
+        git push
