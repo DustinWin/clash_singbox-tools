@@ -32,11 +32,9 @@ jobs:
           download_version=${download_tag}
         fi
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(arm64)
-        new_name=(arm64)
         mkdir -p ./tmp
-        wget "${download_url}/${download_tag}/Clash.Meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.Meta-linux-arm64
-        chmod +x ./tmp/clash.Meta-linux-arm64
+        wget "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
+        chmod +x ./tmp/clash.meta-linux-arm64
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-arm64
         rm -fr upx*
 
