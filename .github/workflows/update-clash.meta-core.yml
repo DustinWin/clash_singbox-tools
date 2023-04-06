@@ -18,10 +18,8 @@ jobs:
       uses: actions/checkout@main
     - name: Init Dependencies
       run: |
-        wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
-        wget https://github.com/upx/upx/releases/download/v3.93/upx-3.93-amd64_linux.tar.xz
-        tar xf upx-3.96-amd64_linux.tar.xz
-        tar xf upx-3.93-amd64_linux.tar.xz
+        wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
+        tar xf upx-4.0.2-amd64_linux.tar.xz
     - name: Download Core
       run: |
         if [ "${download_tag}" = "Prerelease-Alpha" ] || [ "${download_tag}" = "Prerelease-Beta" ];then
@@ -36,19 +34,12 @@ jobs:
         for((i=0;i<7;i++));do
           wget "${download_url}/${download_tag}/Clash.Meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > ./tmp/clash-linux-${new_name[i]}
           chmod +x ./tmp/clash-linux-${new_name[i]}
-          if [ "${archs[i]}" != "armv5" ];then
-            if [[ ${archs[i]} = mips* ]];then
-              ./upx-3.93-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
-            else
-              ./upx-3.96-amd64_linux/upx ./tmp/clash-linux-${new_name[i]}
-            fi
-          fi
         done
         rm -fr upx*
     - name: Update
       run: |
-        rm -fr ./bin/clash.meta/*
-        cp ./tmp/* ./bin/clash.meta/
+        rm -fr ./clash.meta/*
+        cp ./tmp/* ./clash.meta/
         rm -fr ./tmp
         sed -i "s/meta_v=.*/meta_v=$(./bin/clash.meta/clash-linux-amd64 -v 2>/dev/null | sed 's/ linux.*//;s/.* //')/" bin/version
     - name: Commit and push
