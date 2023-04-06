@@ -38,7 +38,7 @@ jobs:
       run: |
         mkdir -p ./AdGuardHome
         rm -fr ./AdGuardHome/*
-        cp ./tmp/* ./AdGuardHome/
+        cp ./tmp/AdGuardHome/* ./AdGuardHome/
         rm -fr ./tmp
 
     - name: Commit and push
