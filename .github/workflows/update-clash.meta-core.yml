@@ -33,7 +33,7 @@ jobs:
         mkdir tmp
         wget "${download_url}/${download_tag}/Clash.Meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
         chmod +x ./tmp/clash.meta-linux-${new_name[i]}
-        ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash-linux-${new_name[i]}
+        ./upx-4.0.2-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
         rm -fr upx*
     - name: Update
       run: |
