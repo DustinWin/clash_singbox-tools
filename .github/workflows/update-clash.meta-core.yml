@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Input version, such as Prerelease-Alpha, v1.14.3'
+        description: 'Input version, such as "Prerelease-Alpha" or "v1.14.3"'
         required: true
         type: string
 
