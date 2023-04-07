@@ -41,9 +41,9 @@ jobs:
         fi
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         mkdir -p ./tmp
-        curl -o /tmp/clash.meta-linux-arm64.gz -L "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" && gunzip /tmp/clash.meta-linux-arm64.gz
+        curl -o /tmp/clash.meta-linux-arm64.gz -L "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" && gunzip /tmp/clash.meta-linux-arm64-${download_version}.gz
         chmod +x ./tmp/clash.meta-linux-arm64
-        curl -o /tmp/clash.meta-windows-amd64.zip -L "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" && unzip ./tmp/clash.meta-windows-amd64.zip -d ./tmp
+        curl -o /tmp/clash.meta-windows-amd64.zip -L "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" && unzip ./tmp/clash.meta-windows-amd64-${download_version}.zip -d ./tmp
         rm -fr upx*
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
