@@ -44,7 +44,7 @@ jobs:
         wget "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
         ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
-        wget "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" -O - | unzip -d > ./tmp/clash.meta-windows-amd64.exe
+        wget "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" -O - | unzip -d /tmp -
         rm -rf upx*
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
