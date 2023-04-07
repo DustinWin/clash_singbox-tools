@@ -5,7 +5,7 @@ dns:
   listen: 0.0.0.0:56252
   use-hosts: true
   fake-ip-range: 198.18.0.1/16
-  enhanced-mode: fake-ip
+  enhanced-mode: fake-i
   fake-ip-filter:
     - '+.komect.com'
     - '+.qq.com'
