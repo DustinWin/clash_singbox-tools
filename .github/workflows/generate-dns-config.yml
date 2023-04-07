@@ -5,7 +5,7 @@ on:
     - cron: "0 22 * * *"
   push:
     branches:
-      - main
+      - main/MyConfig
 
 jobs:
   create-test-file:
