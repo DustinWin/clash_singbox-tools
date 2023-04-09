@@ -54,7 +54,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b release
           git add .
-          git commit -m ""
+          git commit -m "g"
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
 
