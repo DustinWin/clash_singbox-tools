@@ -1,6 +1,6 @@
 # 自动更新配置文件、Clash.Meta 内核和 AdGuardHome
 # 一、 说明
-一直钟爱 Clash 的 fake-ip 模式，但一直有一个头疼的问题：使用 [BT 下载](https://github.com/c0re100/qBittorrent-Enhanced-Edition)添加 [TrackersList](https://trackerslist.com) 后 UDP 协议无法连接。不管是以前使用的 [Clash for Windows](https://github.com/Fndroid/clash_for_windows_pkg)，还是现在使用的 [ShellClash](https://github.com/juewuy/ShellClash) 和 [Clash Verge](https://github.com/zzzgydi/clash-verge)。后来终于发现只要**将 TrackersList 列表内的域名添加到 fake-ip-filter 内，UDP 协议就可以连接了**。于是萌生出通过自动化脚本添加 TrackersList 列表域名到 fake-ip-filter 的想法，然后在本地客户端替换配置文件就可以了
+一直钟爱 Clash 的 fake-ip 模式，但一直有一个头疼的问题：使用 [BT 下载](https://github.com/c0re100/qBittorrent-Enhanced-Edition)添加 [TrackersList](https://trackerslist.com) 后 UDP 协议无法连接。不管是以前使用的 [Clash for Windows](https://github.com/Fndroid/clash_for_windows_pkg)，还是现在使用的 [ShellClash](https://github.com/juewuy/ShellClash) 和 [Clash Verge](https://github.com/zzzgydi/clash-verge)。后来终于发现只要**将 TrackersList 列表内的域名添加到 fake-ip-filter 内，UDP 协议就可以连接了**。于是萌生出通过自动化脚本添加 TrackersList 列表域名到 fake-ip-filter 的想法，然后在本地客户端替换配置文件就可以了。每天早上 3 点（北京时间）自动构建
 - 注：若想自己生成配置文件 user.yaml，请 [Fork 本项目](https://github.com/DustinWin/Clash-Files)后编辑 MyConfig/front-user.yaml 文件，将 listen 参数的端口改为默认的 1053
 
 # 二、 使用方法
