@@ -1,15 +1,14 @@
-name: Update Clash.Meta core
+name: Update Clash.Meta release
 on: 
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Input version, such as "Prerelease-Alpha" or "v1.14.3"'
+        description: 'Input version, such as "v1.14.3"'
         required: true
         type: string
 
 env:
-  download_tag: ${{ github.event.inputs.tag }}
-  download_version: ''
+  download_version: ${{ github.event.inputs.tag }}
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
@@ -23,8 +22,8 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git rm -f ./Clash.Meta-Core/*
-        git commit -m "Delete old Clash.Meta core"
+        git rm -f ./Clash.Meta-Core/Release*
+        git commit -m "Delete old Clash.Meta release"
         git push
 
     - name: Download and unzip `upx`
@@ -34,17 +33,12 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        if [ "${download_tag}" = "Prerelease-Alpha" ];then
-          download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
-        else
-          download_version=${download_tag}
-        fi
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         mkdir -p ./tmp
-        wget "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
+        wget "${download_url}/${download_version}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
         ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
-        wget -P ./tmp "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip"
+        wget -P ./tmp "${download_url}/$${download_version}/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         mv "./tmp/clash.meta-windows-amd64.exe" "./tmp/clash-meta.exe"
         rm -f "./tmp/clash.meta-windows-amd64-${download_version}.zip"
@@ -52,9 +46,8 @@ jobs:
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
-        mkdir -p ./Clash.Meta-Core
-        rm -rf ./Clash.Meta-Core/*
-        cp ./tmp/* ./Clash.Meta-Core
+        mkdir -p ./Clash.Meta-Core/Release
+        cp ./tmp/* ./Clash.Meta-Core/Release
         rm -rf ./tmp
 
     - name: Commit and push
@@ -68,4 +61,4 @@ jobs:
       uses: gacts/purge-jsdelivr-cache@v1
       with:
         url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-linux-arm64
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/Release/clash.meta-linux-arm64
