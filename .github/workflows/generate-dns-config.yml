@@ -5,7 +5,7 @@ on:
     - cron: "0 22 * * *"
   push:
     branches:
-      - main
+      - main/MyConfig
 
 jobs:
   create-test-file:
@@ -14,13 +14,12 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v3
 
-      - name: Delete old `user.yaml`
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git rm -f ./MyConfig/user.yaml
-          git commit -m "Delete old user.yaml"
-          git push
+      - uses: dev-drprasad/delete-tag-and-release@v1.0
+        with:
+          tag_name: latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
+          repo: DustinWin/Clash-Files
 
       - name: Put together user.yaml
         run: |
@@ -29,27 +28,38 @@ jobs:
           curl -sSL https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all.txt | grep -i "\.[A-Z]" | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | sed "s/^/    - '/;s/$/'/" >> ./MyConfig/temp/temp-user.txt
           curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/later-user.yaml >> ./MyConfig/temp/temp-user.txt
 
-      - name: Create user.yaml
+      - name: Move files
         run: |
-          cat ./MyConfig/temp/temp-user.txt > ./MyConfig/temp/user.yaml
+          mkdir -p ./publish
+          cat ./MyConfig/temp/temp-user.txt > ./publish/user.yaml
+          cd ./publish || exit 1
 
-      - name: Copy `User.yaml` to `MyConfig` directory
-        run: |
-          cp -f ./MyConfig/temp/user.yaml ./MyConfig/
+      - name: Release and upload assets
+        uses: softprops/action-gh-release@v0.1.6
+        with:
+          name: latest
+          tag_name: latest
+          draft: false
+          prerelease: false
+          files: |
+            ./publish/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Delete `temp` directory
+      - name: Git push assets to "release" branch
         run: |
-          rm -rf ./MyConfig/temp
-
-      - name: Commit and push
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add . && git commit -m "更新时间 $(date +%Y%m%d%H%M)" || exit 0
-          git push
+          cd publish || exit 1
+          git init
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b release
+          git add .
+          git commit -m "${{ env.RELEASE_NAME }}"
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f -u origin release
 
       - name: Purge jsDelivr CDN cache
         uses: gacts/purge-jsdelivr-cache@v1
         with:
           url: |
-            https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/MyConfig/user.yaml
+            https://curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
