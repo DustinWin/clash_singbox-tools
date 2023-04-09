@@ -58,8 +58,9 @@ jobs:
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
 
-      - name: Purge jsDelivr CDN cache
-        uses: gacts/purge-jsdelivr-cache@v1
-        with:
-          url: |
-            https://curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
+      - name: Purge jsdelivr CDN
+        run: |
+          cd ./publish || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@release/${file}"
+          done
