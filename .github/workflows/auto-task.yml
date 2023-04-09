@@ -60,7 +60,7 @@ jobs:
         run: |
           mkdir -p ./publish
           cat ./tmp/temp-user.txt > ./publish/user.yaml
-          rm -f /tmp/temp-user.txt
+          rm -f ./tmp/temp-user.txt
           cp ./tmp/* ./publish
           rm -rf ./tmp
           cd ./publish || exit 1
