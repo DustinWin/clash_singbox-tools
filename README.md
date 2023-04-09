@@ -10,7 +10,7 @@
 - 注：将 user.yaml 文件直链修改成自己的链接
 
 ```
-curl -o $clashdir/user.yaml -L https://fastly.jsdelivr.net/gh/DustinWin/Clash-Files@main/MyConfig/user.yaml
+curl -o $clashdir/user.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@releases/download/latest/user.yaml
 $clashdir/start.sh start
 ```
 ② Clash Verge（Windows）  
@@ -18,7 +18,7 @@ $clashdir/start.sh start
 - 注：将 user.yaml 文件直链修改成自己的链接
 
 ```
-curl -o %USERPROFILE%\.config\clash-verge\profiles\{文件名}.yaml -L https://fastly.jsdelivr.net/gh/DustinWin/Clash-Files@main/MyConfig/user.yaml
+curl -o %USERPROFILE%\.config\clash-verge\profiles\{文件名}.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@main/MyConfig/user.yaml
 ```
 最好重启一下 Clash Verge 客户端
 ## 2. Clash.Meta 内核
@@ -36,8 +36,8 @@ chmod +x /data/AdGuardHome/AdGuardHome && reboot
 可以在 ShellClash 里添加定时更新配置文件 user.yaml、Clash.Meta 内核、路由规则文件和 AdGuardHome 的任务，连接 SSH 后运行 `crontab -e`，按一下 Ins 键（Insert 键），在最下方粘贴如下内容：
 ```
 0 3 * * 1,3,5 curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@main/Clash.Meta-Core/clash.meta-linux-arm64 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 3 点更新 Clash.Meta 内核
-30 3 * * 1,3,5 curl -o /data/clash/GeoSite.dat -L https://fastly.jsdelivr.net/gh/DustinWin/clash-geosite@release/geosite.dat && curl -o /data/clash/GeoIP.dat -L https://fastly.jsdelivr.net/gh/DustinWin/clash-geoip@release/geoip.dat && curl -o /data/clash/Country.mmdb -L https://fastly.jsdelivr.net/gh/DustinWin/clash-geoip@release/Country.mmdb && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 3点半更新路由规则文件
-30 4 * * 1,3,5 curl -o /data/clash/user.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@release/user.yaml && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 4 点半更新 user.yaml
+30 3 * * 1,3,5 curl -o /data/clash/GeoSite.dat -L https://cdn.jsdelivr.net/gh/DustinWin/clash-geosite@release/geosite.dat && curl -o /data/clash/GeoIP.dat -L https://cdn.jsdelivr.net/gh/DustinWin/clash-geoip@release/geoip.dat && curl -o /data/clash/Country.mmdb -L https://cdn.jsdelivr.net/gh/DustinWin/clash-geoip@release/Country.mmdb && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 3点半更新路由规则文件
+30 4 * * 1,3,5 curl -o /data/clash/user.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@releases/download/latest/user.yaml && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 4 点半更新 user.yaml
 0 5 * * 1,3,5 /data/clash/start.sh updateyaml && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 5 点更新订阅并重启 Clash 服务
 0 6 * * 1,3,5 curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@main/AdGuardHome/AdGuardHome && chmod +x /data/AdGuardHome/AdGuardHome && reboot >/dev/null 2>&1 #每周一、三、五早上 6 点更新 AdGuardHome 并重启路由器
 ```
