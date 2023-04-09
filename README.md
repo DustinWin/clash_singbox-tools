@@ -18,7 +18,7 @@ $clashdir/start.sh start
 - 注：将 user.yaml 文件直链修改成自己的链接
 
 ```
-curl -o %USERPROFILE%\.config\clash-verge\profiles\{文件名}.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@main/MyConfig/user.yaml
+curl -o %USERPROFILE%\.config\clash-verge\profiles\{文件名}.yaml -L https://cdn.jsdelivr.net/gh/DustinWin/Clash-Files@releases/download/latest/user.yaml
 ```
 最好重启一下 Clash Verge 客户端
 ## 2. Clash.Meta 内核
