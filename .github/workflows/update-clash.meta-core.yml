@@ -44,7 +44,7 @@ jobs:
         wget "${download_url}/${download_tag}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
         ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
-        wget -qO-"${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" | unzip -q - -d /tmp && rm "clash.meta-windows-amd64-${download_version}.zip"
+        wget "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip" | unzip -d /tmp && rm -f "clash.meta-windows-amd64-${download_version}.zip"
         rm -rf upx*
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
@@ -66,4 +66,3 @@ jobs:
       with:
         url: |
           https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-linux-arm64
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-windows-amd64.exe
