@@ -59,7 +59,7 @@ jobs:
       - name: Move files
         run: |
           mkdir -p ./publish
-          cp ./tmp/* ./Clash.Meta-Release
+          cp ./tmp/* ./publish
           cat ./tmp/temp-user.txt > ./publish/user.yaml
           cd ./publish || exit 1
 
