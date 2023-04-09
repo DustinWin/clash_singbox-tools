@@ -61,6 +61,7 @@ jobs:
           mkdir -p ./publish
           cp ./tmp/* ./publish
           cat ./tmp/temp-user.txt > ./publish/user.yaml
+          rm -rf ./tmp
           cd ./publish || exit 1
 
       - name: Release and upload assets
