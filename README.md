@@ -3,7 +3,7 @@
 一直钟爱 Clash 的 fake-ip 模式，但一直有一个头疼的问题：使用 [BT 下载](https://github.com/c0re100/qBittorrent-Enhanced-Edition)添加 [TrackersList](https://trackerslist.com) 后 UDP 协议无法连接。不管是以前使用的 [Clash for Windows](https://github.com/Fndroid/clash_for_windows_pkg)，还是现在使用的 [ShellClash](https://github.com/juewuy/ShellClash) 和 [Clash Verge](https://github.com/zzzgydi/clash-verge)。后来终于发现只要**将 TrackersList 列表内的域名添加到 fake-ip-filter 内，UDP 协议就可以连接了**。于是萌生出通过自动化脚本添加 TrackersList 列表域名到 fake-ip-filter 的想法，然后在本地客户端替换配置文件就可以了。每天早上 3 点（北京时间）自动构建
 - 注：
 - 1. 若想自己生成配置文件 user.yaml，请 [Fork 本项目](https://github.com/DustinWin/Clash-Files)后编辑 MyConfig/front-user.yaml 文件，将 listen 参数的端口改为默认的 1053
-- 2. 编辑 MyConfig/later-user.yaml 文件，将 nameserver 中的`🪜 国外域名`改成可以访问外网的代理组名，或者直接将 `'https://dns.google/dns-query#🪜 国外域名'`修改为`tls://dns.google`
+- 2. 编辑 MyConfig/later-user.yaml 文件，将 nameserver 中的`🪜 国外域名`改成可以访问外网的代理组名，或者直接将 `'https://dns.google/dns-query#🪜 国外域名'`修改为 `tls://dns.google`
 
 # 二、 使用方法
 ## 1. 配置文件 user.yaml
