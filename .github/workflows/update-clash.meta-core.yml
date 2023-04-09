@@ -66,3 +66,4 @@ jobs:
       with:
         url: |
           https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-linux-arm64
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Core/clash.meta-windows-amd64.exe
