@@ -2,7 +2,7 @@ name: Generate DNS config
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 19 * * *"
   push:
     branches:
       - main
