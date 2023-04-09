@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - "**/README.md"
 
+env:
+  download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+
 jobs:
   create-test-file:
     runs-on: ubuntu-latest
@@ -36,7 +39,7 @@ jobs:
       - name: Download and compress `Clash.Meta core`
         run: |
           mkdir -p ./tmp
-          download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+          download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
           wget "${download_url}/Prerelease-Alpha/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
           chmod +x ./tmp/clash.meta-linux-arm64
           ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
