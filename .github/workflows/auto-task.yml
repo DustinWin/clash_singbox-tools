@@ -1,11 +1,11 @@
-name: Generate DNS config
+name: Auto task
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 19 * * *"
   push:
     branches:
-      - main/dns
+      - main
     paths-ignore:
       - "**/README.md"
 
@@ -26,18 +26,38 @@ jobs:
       - name: Set variables
         run: |
           echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "download_version=${download_version}" >> ${GITHUB_ENV}
+
+      - name: Download and unzip `upx`
+        run: |
+          wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
+          tar xf upx-4.0.2-amd64_linux.tar.xz
+
+      - name: Download and compress `Clash.Meta core`
+        run: |
+          mkdir -p ./tmp
+          download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/${download_tag} | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+          wget "${download_url}/Prerelease-Alpha/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
+          chmod +x ./tmp/clash.meta-linux-arm64
+          ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
+          wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
+          unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+          mv "./tmp/clash.meta-windows-amd64.exe" "./tmp/clash-meta.exe"
+          rm -f "./tmp/clash.meta-windows-amd64-${download_version}.zip"
+          rm -rf upx*
 
       - name: Put together user.yaml
         run: |
-          mkdir -p ./MyConfig/temp
-          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/front-user.yaml > ./MyConfig/temp/temp-user.txt
-          curl -sSL https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all.txt | grep -i "\.[A-Z]" | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | sed "s/^/    - '/;s/$/'/" >> ./MyConfig/temp/temp-user.txt
-          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/later-user.yaml >> ./MyConfig/temp/temp-user.txt
+          mkdir -p ./tmp
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/front-user.yaml > ./tmp/temp-user.txt
+          curl -sSL https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all.txt | grep -i "\.[A-Z]" | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | sed "s/^/    - '/;s/$/'/" >> ./tmp/temp-user.txt
+          curl -sSL https://raw.githubusercontent.com/DustinWin/Clash-Files/main/MyConfig/later-user.yaml >> ./tmp/temp-user.txt
 
       - name: Move files
         run: |
           mkdir -p ./publish
-          cat ./MyConfig/temp/temp-user.txt > ./publish/user.yaml
+          cp ./tmp/* ./Clash.Meta-Release
+          cat ./tmp/temp-user.txt > ./publish/user.yaml
           cd ./publish || exit 1
 
       - name: Release and upload assets
