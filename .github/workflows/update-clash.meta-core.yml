@@ -46,7 +46,7 @@ jobs:
         ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
         wget -P ./tmp "${download_url}/${download_tag}/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
-        ren "./tmp/clash.meta-windows-amd64.exe" "clash-meta.exe"
+        mv "./tmp/clash.meta-windows-amd64.exe" "clash-meta.exe"
         rm -f "./tmp/clash.meta-windows-amd64-${download_version}.zip"
         rm -rf upx*
 
