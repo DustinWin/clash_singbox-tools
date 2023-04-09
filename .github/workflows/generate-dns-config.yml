@@ -53,9 +53,10 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b release
-          git add -A
-          git remote add Clash-Files "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git push -f -u Clash-Files release
+          git .
+          git commit -m ""
+          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
+          git push -f -u origin release
 
       - name: Purge jsDelivr CDN cache
         uses: gacts/purge-jsdelivr-cache@v1
