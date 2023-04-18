@@ -3,8 +3,8 @@
 1. 每天早上 3 点（北京时间）自动构建生成 user.yaml 和 Clash.Meta Alpha 版内核（arm64 和 amd64）
 2. 若想自己生成配置文件 user.yaml，请 [Fork 本项目](https://github.com/DustinWin/Clash-Files)后编辑 MyConfig/front-user.yaml 文件，将 listen 参数的端口改为默认的 1053
 3. 编辑 MyConfig/later-user.yaml 文件，将 nameserver 中的`🪜 国外域名`改成可以访问外网的代理组名，或者直接将 `'https://dns.google/dns-query#🪜 国外域名'`修改为 `tls://dns.google`
-4. 添加 [TrackersList](https://trackerslist.com) 到 user.yaml 内的 `fake-ip-filter`，防止 BT 下载无法连接 TrackersList UDP 协议
-5. 添加 [NTP 服务](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/NTPService)到 user.yaml 内的 `fake-ip-filter`，防止校时失败
+4. 添加 [NTP 服务](https://github.com/blackmatrix7/ios_rule_script/tree/master/rule/Clash/NTPService)到 user.yaml 内的 `fake-ip-filter`，防止校时失败
+5. 添加 [TrackersList](https://trackerslist.com) 到 user.yaml 内的 `fake-ip-filter`，防止 BT 下载无法连接 TrackersList UDP 协议
 # 二、 使用方法
 ## 1. 配置文件 user.yaml
 ① ShellClash  
