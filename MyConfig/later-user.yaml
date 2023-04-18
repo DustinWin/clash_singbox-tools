@@ -11,5 +11,5 @@
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
   nameserver-policy:
-    "geosite:network,microsoft-cn,apple-cn,google-cn,games-cn": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
+    "geosite:speedtest,microsoft@cn,apple-cn,google-cn,category-games@cn": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
     "geosite:cn,private,tracker": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
