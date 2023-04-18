@@ -12,4 +12,4 @@
     - https://dns.alidns.com/dns-query
   nameserver-policy:
     "geosite:speedtest,microsoft@cn,apple-cn,google-cn,category-games@cn": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
-    "geosite:cn,private,tracker": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
+    "geosite:cn,private,category-public-tracker": [https://doh.pub/dns-query, https://dns.alidns.com/dns-query]
