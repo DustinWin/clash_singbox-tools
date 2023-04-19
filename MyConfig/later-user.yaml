@@ -4,7 +4,7 @@
     - tls://8.8.8.8:853
     - tls://1.1.1.1:853
   nameserver:
-    - 'https://dns.google/dns-query#🪜 国外域名'
+    - 'https://dns.google/dns-query#🪜 代理域名'
     - https://dns.cloudflare.com/dns-query
     - https://doh.opendns.com/dns-query
   proxy-server-nameserver:
