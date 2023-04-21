@@ -64,6 +64,7 @@ jobs:
 
       - name: Move files
         run: |
+          cp ./tmp/* ./publish
           rm -rf ./tmp
           cd ./publish || exit 1
 
