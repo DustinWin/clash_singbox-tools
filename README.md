@@ -1,7 +1,7 @@
 # [ShellClash](https://github.com/juewuy/ShellClash) 自动更新 [Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 1. 每天早上 3 点（北京时间）自动构建生成 Clash.Meta Alpha 版内核（arm64 和 amd64）
-2. Clash.Meta Release 版（arm64 和 amd64）和 AdGuardHome（arm64）手动更新
+2. Clash.Meta Release 版内核（arm64 和 amd64）和 AdGuardHome（arm64）手动更新
 # 二、 使用方法
 ## 1. 导入 Clash.Meta 内核
 ① Release 版  
