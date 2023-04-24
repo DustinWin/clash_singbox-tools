@@ -22,7 +22,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git rm -f ./Clash.Meta-Release/*
+        git rm -f ./Clash.Meta-release/*
         git commit -m "Delete old Clash.Meta release"
         git push
 
@@ -46,8 +46,8 @@ jobs:
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
-        mkdir -p ./Clash.Meta-Release
-        cp ./tmp/* ./Clash.Meta-Release
+        mkdir -p ./Clash.Meta-release
+        cp ./tmp/* ./Clash.Meta-release
         rm -rf ./tmp
 
     - name: Commit and push
