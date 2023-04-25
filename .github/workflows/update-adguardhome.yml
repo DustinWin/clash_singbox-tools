@@ -32,7 +32,7 @@ jobs:
         wget "${download_url}/${download_tag}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf - -C ./tmp/
         chmod +x ./tmp/AdGuardHome/AdGuardHome
         ./upx-4.0.2-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
-        rm -rf ./upx
+        rm -rf upx*
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
