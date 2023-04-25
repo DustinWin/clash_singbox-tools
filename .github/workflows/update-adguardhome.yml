@@ -19,14 +19,6 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Delete old `AdGuardHome`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git rm -f ./AdGuardHome/AdGuardHome
-        git commit -m "Delete old AdGuardHome"
-        git push
-
     - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
@@ -45,9 +37,9 @@ jobs:
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
         mkdir -p ./AdGuardHome
-        rm -fr ./AdGuardHome/*
+        rm -rf ./AdGuardHome/*
         cp ./tmp/AdGuardHome/AdGuardHome ./AdGuardHome/
-        rm -fr ./tmp
+        rm -rf ./tmp
 
     - name: Commit and push
       run: |
