@@ -18,14 +18,6 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Delete old `Clash.Meta core`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git rm -f ./Clash.Meta-release/*
-        git commit -m "Delete old Clash.Meta release"
-        git push
-
     - name: Download and unzip `upx`
       run: |
         wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
@@ -47,6 +39,7 @@ jobs:
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
         mkdir -p ./Clash.Meta-release
+        rm -rf ./Clash.Meta-release/*
         cp ./tmp/* ./Clash.Meta-release
         rm -rf ./tmp
 
