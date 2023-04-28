@@ -21,6 +21,7 @@ chmod +x $clashdir/clash && $clashdir/start.sh restart
 连接 SSH 后执行如下命令：
 ```
 taskkill /f /t /im "Clash Verge*"
+taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWin/clash-tools/raw/main/Clash.Meta-release/clash-meta.exe
 ```
 ② Alpha 版  
