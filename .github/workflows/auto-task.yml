@@ -62,7 +62,7 @@ jobs:
           name: latest
           tag_name: latest
           draft: false
-          prerelease: false
+          prerelease: true
           files: |
             ./publish/*
         env:
