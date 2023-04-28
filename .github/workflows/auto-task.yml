@@ -24,7 +24,7 @@ jobs:
           tag_name: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_release: true
-          repo: DustinWin/Clash-Files
+          repo: DustinWin/clash-tools
 
       - name: Set variables
         run: |
