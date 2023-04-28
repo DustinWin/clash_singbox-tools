@@ -27,6 +27,7 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWi
 连接 SSH 后执行如下命令：
 ```
 taskkill /f /t /im "Clash Verge*"
+taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWin/clash-tools/releases/download/latest/clash-meta.exe
 ```
 ## 3. AdGuardHome
