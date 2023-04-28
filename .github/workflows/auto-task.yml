@@ -61,7 +61,7 @@ jobs:
         with:
           name: latest
           tag_name: latest
-          draft: false
+          draft: true
           prerelease: true
           files: |
             ./publish/*
