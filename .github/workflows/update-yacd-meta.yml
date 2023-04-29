@@ -24,15 +24,21 @@ jobs:
         download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases | grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
-    - name: Download and move `Yacd-meta`
+    - name: Download `Yacd-meta`
+      run: |
+        mkdir -p ./tmp
+        wget -P ./tmp https://github.com/MetaCubeX/yacd/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip
+        rm -f ./tmp/*.zip
+        tar -czvf ./tmp/Yacd-meta.tar.gz ./tmp/Yacd-meta-gh-pages
+        rm -rf ./tmp/Yacd-meta*
+
+    - name: Move `Yacd-meta`
       run: |
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
-        cd ./Yacd-meta
-        wget https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
-        tar -czvf Yacd-meta.tar.gz Yacd-meta-gh-pages/
-        rm -f *.zip
-        rm -rf Yacd-meta-*
+        cp ./tmp/* ./Yacd-meta
+        rm -rf ./tmp
 
     - name: Commit and push
       run: |
