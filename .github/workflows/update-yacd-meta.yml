@@ -25,7 +25,6 @@ jobs:
       run: |
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
-        cd 
         tar -czvf ./Yacd-meta/Yacd-meta.tar.gz ./tmp/gh-pages
         rm -rf ./tmp
 
