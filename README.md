@@ -34,7 +34,7 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWi
 连接 SSH 后执行如下命令：
 ```
 curl -o /tmp/Yacd-meta.tar.gz -L https://github.com/DustinWin/clash-tools/raw/main/Yacd-meta/Yacd-meta.tar.gz
-mkdir -p $clashdir/ui && chmod +x $clashdir/ui && tar -xzvf /tmp/Yacd-meta.tar.gz -C $clashdir/ui
+mkdir -p $clashdir/ui && chmod +x $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui
 rm -f /tmp/Yacd-meta.tar.gz && $clashdir/start.sh restart
 ```
 ## 3. AdGuardHome
@@ -47,7 +47,7 @@ chmod +x /data/AdGuardHome/AdGuardHome && reboot
 可以在 ShellClash 里添加定时更新 Clash.Meta 内核和 AdGuardHome 的任务，连接 SSH 后运行 `crontab -e`，按一下 Ins 键（Insert 键），在最下方粘贴如下内容：
 ```
 30 3 * * * curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@release/clash.meta-linux-arm64 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1 #每天早上 3 点半更新 Clash.Meta 内核
-0 4 * * 1,3,5 curl -o /tmp/Yacd-meta.tar.gz -L https://github.com/DustinWin/clash-tools/raw/main/Yacd-meta/Yacd-meta.tar.gz && tar -xzvf /tmp/Yacd-meta.tar.gz -C $clashdir/ui --overwrite && rm -f /tmp/Yacd-meta.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 4 点更新 Yacd-meta 面板
+0 4 * * 1,3,5 curl -o /tmp/Yacd-meta.tar.gz -L https://github.com/DustinWin/clash-tools/raw/main/Yacd-meta/Yacd-meta.tar.gz && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui --overwrite && rm -f /tmp/Yacd-meta.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1 #每周一、三、五早上 4 点更新 Yacd-meta 面板
 0 4 * * 2,4,6 curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome/AdGuardHome && chmod +x /data/AdGuardHome/AdGuardHome && reboot >/dev/null 2>&1 #每周二、四、六早上 4 点更新 AdGuardHome 并重启路由器
 ```
 按一下 Esc 键（退出键），输入英文冒号“:”，继续输入“wq”并回车，再运行 `/etc/init.d/cron restart`
