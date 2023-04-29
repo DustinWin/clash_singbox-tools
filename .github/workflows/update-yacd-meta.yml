@@ -21,8 +21,8 @@ jobs:
         cd ./Yacd-meta
         curl -o gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
         tar -czvf Yacd-meta.tar.gz Yacd-meta-gh-pages/
-        rm -f ./Yacd-meta/gh-pages.zip
-        rm -rf ./Yacd-meta/Yacd-meta-gh-pages
+        rm -f gh-pages.zip
+        rm -rf Yacd-meta-gh-pages
 
     - name: Commit and push
       run: |
