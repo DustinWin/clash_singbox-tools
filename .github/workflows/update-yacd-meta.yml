@@ -18,14 +18,15 @@ jobs:
       run: |
         mkdir -p ./tmp
         curl -o ./tmp/gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip -d ./tmp/gh-pages
+        unzip ./tmp/gh-pages.zip
         rm -f ./tmp/gh-pages.zip
 
     - name: Create and move `.tar.gz` file
       run: |
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
-        tar -czvf ./Yacd-meta/Yacd-meta.tar.gz ./tmp/gh-pages
+        cd ./tmp/Yacd-meta-gh-pages
+        tar -czvf ./Yacd-meta/Yacd-meta.tar.gz ./Yacd-meta-gh-pages
         rm -rf ./tmp
 
     - name: Commit and push
