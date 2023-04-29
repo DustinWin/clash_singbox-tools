@@ -21,7 +21,7 @@ jobs:
 
     - name: Get version
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases | grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
     - name: Download and move `Yacd-meta`
