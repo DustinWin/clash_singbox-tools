@@ -1,14 +1,16 @@
 name: Update AdGuardHome
 on: 
+on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Input version, such as "v0.107.27" or "v0.108.0-b.32"'
-        required: true
-        type: string
+  schedule:
+    - cron: "0 19 * * *"
+  push:
+    branches:
+      - mains
+    paths-ignore:
+      - "**/README.md"
 
 env:
-  download_tag: ${{ github.event.inputs.tag }}
   download_version: ''
   download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
 
@@ -21,18 +23,21 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
-        tar xf upx-4.0.2-amd64_linux.tar.xz
+        mkdir -p ./tmp
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/tags | grep name | head -n 1 | sed 's/.*v//g' | sed 's/",$//')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+        echo "upx_version_nov=${upx_version_nov}" >> ${GITHUB_ENV}
+        wget -P ./tmp "https://github.com/upx/upx/releases/download/${upx_version}/upx-${upx_version_nov}-amd64_linux.tar.xz"
+        tar xf "./tmp/upx-${upx_version_nov}-amd64_linux.tar.xz"
 
     - name: Download and compress `AdGuardHome`
       run: |
-        download_version=${download_tag}
+        download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        mkdir -p ./tmp
-        wget "${download_url}/${download_tag}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf - -C ./tmp/
+        wget "${download_url}/${download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf - -C ./tmp/
         chmod +x ./tmp/AdGuardHome/AdGuardHome
-        ./upx-4.0.2-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
-        rm -rf upx*
+        "./tmp/upx-${upx_version_nov}-amd64_linux/upx" --best ./tmp/AdGuardHome/AdGuardHome
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
