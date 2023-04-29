@@ -1,11 +1,11 @@
-name: Auto task
+name: Update release
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 19 * * *"
   push:
     branches:
-      - mains
+      - main
     paths-ignore:
       - "**/README.md"
 
