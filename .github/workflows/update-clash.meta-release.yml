@@ -37,7 +37,7 @@ jobs:
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         wget "${download_url}/${download_version}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
-        ./upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-arm64
+        ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-arm64
         wget -P ./tmp "${download_url}/${download_version}/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         mv "./tmp/clash.meta-windows-amd64.exe" "./tmp/clash-meta.exe"
