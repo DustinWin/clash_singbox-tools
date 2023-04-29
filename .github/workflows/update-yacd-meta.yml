@@ -30,7 +30,7 @@ jobs:
         wget -P ./tmp https://github.com/MetaCubeX/yacd/archive/gh-pages.zip
         unzip ./tmp/gh-pages.zip -d ./tmp
         rm -f ./tmp/*.zip
-        tar -czvf ./tmp/Yacd-meta.tar.gz -C ./tmp/Yacd-meta-gh-pages .
+        tar -czf ./tmp/Yacd-meta.tar.gz -C ./tmp/Yacd-meta-gh-pages .
         rm -rf ./tmp/Yacd-meta-*
 
     - name: Move `Yacd-meta`
