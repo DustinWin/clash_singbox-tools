@@ -1,14 +1,16 @@
 name: Update Clash.Meta release
-on: 
+on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Input version, such as "v1.14.3"'
-        required: true
-        type: string
+  schedule:
+    - cron: "0 19 * * *"
+  push:
+    branches:
+      - mains
+    paths-ignore:
+      - "**/README.md"
 
 env:
-  download_version: ${{ github.event.inputs.tag }}
+  download_version: ''
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
@@ -20,21 +22,25 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        wget https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-amd64_linux.tar.xz
-        tar xf upx-4.0.2-amd64_linux.tar.xz
+        mkdir -p ./tmp
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases | grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases | grep tag_name | head -n 1 | sed 's/.*v//g' | sed 's/",$//')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+        echo "upx_version_nov=${upx_version_nov}" >> ${GITHUB_ENV}
+        wget -P ./tmp "https://github.com/upx/upx/releases/download/${upx_version}/upx-${upx_version_nov}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version_nov}-amd64_linux.tar.xz" -C ./tmp
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         mkdir -p ./tmp
+        download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases | grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         wget "${download_url}/${download_version}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
-        ./upx-4.0.2-amd64_linux/upx ./tmp/clash.meta-linux-arm64
+        ./upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-arm64
         wget -P ./tmp "${download_url}/${download_version}/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         mv "./tmp/clash.meta-windows-amd64.exe" "./tmp/clash-meta.exe"
-        rm -f "./tmp/clash.meta-windows-amd64-${download_version}.zip"
-        rm -rf upx*
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
