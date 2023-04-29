@@ -9,6 +9,9 @@ on:
     paths-ignore:
       - "**/README.md"
 
+env:
+  download_version: ''
+
 jobs:
   Update:
     runs-on: ubuntu-latest
