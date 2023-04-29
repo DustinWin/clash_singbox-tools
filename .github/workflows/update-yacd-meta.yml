@@ -16,13 +16,9 @@ jobs:
 
     - name: Download and move `Yacd-meta`
       run: |
-        mkdir -p ./tmp
-        cd ./tmp
+        mkdir -p ./Yacd-meta
+        cd ./Yacd-meta
         curl -sSL https://github.com/MetaCubeX/yacd/archive/gh-pages.zip | funzip | tar -cz > Yacd-meta.tar.gz
-        mldir -p ./Yacd-meta
-        rm -rf ./Yacd-meta/*
-        cp ./tmp/Yacd-meta.tar.gz ./Yacd-meta
-        rm -rf ./tmp
 
     - name: Commit and push
       run: |
