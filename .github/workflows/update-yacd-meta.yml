@@ -1,0 +1,41 @@
+name: Update Yacd-meta
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/README.md"
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Download and unzip `Yacd-meta`
+      run: |
+        mkdir -p ./tmp
+        curl -o ./tmp/gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip
+
+    - name: Create and move `.tar.gz` file
+      run: |
+        mkdir -p ./Yacd-meta
+        rm -rf ./Yacd-meta/*
+        tar -czvf ./Yacd-meta/Yacd-meta.tar.gz ./tmp/gh-pages
+        rm -rf ./tmp
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 Yacd-meta" || exit 0
+        git push
+
+    - name: Purge jsDelivr CDN cache
+      uses: gacts/purge-jsdelivr-cache@v1
+      with:
+        url: |
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Yacd-meta/Yacd-meta.tar.gz
