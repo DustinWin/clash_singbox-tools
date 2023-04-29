@@ -35,7 +35,7 @@ jobs:
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        wget "${download_url}/${download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxvf - -C ./tmp
+        wget "${download_url}/${download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -zxf - -C ./tmp
         chmod +x ./tmp/AdGuardHome/AdGuardHome
         ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
         rm -rf ./tmp/upx*
