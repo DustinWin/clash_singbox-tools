@@ -19,7 +19,7 @@ jobs:
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
         cd ./Yacd-meta
-        curl -sSL https://github.com/MetaCubeX/yacd/archive/gh-pages.zip | funzip | tar -cz > Yacd-meta.tar.gz
+        curl -sSL https://github.com/MetaCubeX/yacd/archive/gh-pages.zip | unzip -p - | tar -cz > Yacd-meta.tar.gz
 
     - name: Commit and push
       run: |
