@@ -1,6 +1,8 @@
 name: Update Yacd-meta
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 19 * * *"
   push:
     branches:
       - main
@@ -14,12 +16,16 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
+    - name: Get version
+      run: |
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+
     - name: Download and move `Yacd-meta`
       run: |
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
         cd ./Yacd-meta
-        curl -o gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
+        wget https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
         tar -czvf Yacd-meta.tar.gz Yacd-meta-gh-pages/
         rm -f gh-pages.zip
         rm -rf Yacd-meta-gh-pages
@@ -28,7 +34,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Yacd-meta" || exit 0
+        git add . && git commit -m "更新 Yacd-meta 至 ${download_version}" || exit 0
         git push
 
     - name: Purge jsDelivr CDN cache
