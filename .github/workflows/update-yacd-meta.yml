@@ -14,19 +14,14 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Download and unzip `Yacd-meta`
+    - name: Download and move `Yacd-meta`
       run: |
         mkdir -p ./tmp
-        curl -o ./tmp/gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip
-        rm -f ./tmp/gh-pages.zip
-
-    - name: Create and move `.tar.gz` file
-      run: |
-        mkdir -p ./Yacd-meta
+        cd ./tmp
+        curl -sSL https://github.com/MetaCubeX/yacd/archive/gh-pages.zip | funzip | tar -cz > Yacd-meta.tar.gz
+        mldir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
-        cd ./tmp/Yacd-meta-gh-pages
-        tar -czvf ./Yacd-meta/Yacd-meta.tar.gz ./Yacd-meta-gh-pages
+        cp ./tmp/Yacd-meta.tar.gz ./Yacd-meta
         rm -rf ./tmp
 
     - name: Commit and push
