@@ -19,7 +19,7 @@ jobs:
         mkdir -p ./Yacd-meta
         rm -rf ./Yacd-meta/*
         cd ./Yacd-meta
-        curl -O https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
+        curl -o gh-pages.zip -L https://github.com/MetaCubeX/yacd/archive/gh-pages.zip && unzip gh-pages.zip
         tar -czvf Yacd-meta.tar.gz gh-pages/
         
 
