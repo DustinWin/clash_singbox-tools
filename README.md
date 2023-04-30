@@ -37,7 +37,7 @@ curl -o /tmp/Yacd-meta.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-too
 mkdir -p $clashdir/ui && chmod +x $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui
 rm -f /tmp/Yacd-meta.tar.gz && $clashdir/start.sh restart
 ```
-## 3. AdGuardHome
+## 4. AdGuardHome
 连接 SSH 后执行如下命令：
 ```
 curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome/AdGuardHome
