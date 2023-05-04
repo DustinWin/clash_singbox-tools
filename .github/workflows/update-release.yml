@@ -70,7 +70,7 @@ jobs:
         with:
           name: latest
           tag_name: latest
-          core_version: ${{ download_version }}
+          core_version: ${{ github.ref }}
           draft: false
           prerelease: false
           body: |
