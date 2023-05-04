@@ -5,7 +5,7 @@ on:
     - cron: "0 19 * * *"
   push:
     branches:
-      - main
+      - mains
     paths-ignore:
       - "**/README.md"
 
@@ -76,6 +76,19 @@ jobs:
             ./publish/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            New version ${{ github.ref }} is released!
+            Some new features and bug fixes included.
+          draft: false
+          prerelease: false
 
       - name: Git push assets to "release" branch
         run: |
