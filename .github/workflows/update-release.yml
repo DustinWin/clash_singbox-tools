@@ -10,6 +10,7 @@ on:
       - "**/README.md"
 
 env:
+  download_version: ''
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
@@ -73,7 +74,7 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            Clash.Meta core $(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+            core ${download_version}
           files: |
             ./publish/*
         env:
