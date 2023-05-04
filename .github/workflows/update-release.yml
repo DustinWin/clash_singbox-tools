@@ -70,10 +70,11 @@ jobs:
         with:
           name: latest
           tag_name: latest
+          core_version: ${{ download_version }}
           draft: false
           prerelease: false
           body: |
-            Clash.Meta core ${{ download_url }}
+            Clash.Meta core ${{ core_version }}
           files: |
             ./publish/*
         env:
