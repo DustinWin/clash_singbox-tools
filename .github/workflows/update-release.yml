@@ -5,12 +5,11 @@ on:
     - cron: "0 19 * * *"
   push:
     branches:
-      - mains
+      - main
     paths-ignore:
       - "**/README.md"
 
 env:
-  download_version: ''
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
@@ -73,8 +72,6 @@ jobs:
           tag_name: latest
           draft: false
           prerelease: false
-          body: |
-            core ${{ download_version }}
           files: |
             ./publish/*
         env:
