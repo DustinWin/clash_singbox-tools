@@ -11,7 +11,7 @@ on:
 
 env:
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
-  download_version: $(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+  download_version: curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__'
 
 jobs:
   create-test-file:
