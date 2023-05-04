@@ -74,7 +74,7 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            core ${download_version}
+            core ${{ download_version }}
           files: |
             ./publish/*
         env:
