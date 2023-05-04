@@ -73,7 +73,7 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            Clash.Meta core ${{ download_version }}
+            Clash.Meta core ${{ download_url }}
           files: |
             ./publish/*
         env:
