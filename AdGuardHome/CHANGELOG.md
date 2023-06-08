@@ -23,10 +23,33 @@ See also the [v0.107.30 GitHub milestone][ms-v0.107.30].
 NOTE: Add new changes BELOW THIS COMMENT.
 -->
 
+### Security
+
+- Go version has been updated to prevent the possibility of exploiting the
+  CVE-2023-29402, CVE-2023-29403, and CVE-2023-29404 Go vulnerabilities fixed in
+  [Go 1.19.10][go-1.19.10].
+
+### Added
+
+- The ability to edit rewrite rules via `PUT /control/rewrite/update` HTTP API
+  ([#1577]).
+
 ### Fixed
 
+- Unquoted IPv6 bind hosts with trailing colons erroneously considered
+  unspecified addresses are now properly validated ([#5752]).
+
+  **NOTE:** the Docker healthcheck script now also doesn't interpret the `""`
+  value as unspecified address.
+- Incorrect `Content-Type` header value in `POST /control/version.json` and `GET
+  /control/dhcp/interfaces` HTTP APIs ([#5716]).
 - Provided bootstrap servers are now used to resolve the hostnames of plain
   UDP/TCP upstream servers.
+
+[#1577]: https://github.com/AdguardTeam/AdGuardHome/issues/1577
+[#5716]: https://github.com/AdguardTeam/AdGuardHome/issues/5716
+
+[go-1.19.10]: https://groups.google.com/g/golang-announce/c/q5135a9d924/m/j0ZoAJOHAwAJ
 
 <!--
 NOTE: Add new changes ABOVE THIS COMMENT.
@@ -60,6 +83,7 @@ See also the [v0.107.29 GitHub milestone][ms-v0.107.29].
 [#5712]: https://github.com/AdguardTeam/AdGuardHome/issues/5712
 [#5721]: https://github.com/AdguardTeam/AdGuardHome/issues/5721
 [#5725]: https://github.com/AdguardTeam/AdGuardHome/issues/5725
+[#5752]: https://github.com/AdguardTeam/AdGuardHome/issues/5752
 
 [ms-v0.107.29]: https://github.com/AdguardTeam/AdGuardHome/milestone/65?closed=1
 
