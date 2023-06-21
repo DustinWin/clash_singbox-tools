@@ -68,8 +68,7 @@ jobs:
           release_name: latest
           tag: latest
           file_glob: true
-          files: |
-            ./publish/*
+          file: ./publish/*
 
       - name: Git push assets to "release" branch
         run: |
