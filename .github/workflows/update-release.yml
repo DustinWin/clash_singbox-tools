@@ -62,16 +62,14 @@ jobs:
           cd ./publish || exit 1
 
       - name: Release and upload assets
-        uses: softprops/action-gh-release@v0.1.6
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: latest
-          tag_name: latest
-          draft: false
-          prerelease: false
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          release_name: latest
+          tag: latest
+          file_glob: true
           files: |
             ./publish/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Git push assets to "release" branch
         run: |
