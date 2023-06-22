@@ -15,4 +15,4 @@ jobs:
           token: ${{ github.token }}
           repository: DustinWin/clash-tools
           retain_days: 3
-          keep_minimum_runs: 3
+          keep_minimum_runs: 6
