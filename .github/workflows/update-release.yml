@@ -13,7 +13,7 @@ env:
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
-  create-test-file:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout codebase
