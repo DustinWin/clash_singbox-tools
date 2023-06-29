@@ -33,7 +33,7 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        download_version=$(curl -sL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases | grep '"tag_name": "v' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases | grep '"tag_name": "v' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         wget "${download_url}/${download_version}/clash.meta-linux-arm64-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-arm64
         chmod +x ./tmp/clash.meta-linux-arm64
