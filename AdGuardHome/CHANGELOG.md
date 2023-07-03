@@ -14,14 +14,24 @@ and this project adheres to
 <!--
 ## [v0.108.0] - TBA
 
-## [v0.107.33] - 2023-06-28 (APPROX.)
+## [v0.107.34] - 2023-07-26 (APPROX.)
 
-See also the [v0.107.33 GitHub milestone][ms-v0.107.33].
+See also the [v0.107.34 GitHub milestone][ms-v0.107.34].
 
-[ms-v0.107.33]: https://github.com/AdguardTeam/AdGuardHome/milestone/68?closed=1
+[ms-v0.107.34]: https://github.com/AdguardTeam/AdGuardHome/milestone/69?closed=1
 
 NOTE: Add new changes BELOW THIS COMMENT.
 -->
+
+<!--
+NOTE: Add new changes ABOVE THIS COMMENT.
+-->
+
+
+
+## [v0.107.33] - 2023-07-03
+
+See also the [v0.107.33 GitHub milestone][ms-v0.107.33].
 
 ### Added
 
@@ -37,8 +47,27 @@ NOTE: Add new changes BELOW THIS COMMENT.
 
 #### Configuration Changes
 
-In this release, the schema version has changed from 20 to 22.
+In this release, the schema version has changed from 20 to 23.
 
+- Properties `bind_host`, `bind_port`, and `web_session_ttl` which used to setup
+  web UI binding configuration, are now moved to a new object `http` containing
+  new properties `address` and `session_ttl`:
+
+  ```yaml
+  # BEFORE:
+  'bind_host': '1.2.3.4'
+  'bind_port': 8080
+  'web_session_ttl': 720
+
+  # AFTER:
+  'http':
+    'address': '1.2.3.4:8080'
+    'session_ttl': '720h'
+  ```
+
+  Note that the new `http.session_ttl` property is now a duration string.  To
+  rollback this change, remove the new object `http`, set back `bind_host`,
+  `bind_port`, `web_session_ttl`,  and change the `schema_version` back to `22`.
 - Property `clients.persistent.blocked_services`, which in schema versions 21
   and earlier used to be a list containing ids of blocked services, is now an
   object containing ids and schedule for blocked services:
@@ -118,14 +147,20 @@ In this release, the schema version has changed from 20 to 22.
 
 ### Deprecated
 
+- `HEALTHCHECK` and `ENTRYPOINT` sections in `Dockerfile` ([#5939]).  They cause
+  a lot of issues, especially with tools like `docker-compose` and `podman`, and
+  will be removed in a future release.
 - Flags `-h`, `--host`, `-p`, `--port` have been deprecated.  The `-h` flag
   will work as an alias for `--help`, instead of the deprecated `--host` in the
   future releases.
 
 ### Fixed
 
+- Ignoring of `/etc/hosts` file when resolving the hostnames of upstream DNS
+  servers ([#5902]).
 - Excessive error logging when using DNS-over-QUIC ([#5285]).
-- Cannot set `bind_host` in AdGuardHome.yaml (docker version)([#4231], [#4235]).
+- Inability to set `bind_host` in `AdGuardHome.yaml` in Docker ([#4231],
+  [#4235]).
 - The blocklists can now be deleted properly ([#5700]).
 - Queries with the question-section target `.`, for example `NS .`, are now
   counted in the statistics and correctly shown in the query log ([#5910]).
@@ -138,12 +173,12 @@ In this release, the schema version has changed from 20 to 22.
 [#4235]: https://github.com/AdguardTeam/AdGuardHome/pull/4235
 [#5285]: https://github.com/AdguardTeam/AdGuardHome/issues/5285
 [#5700]: https://github.com/AdguardTeam/AdGuardHome/issues/5700
+[#5902]: https://github.com/AdguardTeam/AdGuardHome/issues/5902
 [#5910]: https://github.com/AdguardTeam/AdGuardHome/issues/5910
 [#5913]: https://github.com/AdguardTeam/AdGuardHome/issues/5913
+[#5939]: https://github.com/AdguardTeam/AdGuardHome/discussions/5939
 
-<!--
-NOTE: Add new changes ABOVE THIS COMMENT.
--->
+[ms-v0.107.33]: https://github.com/AdguardTeam/AdGuardHome/milestone/68?closed=1
 
 
 
@@ -2125,11 +2160,12 @@ See also the [v0.104.2 GitHub milestone][ms-v0.104.2].
 
 
 <!--
-[Unreleased]: https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.33...HEAD
-[v0.107.33]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.32...v0.107.33
+[Unreleased]: https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.34...HEAD
+[v0.107.34]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.33...v0.107.34
 -->
 
-[Unreleased]: https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.32...HEAD
+[Unreleased]: https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.33...HEAD
+[v0.107.33]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.32...v0.107.33
 [v0.107.32]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.31...v0.107.32
 [v0.107.31]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.30...v0.107.31
 [v0.107.30]:  https://github.com/AdguardTeam/AdGuardHome/compare/v0.107.29...v0.107.30
