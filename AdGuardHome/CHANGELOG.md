@@ -23,6 +23,67 @@ See also the [v0.107.34 GitHub milestone][ms-v0.107.34].
 NOTE: Add new changes BELOW THIS COMMENT.
 -->
 
+### Changed
+
+- Improved CPU and RAM consumption during updates of filtering-rule lists.
+
+#### Configuration Changes
+
+In this release, the schema version has changed from 23 to 24.
+
+- Properties starting with `log_`, and `verbose` property, which used to set up
+  logging are now moved to the new object `log` containing new properties `file`,
+  `max_backups`, `max_size`, `max_age`, `compress`, `local_time`, and `verbose`:
+
+  ```yaml
+  # BEFORE:
+  'log_file': ""
+  'log_max_backups': 0
+  'log_max_size': 100
+  'log_max_age': 3
+  'log_compress': false
+  'log_localtime': false
+  'verbose': false
+
+  # AFTER:
+  'log':
+    'file': ""
+    'max_backups': 0
+    'max_size': 100
+    'max_age': 3
+    'compress': false
+    'local_time': false
+    'verbose': false
+  ```
+
+  To rollback this change, remove the new object `log`, set back `log_` and
+  `verbose` properties and change the `schema_version` back to `23`.
+
+### Deprecated
+
+- Default exposure of the non-standard ports 784 and 8853 for DNS-over-QUIC in
+  the `Dockerfile`.
+
+### Fixed
+
+- Two unspecified IPs when a host is blocked in two filter lists ([#5972]).
+- Incorrect setting of Parental Control cache size.
+- Excessive RAM and CPU consumption by Safe Browsing and Parental Control
+  filters ([#5896]).
+
+### Removed
+
+- The `HEALTHCHECK` section and the use of `tini` in the `ENTRYPOINT` section in
+  `Dockerfile` ([#5939]).  They caused a lot of issues, especially with tools
+  like `docker-compose` and `podman`.
+
+  **NOTE:** Some Docker tools may cache `ENTRYPOINT` sections, so some users may
+  be required to backup their configuration, stop the container, purge the old
+  image, and reload it from scratch.
+
+[#5896]: https://github.com/AdguardTeam/AdGuardHome/issues/5896
+[#5972]: https://github.com/AdguardTeam/AdGuardHome/issues/5972
+
 <!--
 NOTE: Add new changes ABOVE THIS COMMENT.
 -->
@@ -147,9 +208,9 @@ In this release, the schema version has changed from 20 to 23.
 
 ### Deprecated
 
-- `HEALTHCHECK` and `ENTRYPOINT` sections in `Dockerfile` ([#5939]).  They cause
-  a lot of issues, especially with tools like `docker-compose` and `podman`, and
-  will be removed in a future release.
+- The `HEALTHCHECK` section and the use of `tini` in the `ENTRYPOINT` section in
+  `Dockerfile` ([#5939]).  They cause a lot of issues, especially with tools
+  like `docker-compose` and `podman`, and will be removed in a future release.
 - Flags `-h`, `--host`, `-p`, `--port` have been deprecated.  The `-h` flag
   will work as an alias for `--help`, instead of the deprecated `--host` in the
   future releases.
