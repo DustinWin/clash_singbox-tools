@@ -21,14 +21,14 @@ chmod +x $clashdir/clash && $clashdir/start.sh restart
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
-curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWin/clash-tools/raw/main/Clash.Meta-release/clash-meta.exe
+curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/raw/main/Clash.Meta-release/clash-meta.exe
 ```
 ② Alpha 版  
 连接 SSH 后执行如下命令：
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
-curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://github.com/DustinWin/clash-tools/releases/download/latest/clash-meta.exe
+curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/releases/download/latest/clash-meta.exe
 ```
 ## 3. ShellClash 导入 Yacd-meta 面板
 连接 SSH 后执行如下命令：
