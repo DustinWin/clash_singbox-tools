@@ -5,7 +5,7 @@ on:
     - cron: "0 19 * * *"
   push:
     branches:
-      - mains
+      - main
     paths-ignore:
       - "**/README.md"
 
@@ -60,6 +60,10 @@ jobs:
         cp ./tmp/* ./Clash.Meta-release
         rm -rf ./tmp
 
+    - name: Set variables
+      run: |
+        echo "download_version=${download_version}" >> $GITHUB_ENV
+
     - name: Commit and push
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -70,5 +74,12 @@ jobs:
     - name: Purge jsDelivr CDN cache
       uses: gacts/purge-jsdelivr-cache@v1
       with:
-        url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-arm64
+        url: |  
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-amd64
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv5
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv6
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv7
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv8
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mips-softfloat
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mipsle-hardfloat
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mipsle-softfloat
