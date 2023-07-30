@@ -11,6 +11,7 @@ on:
 
 env:
   download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
+  download_version: curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | tail -n 2 | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//'
 
 jobs:
   Update:
@@ -36,8 +37,6 @@ jobs:
 
     - name: Download and compress `AdGuardHome`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | tail -n 2 | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++));do
@@ -77,4 +76,10 @@ jobs:
       uses: gacts/purge-jsdelivr-cache@v1
       with:
         url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_${new_name[i]}
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_amd64
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv5
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv6
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv7
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv8
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_mips_softfloat
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_mipsle_softfloat
