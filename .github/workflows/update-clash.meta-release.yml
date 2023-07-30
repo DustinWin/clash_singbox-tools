@@ -60,10 +60,6 @@ jobs:
         cp ./tmp/* ./Clash.Meta-release
         rm -rf ./tmp
 
-    - name: Set variables
-      run: |
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
-
     - name: Commit and push
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
