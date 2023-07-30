@@ -1,6 +1,6 @@
 # 更新 [Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
-每天早上 3 点（北京时间）自动构建生成 Clash.Meta Alpha 版内核、Clash.Meta Release 版内核（arm64 和 amd64）、Yacd-meta 面板和 AdGuardHome（arm64），以保证最新
+每天早上 3 点（北京时间）自动构建生成 Clash.Meta Alpha 版内核、Clash.Meta Release 版内核、Yacd-meta 面板和 AdGuardHome，以保证最新
 # 二、 使用方法
 ## 1. [ShellClash](https://github.com/juewuy/ShellClash) 导入 Clash.Meta 内核
 ① Release 版  
