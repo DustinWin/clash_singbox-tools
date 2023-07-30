@@ -5,13 +5,12 @@ on:
     - cron: "0 19 * * *"
   push:
     branches:
-      - mains
+      - main
     paths-ignore:
       - "**/README.md"
 
 env:
   download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
-  download_version: ''
 
 jobs:
   Update:
@@ -19,6 +18,10 @@ jobs:
     steps:
     - name: Clone Repository
       uses: actions/checkout@main
+
+    - name: Set variables
+      run: |
+        echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
     - name: Download and unzip `upx`
       run: |
@@ -74,4 +77,4 @@ jobs:
       uses: gacts/purge-jsdelivr-cache@v1
       with:
         url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_${new_name[i]}
