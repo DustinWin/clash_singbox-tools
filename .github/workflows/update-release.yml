@@ -5,7 +5,7 @@ on:
     - cron: "0 19 * * *"
   push:
     branches:
-      - mains
+      - main
     paths-ignore:
       - "**/README.md"
 
@@ -26,10 +26,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           delete_release: true
           repo: DustinWin/clash-tools
-
-      - name: Set variables
-        run: |
-          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
       - name: Download and unzip `upx`
         run: |
@@ -79,6 +75,10 @@ jobs:
           tag: latest
           file_glob: true
           file: ./publish/*
+
+      - name: Set variables
+        run: |
+          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
       - name: Git push assets to "release" branch
         run: |
