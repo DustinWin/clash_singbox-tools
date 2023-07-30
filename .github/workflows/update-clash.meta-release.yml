@@ -10,7 +10,6 @@ on:
       - "**/README.md"
 
 env:
-  download_version: ''
   download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
 
 jobs:
@@ -19,6 +18,10 @@ jobs:
     steps:
     - name: Clone Repository
       uses: actions/checkout@main
+
+    - name: Set variables
+      run: |
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
     - name: Download and unzip `upx`
       run: |
@@ -34,7 +37,6 @@ jobs:
     - name: Download and compress `Clash.Meta core`
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases | grep '"tag_name": "v' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<8;i++));do
