@@ -64,12 +64,6 @@ jobs:
           rm -f ./tmp/*.zip
           rm -rf ./tmp/upx*
 
-      - name: Generate fake-ip-filter.list
-        run: |
-          curl -sSL https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt | grep -i '\.[A-Z]' | sed 's/^.*\/\///g' | sed 's/:.*\/.*//g' | ${{ env.SED }} >> ./tmp/fake-ip-filter.txt
-          cat ./tmp/fake-ip-filter.txt > ./tmp/fake-ip-filter.list
-          rm -f ./tmp/*.txt
-
       - name: Move files
         run: |
           mkdir -p ./publish
