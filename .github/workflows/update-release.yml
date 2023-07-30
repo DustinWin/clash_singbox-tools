@@ -29,7 +29,6 @@ jobs:
       - name: Set variables
         run: |
           echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-          echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
       - name: Download and unzip `upx`
         run: |
@@ -45,6 +44,7 @@ jobs:
       - name: Download and compress `Clash.Meta core`
         run: |
           download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep linux-arm64 | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+          echo "download_version=${download_version}" >> ${GITHUB_ENV}
           archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
