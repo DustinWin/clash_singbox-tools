@@ -39,7 +39,6 @@ jobs:
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mips64_softfloat mipsle_softfloat)
         for((i=0;i<8;i++));do
           wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
-          mv ./tmp/AdGuardHome ./tmp/AdGuardHome_linux_${new_name[i]}
           chmod +x ./tmp/AdGuardHome_linux_${new_name[i]}
           if [ "${archs[i]}" != "armv5" ];then
             if [[ ${archs[i]} = mips* ]];then
