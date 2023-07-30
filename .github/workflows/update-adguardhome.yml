@@ -66,7 +66,6 @@ jobs:
     - name: Set variables
       run: |
         echo "download_version=${download_version}" >> $GITHUB_ENV
-        echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
 
     - name: Commit and push
       run: |
