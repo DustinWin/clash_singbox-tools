@@ -35,9 +35,9 @@ jobs:
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | tail -n 2 | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mips64_softfloat mipsle_softfloat)
-        new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mips64_softfloat mipsle_softfloat)
-        for((i=0;i<8;i++));do
+        archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
+        new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
+        for((i=0;i<7;i++));do
           wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
           mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
           chmod +x ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
