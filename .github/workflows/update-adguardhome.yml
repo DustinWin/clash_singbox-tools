@@ -8,8 +8,10 @@ on:
       - main
     paths-ignore:
       - "README.md"
-      - "Clash.Meta-release/*"
-      - "Yacd-meta/*"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-release.yml"
+      - ".github/workflows/update-yacd-meta.yml"
 
 env:
   download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
