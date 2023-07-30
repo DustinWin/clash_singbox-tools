@@ -7,7 +7,11 @@ on:
     branches:
       - mains
     paths-ignore:
-      - "**/README.md"
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-release.yml"
 
 env:
   download_version: ''
