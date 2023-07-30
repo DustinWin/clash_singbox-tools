@@ -34,7 +34,7 @@ jobs:
     - name: Download and compress `AdGuardHome`
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | tail -n 2 | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
-        echo "download_version=${download_version}" >> $GITHUB_ENV
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++));do
@@ -65,7 +65,7 @@ jobs:
 
     - name: Set variables
       run: |
-        echo "download_version=${download_version}" >> $GITHUB_ENV
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
     - name: Commit and push
       run: |
