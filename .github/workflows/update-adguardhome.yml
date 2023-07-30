@@ -50,17 +50,17 @@ jobs:
           fi
         done
         wget -P ./tmp "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
-        unzip "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
+        unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
         rm -f ./tmp/*.zip
-        mv "./tmp/AdGuardHome.exe" "./tmp/AdGuardHome.exe"
+        mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
         rm -rf ./tmp/upx*
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
         mkdir -p ./AdGuardHome
         rm -rf ./AdGuardHome/*
-        cp ./tmp/AdGuardHome/AdGuardHome ./AdGuardHome
-        cp ./tmp/AdGuardHome/*.md ./AdGuardHome
+        rm -f ./tmp/AdGuardHome/*.sig
+        cp ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome
         rm -rf ./tmp
 
     - name: Commit and push
