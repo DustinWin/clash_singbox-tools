@@ -61,7 +61,6 @@ jobs:
           wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
           unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
           rm -f ./tmp/*.zip
-          mv "./tmp/clash.meta-windows-amd64.exe" "./tmp/clash-meta.exe"
           rm -rf ./tmp/upx*
 
       - name: Move files
