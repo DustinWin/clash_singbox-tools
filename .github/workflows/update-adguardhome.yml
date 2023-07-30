@@ -20,10 +20,6 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Set variables
-      run: |
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
-
     - name: Download and unzip `upx`
       run: |
         mkdir -p ./tmp
@@ -38,10 +34,12 @@ jobs:
     - name: Download and compress `AdGuardHome`
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep tag_name | tail -n 2 | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mips64_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mips64_softfloat mipsle_softfloat)
         for((i=0;i<8;i++));do
-          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp --transform=/AdGuardHome/AdGuardHome_linux_${new_name[i]}/
+          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
+          mv ./tmp/AdGuardHome ./tmp/AdGuardHome_linux_${new_name[i]}
           chmod +x ./tmp/AdGuardHome_linux_${new_name[i]}
           if [ "${archs[i]}" != "armv5" ];then
             if [[ ${archs[i]} = mips* ]];then
