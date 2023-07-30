@@ -62,7 +62,7 @@ jobs:
 
     - name: Set variables
       run: |
-        echo "download_version=${download_version}" >> $GITHUB_ENV
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
 
     - name: Commit and push
       run: |
