@@ -43,8 +43,8 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https:/
 连接 SSH 后执行如下命令：
 ```
 curl -o /tmp/Yacd-meta.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Yacd-meta/Yacd-meta.tar.gz
-mkdir -p $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui
-rm -f /tmp/Yacd-meta.tar.gz && $clashdir/start.sh restart
+mkdir -p $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui && rm -f /tmp/Yacd-meta.tar.gz
+$clashdir/start.sh restart
 ```
 ## 4. 安装或升级 AdGuardHome
 连接 SSH 后执行如下命令：
