@@ -6,6 +6,8 @@
 ## 2. Yacd-meta 面板  
 ## 3. AdGuardHome  
 包含架构：amd64、armv5、armv6、armv7、armv8、mips_softfloat、mipsle_softfloat 和 windows_amd64
+- 注：查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
+
 # 二、 使用方法
 ## 1. 导入 Clash.Meta 内核（以 [ShellClash](https://github.com/juewuy/ShellClash)  为例）
 ① Release 版  
