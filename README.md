@@ -28,19 +28,21 @@ chmod +x $clashdir/clash && $clashdir/start.sh restart
 
 ## 2. 导入 Clash.Meta 内核（以 [Clash Verge](https://github.com/zzzgydi/clash-verge) Windows 版为例）
 ① Release 版  
-连接 SSH 后执行如下命令：
+编辑文本文档，粘贴如下内容：
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/raw/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 ```
+另存为 .bat 文件，右击并选择以管理员身份运行
 ② Alpha 版  
-连接 SSH 后执行如下命令：
+编辑文本文档，粘贴如下内容：
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/releases/download/latest/clash.meta-windows-amd64.exe
 ```
+另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 导入 Yacd-meta 面板（以 ShellClash 为例）
 连接 SSH 后执行如下命令：
 ```
