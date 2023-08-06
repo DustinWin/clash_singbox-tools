@@ -34,7 +34,7 @@ taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/raw/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 ```
-另存为 .bat 文件，右击并选择以管理员身份运行
+另存为 .bat 文件，右击并选择以管理员身份运行  
 ② Alpha 版  
 编辑文本文档，粘贴如下内容：
 ```
