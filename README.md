@@ -9,24 +9,30 @@
 - 注：查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
 
 # 二、 使用方法
-## 1. 导入 Clash.Meta 内核（以 [ShellClash](https://github.com/juewuy/ShellClash)  为例）
+## 1. 导入 Clash.Meta 内核 Linux 版（以 [ShellClash](https://github.com/juewuy/ShellClash) 为例）
+- 注：如果使用的是搭载非 ARMv8 架构 CPU 的路由器，需要修改一下链接后缀，其余部分不需要任何修改就可以正常识别
+
+比如搭载的是 ARMv7 架构的 CPU  
+Release 版就修改为：`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv7`  
+Alpha 版就修改为：`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@release/clash.meta-linux-armv7`  
+其它架构 CPU 的链接后缀对应如下：
+|CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
+|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|链接后缀|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
+
 ① Release 版  
 连接 SSH 后执行如下命令：
 ```
 curl -o $clashdir/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv8
 chmod +x $clashdir/clash && $clashdir/start.sh restart
 ```
-- 注：若是其它架构，可将命令中的 `armv8` 修改为上述“说明”中对应的架构名称
-
 ② Alpha 版  
 连接 SSH 后执行如下命令：
 ```
 curl -o $clashdir/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@release/clash.meta-linux-armv8
 chmod +x $clashdir/clash && $clashdir/start.sh restart
 ```
-- 注：若是其它架构，可将命令中的 `armv8` 修改为上述“说明”中对应的架构名称
-
-## 2. 导入 Clash.Meta 内核（以 [Clash Verge](https://github.com/zzzgydi/clash-verge) Windows 版为例）
+## 2. 导入 Clash.Meta 内核 Windows 版（以 [Clash Verge](https://github.com/zzzgydi/clash-verge) 为例）
 ① Release 版  
 编辑文本文档，粘贴如下内容：
 ```
@@ -51,13 +57,20 @@ mkdir -p $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui && rm -f
 $clashdir/start.sh restart
 ```
 ## 4. 安装或升级 AdGuardHome
+- 注：如果使用的是搭载非 ARMv8 架构 CPU 的路由器，需要修改一下链接后缀，其余部分不需要任何修改就可以正常识别
+
+比如搭载的是 ARMv7 架构的 CPU，就修改为：  
+`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv7`  
+其它架构 CPU 的链接后缀对应如下：
+|CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-softfloat|
+|-----|-----|-----|-----|-----|-----|-----|-----|
+|链接后缀|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
+
 连接 SSH 后执行如下命令：
 ```
 curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome/AdGuardHome_linux_armv8
 chmod +x /data/AdGuardHome/AdGuardHome && reboot
 ```
-- 注：若是其它架构，可将命令中的 `armv8` 修改为上述“说明”中对应的架构名称
-
 # 三、 配置 ShellClash 定时任务
 可以在 ShellClash 里添加定时更新 Clash.Meta 内核、Yacd-meta 面板和 AdGuardHome 的任务，连接 SSH 后运行 `crontab -e`，按一下 Ins 键（Insert 键），在最下方粘贴如下内容：
 ```
