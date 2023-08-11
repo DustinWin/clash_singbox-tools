@@ -46,7 +46,7 @@ jobs:
         tar -czf ./tmp/clash-dashboard.tar.gz -C ./tmp/clash-dashboard-gh-pages .
         mkdir -p ./Dashboard
         rm -f ./Dashboard/clash-dashboard*
-        cp ./tmp/* ./Dashboard
+        cp ./tmp/*.tar.gz ./Dashboard
         rm -rf ./tmp
 
     - name: Commit and push `clash-dashboard`
@@ -65,7 +65,7 @@ jobs:
         tar -czf ./tmp/Razord-meta.tar.gz -C ./tmp/Razord-meta-gh-pages .
         mkdir -p ./Dashboard
         rm -f ./Dashboard/Razord-meta*
-        cp ./tmp/* ./Dashboard
+        cp ./tmp/*.tar.gz ./Dashboard
         rm -rf ./tmp
 
     - name: Commit and push `Razord-meta`
@@ -85,7 +85,7 @@ jobs:
         tar -czf ./tmp/yacd.tar.gz -C ./tmp/yacd-gh-pages .
         mkdir -p ./Dashboard
         rm -f ./Dashboard/yacd*
-        cp ./tmp/* ./Dashboard
+        cp ./tmp/*.tar.gz ./Dashboard
         rm -rf ./tmp
 
     - name: Commit and push `yacd`
@@ -104,7 +104,7 @@ jobs:
         tar -czf ./tmp/Yacd-meta.tar.gz -C ./tmp/Yacd-meta-gh-pages .
         mkdir -p ./Dashboard
         rm -f ./Dashboard/Yacd-meta*
-        cp ./tmp/* ./Dashboard
+        cp ./tmp/*.tar.gz ./Dashboard
         rm -rf ./tmp
 
     - name: Commit and push
