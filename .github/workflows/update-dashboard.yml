@@ -1,0 +1,124 @@
+name: Update Dashboard
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 19 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-release.yml"
+
+env:
+  download_version: ''
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Get version
+      env:
+        SED1: grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//'
+        SED2: grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//'
+      run: |
+        clash-dashboard_download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | ${{ env.SED1 }})
+        Razord-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | ${{ env.SED1 }})
+        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | ${{ env.SED2 }})
+        Yacd-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | ${{ env.SED2 }})
+        echo "clash-dashboard_download_version=${clash-dashboard_download_version}" >> ${GITHUB_ENV}
+        echo "Razord-meta_download_version=${Razord-meta_download_version}" >> ${GITHUB_ENV}
+        echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
+        echo "Yacd-meta_download_version=${Yacd-meta_download_version}" >> ${GITHUB_ENV}
+
+    - name: Download and generate `clash-dashboard`
+      run: |
+        mkdir -p ./tmp
+        wget -P ./tmp https://github.com/Dreamacro/clash-dashboard/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip -d ./tmp
+        rm -f ./tmp/*.zip
+        tar -czf ./tmp/clash-dashboard.tar.gz -C ./tmp/clash-dashboard-gh-pages .
+        mkdir -p ./Dashboard
+        rm -f ./Dashboard/clash-dashboard*
+        cp ./tmp/* ./Dashboard
+        rm -rf ./tmp
+
+    - name: Commit and push `clash-dashboard`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 clash-dashboard 至 ${clash-dashboard_download_version}" || exit 0
+        git push -f
+
+    - name: Download and generate `Razord-meta`
+      run: |
+        mkdir -p ./tmp
+        wget -P ./tmp https://github.com/MetaCubeX/Razord-meta/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip -d ./tmp
+        rm -f ./tmp/*.zip
+        tar -czf ./tmp/Razord-meta.tar.gz -C ./tmp/Razord-meta-gh-pages .
+        mkdir -p ./Dashboard
+        rm -f ./Dashboard/Razord-meta*
+        cp ./tmp/* ./Dashboard
+        rm -rf ./tmp
+
+    - name: Commit and push `Razord-meta`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 Razord-meta 至 ${Razord-meta_download_version}" || exit 0
+        git push -f
+
+
+    - name: Download and generate `yacd`
+      run: |
+        mkdir -p ./tmp
+        wget -P ./tmp https://github.com/haishanh/yacd/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip -d ./tmp
+        rm -f ./tmp/*.zip
+        tar -czf ./tmp/yacd.tar.gz -C ./tmp/yacd-gh-pages .
+        mkdir -p ./Dashboard
+        rm -f ./Dashboard/yacd*
+        cp ./tmp/* ./Dashboard
+        rm -rf ./tmp
+
+    - name: Commit and push `yacd`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
+        git push -f
+
+    - name: Download and generate `Yacd-meta`
+      run: |
+        mkdir -p ./tmp
+        wget -P ./tmp https://github.com/MetaCubeX/Yacd-meta/archive/gh-pages.zip
+        unzip ./tmp/gh-pages.zip -d ./tmp
+        rm -f ./tmp/*.zip
+        tar -czf ./tmp/Yacd-meta.tar.gz -C ./tmp/Yacd-meta-gh-pages .
+        mkdir -p ./Dashboard
+        rm -f ./Dashboard/Yacd-meta*
+        cp ./tmp/* ./Dashboard
+        rm -rf ./tmp
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 Yacd-meta 至 ${Yacd-meta_download_version}" || exit 0
+        git push -f
+
+    - name: Purge jsDelivr CDN cache
+      uses: gacts/purge-jsdelivr-cache@v1
+      with:
+        url: |
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/clash-dashboard.tar.gz
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Razord-meta.tar.gz
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/yacd.tar.gz
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Yacd-meta.tar.gz
