@@ -1,4 +1,4 @@
-# 更新 [Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)、Dashboard 和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
+# 更新 [Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)、Dashboard 面板和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 每天早上 3 点（北京时间）自动构建生成：
 1. Clash.Meta Alpha 版和 Release 版内核  
