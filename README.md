@@ -10,7 +10,7 @@
 - 2. 查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
 
 # 二、 使用方法
-## 1. 导入 Clash.Meta 内核 Linux 版（以 [ShellClash](https://github.com/juewuy/ShellClash) 安装 Yacd-meta 面板为例）
+## 1. 导入 Clash.Meta 内核 Linux 版（以 [ShellClash](https://github.com/juewuy/ShellClash) 为例）
 Clash.Meta 内核 CPU 架构和链接后缀对应关系如下：
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
@@ -47,7 +47,7 @@ taskkill /f /t /im clash-meta*
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://github.com/DustinWin/clash-tools/releases/download/latest/clash.meta-windows-amd64.exe
 ```
 另存为 .bat 文件，右击并选择以管理员身份运行
-## 3. 导入 Dashboard 面板（以 ShellClash 为例）
+## 3. 导入 Dashboard 面板（以 ShellClash 安装 Yacd-meta 面板为例）
 Dashboard 面板类型和文件名对应关系如下：
 |面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|
 |-----|-----|-----|-----|-----|
