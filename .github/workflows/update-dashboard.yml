@@ -14,7 +14,7 @@ on:
       - ".github/workflows/update-release.yml"
 
 env:
-  clash_dashboard_download_version: ''
+  download_version_cd: ''
   Razord_meta_download_version: ''
   yacd_download_version: ''
   Yacd_meta_download_version: ''
@@ -28,11 +28,11 @@ jobs:
 
     - name: Get version
       run: |
-        clash_dashboard_download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        download_version_cd=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
         Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
-        echo "clash_dashboard_download_version=${clash_dashboard_download_version}" >> ${GITHUB_ENV}
+        echo "download_version_cd=${download_version_cd}" >> ${GITHUB_ENV}
         echo "Razord_meta_download_version=${Razord_meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
         echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
@@ -53,7 +53,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
+        git add . && git commit -m "更新 clash-dashboard 至 ${download_version_cd}" || exit 0
         git push -f
 
     - name: Download and generate `Razord-meta`
