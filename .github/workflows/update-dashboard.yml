@@ -53,7 +53,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 clash-dashboard 至 ${clash-dashboard_download_version}" || exit 0
+        git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
         git push -f
 
     - name: Download and generate `Razord-meta`
@@ -72,7 +72,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Razord-meta 至 ${Razord-meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
         git push -f
 
 
@@ -111,7 +111,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Yacd-meta 至 ${Yacd-meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN cache
