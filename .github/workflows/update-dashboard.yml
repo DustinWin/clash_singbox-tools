@@ -14,7 +14,10 @@ on:
       - ".github/workflows/update-release.yml"
 
 env:
-  download_version: ''
+  clash-dashboard_download_version: ''
+  Razord-meta_download_version: ''
+  yacd_download_version: ''
+  Yacd-meta_download_version: ''
 
 jobs:
   Update:
