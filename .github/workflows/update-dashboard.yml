@@ -27,14 +27,11 @@ jobs:
       uses: actions/checkout@main
 
     - name: Get version
-      env:
-        SED1: grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//'
-        SED2: grep tag_name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//'
       run: |
-        clash-dashboard_download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | ${{ env.SED1 }})
-        Razord-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | ${{ env.SED1 }})
-        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | ${{ env.SED2 }})
-        Yacd-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | ${{ env.SED2 }})
+        clash-dashboard_download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        Razord-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
+        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
+        Yacd-meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
         echo "clash-dashboard_download_version=${clash-dashboard_download_version}" >> ${GITHUB_ENV}
         echo "Razord-meta_download_version=${Razord-meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
