@@ -32,7 +32,7 @@ jobs:
         Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep name | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
         Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep tag_name | sed 's/.*v/v/g' | sed 's/",$//')
-        echo "download_version_cd=${download_version_cd}" >> ${GITHUB_ENV}
+        echo "clash_dashboard_download_version=${clash_dashboard_download_version}" >> ${GITHUB_ENV}
         echo "Razord_meta_download_version=${Razord_meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
         echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
