@@ -51,7 +51,7 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https:/
 Dashboard 面板类型和文件名对应关系如下：
 |面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|
 |-----|-----|-----|-----|-----|
-|文件名|`clash-dashboard.tar.gz`|`Razord-meta.tar.gz`|`yacd.tar.gz`|`Yacd-meta.tar.gz`|
+|**文件名**|`clash-dashboard.tar.gz`|`Razord-meta.tar.gz`|`yacd.tar.gz`|`Yacd-meta.tar.gz`|
 
 如需要安装 Razord-meta 面板，则命令中的文件名须修改为 `Razord-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/Razord-meta.tar.gz`  
 连接 SSH 后执行如下命令：
@@ -64,7 +64,7 @@ $clashdir/start.sh restart
 AdGuardHome CPU 架构和链接后缀对应关系如下：
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|
-|链接后缀|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
+|**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
 
 如 CPU 架构为 ARMv7，则下载链接须修改为：  
 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome/AdGuardHome_linux_armv7`  
