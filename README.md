@@ -14,7 +14,7 @@
 Clash.Meta 内核 CPU 架构和链接后缀对应关系如下：
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
-|链接后缀|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
+|**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
 如 CPU 架构为 ARMv7，则下载链接须修改为：`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv7`
 和 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@release/clash.meta-linux-armv7`  
