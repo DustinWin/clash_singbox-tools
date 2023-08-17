@@ -107,7 +107,7 @@ jobs:
         cp ./tmp/*.tar.gz ./Dashboard
         rm -rf ./tmp
 
-    - name: Commit and push
+    - name: Commit and push `Yacd-meta`
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
