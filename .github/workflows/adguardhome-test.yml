@@ -34,7 +34,7 @@ jobs:
       env:
           SED1: sed '/^\s*#/d' | sed '/payload:/d' | sed 's/- "+./[\//g' | sed 's/- "/[\//g' | sed 's/"$/\/]https:\/\/doh.pub\/dns-query/g' | sed '/^\s*$/d'
           SED2: sed '/^\s*#/d' | sed '/^PROCESS-NAME,/d' | sed '/^\s*IP-CIDR/d' | sed 's/DOMAIN,/[\//g' | sed 's/DOMAIN-SUFFIX,/[\//g' | sed 's/DOMAIN-KEYWORD,/[\//g' | sed 's/$/\/]https:\/\/doh.pub\/dns-query/'
-          SED3: sed '/^\s*#/d' | sed '/^\s*IP-CIDR/d' | sed 's/DOMAIN,/[\//g' | sed 's/DOMAIN-SUFFIX,/[\//g' | sed 's/DOMAIN-KEYWORD,/[\//g' | sed 's/$/\/]https:\/\/dns.google\/dns-query/'
+          SED3: sed '/^\s*#/d' | sed '/^\s*IP-CIDR/d' | sed 's/DOMAIN,/[\//g' | sed 's/DOMAIN-SUFFIX,/[\//g' | sed 's/DOMAIN-KEYWORD,/[\//g' | sed 's/$/\/]tls:\/\/dns.google/'
       run: |
         echo "update_version=$(date +%Y-%m-%d)" >> ${GITHUB_ENV}
         mkdir -p ./tmp
@@ -46,15 +46,14 @@ jobs:
         curl -sSL $CHINAMAX_URL |  ${{ env.SED2 }} >> ./tmp/temp-whitelist.txt
         curl -sSL $PROXY_URL |  ${{ env.SED3 }} >> ./tmp/temp-whitelist.txt
         cat <<EOF >> ./tmp/temp-whitelist.txt
-        https://dns.google/dns-query
-        https://cloudflare-dns.com/dns-query
-        https://dns.quad9.net/dns-query
+        tls://dns.google
+        https://1.1.1.1/dns-query
         EOF
         cat ./tmp/temp-whitelist.txt > ./adgtest/adguardhome-whitelist.txt
 
     - name: Generate adguardhome-blacklist
       env:
-          SED: sed '/^\s*#/d' | sed '/^\s*IP-CIDR/d' | sed 's/DOMAIN,/[\//g' | sed 's/DOMAIN-SUFFIX,/[\//g' | sed 's/DOMAIN-KEYWORD,/[\//g' | sed 's/$/\/]https:\/\/dns.google\/dns-query/'
+          SED: sed '/^\s*#/d' | sed '/^\s*IP-CIDR/d' | sed 's/DOMAIN,/[\//g' | sed 's/DOMAIN-SUFFIX,/[\//g' | sed 's/DOMAIN-KEYWORD,/[\//g' | sed 's/$/\/]tls:\/\/dns.google/'
       run: |
         curl -sSL $PROXY_URL |  ${{ env.SED }} > ./tmp/temp-blacklist.txt
         cat <<EOF >> ./tmp/temp-blacklist.txt
