@@ -46,6 +46,7 @@ jobs:
         curl -sSL $CHINAMAX_URL |  ${{ env.SED2 }} >> ./tmp/temp-whitelist.txt
         curl -sSL $PROXY_URL |  ${{ env.SED3 }} >> ./tmp/temp-whitelist.txt
         cat <<EOF >> ./tmp/temp-whitelist.txt
+        https://dns.google/dns-query
         https://cloudflare-dns.com/dns-query
         https://dns.quad9.net/dns-query
         EOF
