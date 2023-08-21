@@ -73848,5 +73848,6 @@
 [/uk-live/]https://dns.google/dns-query
 [/whatsapp/]https://dns.google/dns-query
 [/youtube/]https://dns.google/dns-query
+https://dns.google/dns-query
 https://cloudflare-dns.com/dns-query
 https://dns.quad9.net/dns-query
