@@ -18,6 +18,7 @@ env:
   Razord_meta_download_version: ''
   yacd_download_version: ''
   Yacd_meta_download_version: ''
+  metacubexd_download_version: ''
 
 jobs:
   Update:
@@ -32,10 +33,12 @@ jobs:
         Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep "name" | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//')
         yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep "tag_name" | sed 's/.*v/v/g' | sed 's/",$//')
         Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep "tag_name" | sed 's/.*v/v/g' | sed 's/",$//')
+        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep "tag_name" | sed 's/.*v/v/g' | sed 's/",$//')
         echo "clash_dashboard_download_version=${clash_dashboard_download_version}" >> ${GITHUB_ENV}
         echo "Razord_meta_download_version=${Razord_meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
         echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
+        echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
 
     - name: Download and generate `clash-dashboard`
       run: |
@@ -75,7 +78,6 @@ jobs:
         git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
         git push -f
 
-
     - name: Download and generate `yacd`
       run: |
         mkdir -p ./tmp
@@ -114,6 +116,23 @@ jobs:
         git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
         git push -f
 
+    - name: Download and generate `metacubexd`
+      run: |
+        mkdir -p ./tmp
+        git clone https://github.com/metacubex/metacubexd.git -b gh-pages ./tmp/metacubexd
+        tar -czf ./tmp/metacubexd.tar.gz -C ./tmp/metacubexd .
+        mkdir -p ./Dashboard
+        rm -f ./Dashboard/metacubexd*
+        cp ./tmp/*.tar.gz ./Dashboard
+        rm -rf ./tmp
+
+    - name: Commit and push `metacubexd`
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 metacubexd 至 ${metacubexd_download_version}" || exit 0
+        git push -f
+
     - name: Purge jsDelivr CDN cache
       uses: gacts/purge-jsdelivr-cache@v1
       with:
@@ -122,3 +141,4 @@ jobs:
           https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Razord-meta.tar.gz
           https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/yacd.tar.gz
           https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Yacd-meta.tar.gz
+          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/metacubexd.tar.gz
