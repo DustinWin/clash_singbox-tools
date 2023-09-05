@@ -2,7 +2,7 @@
 # 一、 说明
 每天早上 3 点（北京时间）自动构建生成：
 1. Clash.Meta Alpha 版和 Release 版内核  
-2. Dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd](https://github.com/MetaCubeX/metacubexd)
+2. Dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
 3. AdGuardHome
 
 注：
@@ -49,7 +49,7 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https:/
 另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 导入 Dashboard 面板（以 ShellClash 安装 Yacd-meta 面板为例）
 Dashboard 面板类型和文件名对应关系如下：
-|面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|metacubexd 面板
+|面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|metacubexd 面板|
 |-----|-----|-----|-----|-----|-----|
 |**文件名**|`clash-dashboard.tar.gz`|`Razord-meta.tar.gz`|`yacd.tar.gz`|`Yacd-meta.tar.gz`|`metacubexd.tar.gz`|
 
