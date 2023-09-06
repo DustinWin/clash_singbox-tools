@@ -74,14 +74,9 @@ jobs:
         git add . && git commit -m "更新 AdGuardHome 至 ${download_version}" || exit 0
         git push -f
 
-    - name: Purge jsDelivr CDN cache
-      uses: gacts/purge-jsdelivr-cache@v1
-      with:
-        url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_amd64
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv5
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv6
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv7
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_armv8
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_mips_softfloat
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/AdGuardHome_linux_mipsle_softfloat
+    - name: Purge jsdelivr CDN
+      run: |
+        cd ./AdGuardHome || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${file}"
+        done
