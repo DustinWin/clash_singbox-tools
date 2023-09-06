@@ -92,8 +92,10 @@ chmod +x /data/AdGuardHome/AdGuardHome
 ② 升级 AdGuardHome  
 连接 SSH 后执行如下命令：
 ```
+/data/AdGuardHome/AdGuardHome -s stop
 curl -o /data/AdGuardHome/AdGuardHome -L https://ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome/AdGuardHome_linux_armv8
-chmod +x /data/AdGuardHome/AdGuardHome && reboot
+chmod +x /data/AdGuardHome/AdGuardHome
+/data/AdGuardHome/AdGuardHome -s start
 ```
 # 三、 配置 ShellClash 定时任务
 可以在 ShellClash 里添加定时更新 Clash.Meta 内核、Yacd-meta 面板和 AdGuardHome 的任务，连接 SSH 后运行 `crontab -e`，按一下 Ins 键（Insert 键），在最下方粘贴如下内容：
