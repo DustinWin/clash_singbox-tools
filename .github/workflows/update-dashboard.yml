@@ -44,7 +44,7 @@ jobs:
       run: |
         archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
         new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
-        versions=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
+        all_version=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
         for((i=0;i<5;i++));do
           mkdir -p ./tmp
           wget -P ./tmp "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
@@ -57,7 +57,7 @@ jobs:
           rm -rf ./tmp
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add . && git commit -m "更新 ${new_name[i]} 至 ${versions[i]}" || exit 0
+          git add . && git commit -m "更新 ${new_name[i]} 至 ${all_version[i]}" || exit 0
           git push -f
         done
 
