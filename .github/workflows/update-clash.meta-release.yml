@@ -71,15 +71,9 @@ jobs:
         git add . && git commit -m "更新 Clash.Meta 内核至 ${download_version}" || exit 0
         git push -f
 
-    - name: Purge jsDelivr CDN cache
-      uses: gacts/purge-jsdelivr-cache@v1
-      with:
-        url: |  
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-amd64
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv5
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv6
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv7
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-armv8
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mips-softfloat
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mipsle-hardfloat
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/clash.meta-linux-mipsle-softfloat
+    - name: Purge jsdelivr CDN
+      run: |
+        cd ./Clash.Meta-release || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-release/${file}"
+        done
