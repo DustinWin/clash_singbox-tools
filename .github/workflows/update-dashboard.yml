@@ -40,7 +40,7 @@ jobs:
         echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
         echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
 
-    - name: Download and generate `clash-dashboard`
+    - name: Download and generate dashboard
       run: |
         archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
         new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
