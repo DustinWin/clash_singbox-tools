@@ -61,12 +61,9 @@ jobs:
           git push -f
         done
 
-    - name: Purge jsDelivr CDN cache
-      uses: gacts/purge-jsdelivr-cache@v1
-      with:
-        url: |
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/clash-dashboard.tar.gz
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Razord-meta.tar.gz
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/yacd.tar.gz
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/Yacd-meta.tar.gz
-          https://cdn.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/metacubexd.tar.gz
+    - name: Purge jsdelivr CDN
+      run: |
+        cd ./Dashboard || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/${file}"
+        done
