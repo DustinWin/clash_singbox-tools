@@ -57,9 +57,13 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https:/
 另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 导入 Dashboard 面板（以 ShellClash 安装 Yacd-meta 面板为例）
 Dashboard 面板类型和文件名对应关系如下：
-|面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|metacubexd 面板|
-|-----|-----|-----|-----|-----|-----|
-|**文件名**|`clash-dashboard.tar.gz`|`Razord-meta.tar.gz`|`yacd.tar.gz`|`Yacd-meta.tar.gz`|`metacubexd.tar.gz`|
+|面板类型|文件名|
+|-----|-----|
+|Clash 官方面板|`clash-dashboard.tar.gz`|
+|Razord-meta 面板|`Razord-meta.tar.gz`|
+|yacd 面板|`yacd.tar.gz`|
+|Yacd-meta 面板|`Yacd-meta.tar.gz`|
+|metacubexd 面板|`metacubexd.tar.gz`|
 
 如需要安装 Razord-meta 面板，则命令中的文件名须修改为 `Razord-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/Razord-meta.tar.gz`  
 连接 SSH 后执行如下命令：
