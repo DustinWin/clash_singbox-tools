@@ -42,96 +42,24 @@ jobs:
 
     - name: Download and generate `clash-dashboard`
       run: |
-        mkdir -p ./tmp
-        wget -P ./tmp https://github.com/Dreamacro/clash-dashboard/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip -d ./tmp
-        rm -f ./tmp/*.zip
-        tar -czf ./tmp/clash-dashboard.tar.gz -C ./tmp/clash-dashboard-gh-pages .
-        mkdir -p ./Dashboard
-        rm -f ./Dashboard/clash-dashboard*
-        cp ./tmp/*.tar.gz ./Dashboard
-        rm -rf ./tmp
-
-    - name: Commit and push `clash-dashboard`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
-        git push -f
-
-    - name: Download and generate `Razord-meta`
-      run: |
-        mkdir -p ./tmp
-        wget -P ./tmp https://github.com/MetaCubeX/Razord-meta/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip -d ./tmp
-        rm -f ./tmp/*.zip
-        tar -czf ./tmp/Razord-meta.tar.gz -C ./tmp/Razord-meta-gh-pages .
-        mkdir -p ./Dashboard
-        rm -f ./Dashboard/Razord-meta*
-        cp ./tmp/*.tar.gz ./Dashboard
-        rm -rf ./tmp
-
-    - name: Commit and push `Razord-meta`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
-        git push -f
-
-    - name: Download and generate `yacd`
-      run: |
-        mkdir -p ./tmp
-        wget -P ./tmp https://github.com/haishanh/yacd/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip -d ./tmp
-        rm -f ./tmp/*.zip
-        tar -czf ./tmp/yacd.tar.gz -C ./tmp/yacd-gh-pages .
-        mkdir -p ./Dashboard
-        rm -f ./Dashboard/yacd*
-        cp ./tmp/*.tar.gz ./Dashboard
-        rm -rf ./tmp
-
-    - name: Commit and push `yacd`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
-        git push -f
-
-    - name: Download and generate `Yacd-meta`
-      run: |
-        mkdir -p ./tmp
-        wget -P ./tmp https://github.com/MetaCubeX/Yacd-meta/archive/gh-pages.zip
-        unzip ./tmp/gh-pages.zip -d ./tmp
-        rm -f ./tmp/*.zip
-        tar -czf ./tmp/Yacd-meta.tar.gz -C ./tmp/Yacd-meta-gh-pages .
-        mkdir -p ./Dashboard
-        rm -f ./Dashboard/Yacd-meta*
-        cp ./tmp/*.tar.gz ./Dashboard
-        rm -rf ./tmp
-
-    - name: Commit and push `Yacd-meta`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
-        git push -f
-
-    - name: Download and generate `metacubexd`
-      run: |
-        mkdir -p ./tmp
-        git clone https://github.com/metacubex/metacubexd.git -b gh-pages ./tmp/metacubexd
-        tar -czf ./tmp/metacubexd.tar.gz -C ./tmp/metacubexd .
-        mkdir -p ./Dashboard
-        rm -f ./Dashboard/metacubexd*
-        cp ./tmp/*.tar.gz ./Dashboard
-        rm -rf ./tmp
-
-    - name: Commit and push `metacubexd`
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 metacubexd 至 ${metacubexd_download_version}" || exit 0
-        git push -f
+        archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
+        new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
+        times=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
+        for((i=0;i<5;i++));do
+          mkdir -p ./tmp
+          wget "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
+          unzip ./tmp/gh-pages.zip -d ./tmp
+          rm -f ./tmp/*.zip
+          tar -czf ./tmp/${new_name[i]}.tar.gz -C ./tmp/${new_name[i]}-gh-pages .
+          mkdir -p ./Dashboard
+          rm -f ./Dashboard/${new_name[i]}*
+          cp ./tmp/*.tar.gz ./Dashboard
+          rm -rf ./tmp
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "更新 ${new_name[i]} 至 ${times[i]}" || exit 0
+          git push -f
+        done
 
     - name: Purge jsDelivr CDN cache
       uses: gacts/purge-jsdelivr-cache@v1
