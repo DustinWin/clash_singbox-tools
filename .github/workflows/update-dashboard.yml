@@ -47,7 +47,7 @@ jobs:
         times=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
         for((i=0;i<5;i++));do
           mkdir -p ./tmp
-          wget "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
+          wget -P ./tmp "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
           unzip ./tmp/gh-pages.zip -d ./tmp
           rm -f ./tmp/*.zip
           tar -czf ./tmp/${new_name[i]}.tar.gz -C ./tmp/${new_name[i]}-gh-pages .
