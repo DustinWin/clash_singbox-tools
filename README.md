@@ -3,6 +3,10 @@
 每天早上 3 点（北京时间）自动构建生成：
 1. Clash.Meta Alpha 版和 Release 版内核  
 2. Dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
+3. 
+|面板类型|Clash 官方面板|Razord-meta 面板|yacd 面板|Yacd-meta 面板|metacubexd 面板|
+|-----|-----|-----|-----|-----|-----|
+|**在线地址**|http://clash.razord.top|http://clash.metacubex.one|http://yacd.haishan.me|http://yacd.metacubex.one|http://d.metacubex.one|
 3. AdGuardHome
 
 注：
