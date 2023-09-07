@@ -65,7 +65,7 @@ jobs:
           wget "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -xz -C ./tmp
           chmod +x ./tmp/AdGuardHome/AdGuardHome
           ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
-          mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome_linux_armv8
+          mv "./tmp/AdGuardHome/AdGuardHome" "./tmp/AdGuardHome_linux_armv8"
           wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
           unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
           rm -f ./tmp/*.zip
