@@ -37,7 +37,7 @@ jobs:
 
     - name: Download and compress `AdGuardHome`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep 'tag_name' | grep 'b' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//g')
+        download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
@@ -61,10 +61,10 @@ jobs:
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
-        mkdir -p ./AdGuardHome
-        rm -rf ./AdGuardHome/*
+        mkdir -p ./AdGuardHome-release
+        rm -rf ./AdGuardHome-release/*
         rm -f ./tmp/AdGuardHome/*.sig
-        cp ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome
+        cp ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-release
         rm -rf ./tmp
 
     - name: Commit and push
@@ -76,7 +76,7 @@ jobs:
 
     - name: Purge jsdelivr CDN
       run: |
-        cd ./AdGuardHome || exit 1
+        cd ./AdGuardHome-release || exit 1
         for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome/${file}"
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome-release/${file}"
         done
