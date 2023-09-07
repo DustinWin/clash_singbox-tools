@@ -44,6 +44,7 @@ jobs:
 
     - name: Download and generate dashboard
       run: |
+        mkdir -p ./Dashboard
         archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
         new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
         all_version=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
@@ -53,7 +54,6 @@ jobs:
           unzip ./tmp/gh-pages.zip -d ./tmp
           rm -f ./tmp/*.zip
           tar -czf ./tmp/${new_name[i]}.tar.gz -C ./tmp/${new_name[i]}-gh-pages .
-          mkdir -p ./Dashboard
           rm -f ./Dashboard/${new_name[i]}*
           cp ./tmp/*.tar.gz ./Dashboard
           rm -rf ./tmp
