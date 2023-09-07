@@ -1,6 +1,6 @@
 # 更新 [Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)、Dashboard 面板和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
-每天早上 3 点（北京时间）自动构建生成：
+每天凌晨 0-3 点（北京时间）自动构建生成：
 1. Clash.Meta Alpha 版和 Release 版内核
 2. Dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
 
