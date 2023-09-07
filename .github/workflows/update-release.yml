@@ -63,13 +63,14 @@ jobs:
           adguardhome_download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep 'tag_name' | grep 'b' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//g')
           echo "adguardhome_download_version=${adguardhome_download_version}" >> ${GITHUB_ENV}
           wget "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -xz -C ./tmp
-          mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_armv8
-          chmod +x ./tmp/AdGuardHome/AdGuardHome_linux_armv8
-          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_armv8
+          chmod +x ./tmp/AdGuardHome/AdGuardHome
+          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
+          mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome_linux_armv8
           wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
           unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
           rm -f ./tmp/*.zip
           mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
+          rm -rf ./AdGuardHome
           rm -rf ./tmp/upx*
 
       - name: Move files
