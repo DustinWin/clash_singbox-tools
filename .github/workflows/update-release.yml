@@ -69,7 +69,7 @@ jobs:
           wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
           unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
           rm -f ./tmp/*.zip
-          mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
+          mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome_windows_amd64.exe"
           rm -rf ./tmp/AdGuardHome
           rm -rf ./tmp/upx*
 
