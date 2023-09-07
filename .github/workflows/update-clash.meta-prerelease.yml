@@ -54,7 +54,7 @@ jobs:
             fi
           fi
         done
-        wget -P ./tmp "${download_url}/$Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
+        wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
