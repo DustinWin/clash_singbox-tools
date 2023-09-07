@@ -2,7 +2,7 @@ name: Update Dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "30 18 * * *"
   push:
     branches:
       - main
