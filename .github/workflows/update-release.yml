@@ -16,8 +16,10 @@ on:
       - ".github/workflows/update-dashboard.yml"
 
 env:
-  download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
-  download_version: ''
+  meta_download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+  adguardhome_download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
+  meta_download_version: ''
+  adguardhome_download_version: ''
 
 jobs:
   build:
@@ -35,6 +37,7 @@ jobs:
 
       - name: Download and unzip `upx`
         run: |
+          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
           mkdir -p ./tmp
           upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
           upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
@@ -46,24 +49,27 @@ jobs:
 
       - name: Download and compress `Clash.Meta core`
         run: |
-          download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
-          echo "download_version=${download_version}" >> ${GITHUB_ENV}
-          archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-          new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-          for((i=0;i<8;i++));do
-            wget "${download_url}/Prerelease-Alpha/Clash.Meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
-            chmod +x ./tmp/clash.meta-linux-${new_name[i]}
-            if [ "${archs[i]}" != "armv5" ];then
-              if [[ ${archs[i]} = mips* ]];then
-                ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
-              else
-                ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
-              fi
-            fi
-          done
-          wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
-          unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+          meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+          echo "meta_download_version=${meta_download_version}" >> ${GITHUB_ENV}
+          wget "${meta_download_url}/Prerelease-Alpha/Clash.Meta-linux-arm64-${meta_download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-armv8
+          chmod +x ./tmp/clash.meta-linux-armv8
+          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-armv8
+          wget -P ./tmp "${meta_download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${meta_download_version}.zip"
+          unzip "./tmp/clash.meta-windows-amd64-${meta_download_version}.zip" -d ./tmp
           rm -f ./tmp/*.zip
+
+      - name: Download and compress `AdGuardHome`
+        run: |
+          adguardhome_download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | grep 'tag_name' | grep 'b' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//g')
+          echo "adguardhome_download_version=${adguardhome_download_version}" >> ${GITHUB_ENV}
+          wget "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -xz -C ./tmp
+          mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_armv8
+          chmod +x ./tmp/AdGuardHome/AdGuardHome_linux_armv8
+          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_armv8
+          wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
+          unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
+          rm -f ./tmp/*.zip
+          mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
           rm -rf ./tmp/upx*
 
       - name: Move files
@@ -81,10 +87,6 @@ jobs:
           tag: latest
           file_glob: true
           file: ./publish/*
-
-      - name: Set variables
-        run: |
-          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> ${GITHUB_ENV}
 
       - name: Git push assets to "release" branch
         run: |
