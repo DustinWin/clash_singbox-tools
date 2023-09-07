@@ -1,4 +1,4 @@
-name: Update AdGuardHome
+name: Update AdGuardHome Release
 on:
   workflow_dispatch:
   schedule:
