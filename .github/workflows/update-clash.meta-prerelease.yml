@@ -1,0 +1,81 @@
+name: Update Clash.Meta release
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 19 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-adguardhome-prerelease.yml"
+      - ".github/workflows/update-release.yml"
+      - ".github/workflows/update-dashboard.yml"
+
+env:
+  download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+  download_version: ''
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Download and unzip `upx`
+      run: |
+        mkdir -p ./tmp
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
+        upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+        echo "upx_version_nov=${upx_version_nov}" >> ${GITHUB_ENV}
+        wget -P ./tmp "https://github.com/upx/upx/releases/download/${upx_version}/upx-${upx_version_nov}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version_nov}-amd64_linux.tar.xz" -C ./tmp
+        rm -f ./tmp/*.tar.xz
+
+    - name: Download and compress `Clash.Meta core`
+      run: |
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.gz.*__;s_.*arm64-__')
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
+        archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        for((i=0;i<8;i++));do
+          wget "${download_url}/${download_version}/Clash.Meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
+          chmod +x ./tmp/clash.meta-linux-${new_name[i]}
+          if [ "${archs[i]}" != "armv5" ];then
+            if [[ ${archs[i]} = mips* ]];then
+              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
+            else
+              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
+            fi
+          fi
+        done
+        wget -P ./tmp "${download_url}/${download_version}/clash.meta-windows-amd64-${download_version}.zip"
+        unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+        rm -f ./tmp/*.zip
+        rm -rf ./tmp/upx*
+
+    - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
+      run: |
+        mkdir -p ./Clash.Meta-prerelease
+        rm -rf ./Clash.Meta-prerelease/*
+        cp ./tmp/* ./Clash.Meta-prerelease
+        rm -rf ./tmp
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 Clash.Meta 内核 Pre-release 版至 ${download_version}" || exit 0
+        git push -f
+
+    - name: Purge jsdelivr CDN
+      run: |
+        cd ./Clash.Meta-prerelease || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-prerelease/${file}"
+        done
