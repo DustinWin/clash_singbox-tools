@@ -61,7 +61,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add . && git commit -m "更新 ${new_name[i]} 至 ${all_version[i]}" || exit 0
-          git push -f -u origin master
+          git push -f
         done
 
     - name: Purge jsdelivr CDN
