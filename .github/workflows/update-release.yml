@@ -70,7 +70,7 @@ jobs:
           unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
           rm -f ./tmp/*.zip
           mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
-          rm -rf ./AdGuardHome
+          rm -rf ./tmp/AdGuardHome
           rm -rf ./tmp/upx*
 
       - name: Move files
