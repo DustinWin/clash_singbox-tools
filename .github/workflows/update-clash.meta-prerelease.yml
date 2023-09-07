@@ -1,4 +1,4 @@
-name: Update Clash.Meta release
+name: Update Clash.Meta Pre-release
 on:
   workflow_dispatch:
   schedule:
