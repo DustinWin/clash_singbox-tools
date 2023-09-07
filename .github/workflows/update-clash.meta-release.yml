@@ -9,7 +9,9 @@ on:
     paths-ignore:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-clash.meta-prerelease.yml"
       - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-adguardhome-prerelease.yml"
       - ".github/workflows/update-release.yml"
       - ".github/workflows/update-dashboard.yml"
 
