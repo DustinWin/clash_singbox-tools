@@ -69,7 +69,7 @@ AdGuardHome CPU 架构和链接后缀对应关系如下：
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
 
 如 CPU 架构为 ARMv7，则下载链接须修改为：  
-`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome/AdGuardHome_linux_armv7` 和 `https://ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome/AdGuardHome_linux_armv7`  
+`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-release/AdGuardHome_linux_armv7` 和 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv7`  
 ① 安装 AdGuardHome  
 连接 SSH 后执行如下命令：
 ```
