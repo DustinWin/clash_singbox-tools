@@ -71,7 +71,7 @@ jobs:
           rm -f ./tmp/*.zip
           mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome_windows_amd64.exe"
           rm -rf ./tmp/AdGuardHome
-          rm -rf ./tmp/upx
+          rm -rf ./tmp/upx*
 
       - name: Move files
         run: |
