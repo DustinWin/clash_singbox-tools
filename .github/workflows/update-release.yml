@@ -71,7 +71,7 @@ jobs:
           rm -f ./tmp/*.zip
           mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome_windows_amd64.exe"
           rm -rf ./tmp/AdGuardHome
-          rm -rf ./tmp/upx*
+          rm -rf ./tmp/upx
 
       - name: Move files
         run: |
@@ -101,7 +101,7 @@ jobs:
           git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git push -f -u origin release
 
-      - name: Purge jsdelivr CDN
+      - name: Purge jsDelivr CDN
         run: |
           cd ./publish || exit 1
           for file in $(ls); do
