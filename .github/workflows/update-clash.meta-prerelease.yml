@@ -46,13 +46,7 @@ jobs:
         for((i=0;i<8;i++));do
           wget "${download_url}/Prerelease-Alpha/Clash.Meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-${new_name[i]}
           chmod +x ./tmp/clash.meta-linux-${new_name[i]}
-          if [ "${archs[i]}" != "armv5" ];then
-            if [[ ${archs[i]} = mips* ]];then
-              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
-            else
-              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
-            fi
-          fi
+          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-${new_name[i]}
         done
         wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
         unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
@@ -73,7 +67,7 @@ jobs:
         git add . && git commit -m "更新 Clash.Meta 内核 Pre-release 版至 ${download_version}" || exit 0
         git push -f
 
-    - name: Purge jsdelivr CDN
+    - name: Purge jsDelivr CDN
       run: |
         cd ./Clash.Meta-prerelease || exit 1
         for file in $(ls); do
