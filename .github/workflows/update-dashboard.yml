@@ -45,13 +45,13 @@ jobs:
     - name: Download and generate dashboard
       run: |
         mkdir -p ./Dashboard
-        rm -f ./Dashboard/*.tar.gz
+        rm -rf ./Dashboard/*
         archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
         new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
         all_version=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
         for((i=0;i<5;i++));do
           mkdir -p ./tmp
-          wget -P ./tmp "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
+          curl -o ./tmp/gh-pages.zip -L "https://github.com/${archs[i]}/${new_name[i]}/archive/gh-pages.zip"
           unzip ./tmp/gh-pages.zip -d ./tmp
           tar -czf ./tmp/${new_name[i]}.tar.gz -C ./tmp/${new_name[i]}-gh-pages .
           cp ./tmp/*.tar.gz ./Dashboard
@@ -62,7 +62,7 @@ jobs:
           git push -f
         done
 
-    - name: Purge jsdelivr CDN
+    - name: Purge jsDelivr CDN
       run: |
         cd ./Dashboard || exit 1
         for file in $(ls); do
