@@ -47,19 +47,13 @@ jobs:
           wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
           mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
           chmod +x ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
-          if [ "${archs[i]}" != "armv5" ];then
-            if [[ ${archs[i]} = mips* ]];then
-              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
-            else
-              ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
-            fi
-          fi
+          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
         done
         wget -P ./tmp "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
         unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
         rm -f ./tmp/*.zip
         mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
-        rm -rf ./tmp/upx*
+        rm -rf ./tmp/upx
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
@@ -76,7 +70,7 @@ jobs:
         git add . && git commit -m "更新 AdGuardHome Pre-release 版 至 ${download_version}" || exit 0
         git push -f
 
-    - name: Purge jsdelivr CDN
+    - name: Purge jsDelivr CDN
       run: |
         cd ./AdGuardHome-prerelease || exit 1
         for file in $(ls); do
