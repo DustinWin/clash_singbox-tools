@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp
+        mkdir -p ./tmp ./Clash.Meta-prerelease
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -55,9 +55,8 @@ jobs:
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
-        mkdir -p ./Clash.Meta-prerelease
         rm -rf ./Clash.Meta-prerelease/*
-        cp ./tmp/* ./Clash.Meta-prerelease
+        cp -f ./tmp/* ./Clash.Meta-prerelease
         rm -rf ./tmp
 
     - name: Commit and push
