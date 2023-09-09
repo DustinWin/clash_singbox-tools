@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp
+        mkdir -p ./tmp ./AdGuardHome-prerelease
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -57,7 +57,6 @@ jobs:
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
-        mkdir -p ./AdGuardHome-prerelease
         rm -rf ./AdGuardHome-prerelease/*
         rm -f ./tmp/AdGuardHome/*.sig
         cp -f ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-prerelease
