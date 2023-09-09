@@ -38,7 +38,7 @@ jobs:
       - name: Download and unzip `upx`
         run: |
           echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
-          mkdir -p ./tmp
+          mkdir -p ./tmp ./publish
           upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
           upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
           echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -53,7 +53,7 @@ jobs:
           echo "meta_download_version=${meta_download_version}" >> ${GITHUB_ENV}
           wget "${meta_download_url}/Prerelease-Alpha/Clash.Meta-linux-arm64-${meta_download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-armv8
           chmod +x ./tmp/clash.meta-linux-armv8
-          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/clash.meta-linux-armv8
+          "./tmp/upx-${upx_version_nov}-amd64_linux/upx" ./tmp/clash.meta-linux-armv8
           wget -P ./tmp "${meta_download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${meta_download_version}.zip"
           unzip "./tmp/clash.meta-windows-amd64-${meta_download_version}.zip" -d ./tmp
           rm -f ./tmp/*.zip
@@ -64,19 +64,17 @@ jobs:
           echo "adguardhome_download_version=${adguardhome_download_version}" >> ${GITHUB_ENV}
           wget "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -xz -C ./tmp
           chmod +x ./tmp/AdGuardHome/AdGuardHome
-          ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome
-          mv "./tmp/AdGuardHome/AdGuardHome" "./tmp/AdGuardHome_linux_armv8"
+          "./tmp/upx-${upx_version_nov}-amd64_linux/upx" ./tmp/AdGuardHome/AdGuardHome
+          mv -f ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome_linux_armv8
           wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
-          unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
+          unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp
           rm -f ./tmp/*.zip
-          mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome_windows_amd64.exe"
-          rm -rf ./tmp/AdGuardHome
-          rm -rf ./tmp/upx*
+          mv -f ./tmp/AdGuardHome/AdGuardHome.exe ./tmp/AdGuardHome_windows_amd64.exe
+          rm -rf ./tmp/AdGuardHome ./tmp/upx*
 
       - name: Move files
         run: |
-          mkdir -p ./publish
-          cp ./tmp/* ./publish
+          cp -f ./tmp/* ./publish
           rm -rf ./tmp
           cd ./publish || exit 1
 
