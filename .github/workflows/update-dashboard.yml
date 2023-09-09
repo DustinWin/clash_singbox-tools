@@ -45,12 +45,11 @@ jobs:
     - name: Download and `clash-dashboard` dashboard
       run: |
         mkdir -p ./Dashboard ./tmp
-        rm -rf ./Dashboard/*
         mkdir -p ./tmp/clash-dashboard
         curl -o ./tmp/clash-dashboard/gh-pages.zip -L https://github.com/Dreamacro/clash-dashboard/archive/gh-pages.zip
         unzip ./tmp/clash-dashboard/gh-pages.zip -d ./tmp/clash-dashboard
         tar -czf ./tmp/clash-dashboard/clash-dashboard.tar.gz -C ./tmp/clash-dashboard/clash-dashboard-gh-pages .
-        cp ./tmp/clash-dashboard/*.tar.gz ./Dashboard
+        cp -f ./tmp/clash-dashboard/*.tar.gz ./Dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
@@ -62,7 +61,7 @@ jobs:
         curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/gh-pages.zip
         unzip ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta
         tar -czf ./tmp/Razord-meta/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages .
-        cp ./tmp/Razord-meta/*.tar.gz ./Dashboard
+        cp -f ./tmp/Razord-meta/*.tar.gz ./Dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
@@ -74,7 +73,7 @@ jobs:
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/gh-pages.zip
         unzip ./tmp/yacd/gh-pages.zip -d ./tmp/yacd
         tar -czf ./tmp/yacd/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages .
-        cp ./tmp/yacd/*.tar.gz ./Dashboard
+        cp -f ./tmp/yacd/*.tar.gz ./Dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
@@ -86,7 +85,7 @@ jobs:
         curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/gh-pages.zip
         unzip ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta
         tar -czf ./tmp/Yacd-meta/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages .
-        cp ./tmp/Yacd-meta/*.tar.gz ./Dashboard
+        cp -f ./tmp/Yacd-meta/*.tar.gz ./Dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
@@ -98,7 +97,7 @@ jobs:
         curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip
         unzip ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd
         tar -czf ./tmp/metacubexd/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages .
-        cp ./tmp/metacubexd/*.tar.gz ./Dashboard
+        cp -f ./tmp/metacubexd/*.tar.gz ./Dashboard
         rm -rf ./tmp
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
