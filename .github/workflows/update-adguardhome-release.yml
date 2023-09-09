@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp
+        mkdir -p ./tmp ./AdGuardHome-release
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -45,22 +45,21 @@ jobs:
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++));do
           wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
-          mv ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
+          mv -f ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
           chmod +x ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
           ./tmp/upx-${upx_version_nov}-amd64_linux/upx --best ./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}
         done
         wget -P ./tmp "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
         unzip -o "./tmp/AdGuardHome_windows_amd64.zip" -d ./tmp
         rm -f ./tmp/*.zip
-        mv "./tmp/AdGuardHome/AdGuardHome.exe" "./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe"
+        mv -f ./tmp/AdGuardHome/AdGuardHome.exe ./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe
         rm -rf ./tmp/upx*
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
-        mkdir -p ./AdGuardHome-release
         rm -rf ./AdGuardHome-release/*
         rm -f ./tmp/AdGuardHome/*.sig
-        cp ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-release
+        cp -f ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-release
         rm -rf ./tmp
 
     - name: Commit and push
