@@ -45,8 +45,7 @@ jobs:
     - name: Download and generate dashboard
       run: |
         mkdir -p ./Dashboard ./tmp
-        rm -f ./Dashboard/*.tar.gz
-        rm -rf ./tmp/*
+        rm -rf ./Dashboard/* ./tmp/*
         archs=(Dreamacro MetaCubeX haishanh MetaCubeX MetaCubeX)
         new_name=(clash-dashboard Razord-meta yacd Yacd-meta metacubexd)
         all_version=(${clash_dashboard_download_version} ${Razord_meta_download_version} ${yacd_download_version} ${Yacd_meta_download_version} ${metacubexd_download_version})
