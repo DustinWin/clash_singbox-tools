@@ -85,7 +85,6 @@ chmod +x /data/AdGuardHome/AdGuardHome
 ② 升级 AdGuardHome  
 连接 SSH 后执行如下命令：
 ```
-/data/AdGuardHome/AdGuardHome -s stop
 # Release 版
 curl -o /data/AdGuardHome/AdGuardHome -L https://ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
 # Pre-release 版
