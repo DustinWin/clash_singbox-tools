@@ -68,7 +68,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./Clash.Meta-prerelease || exit 1
+        cd ./Clash.Meta-Alpha || exit 1
         for file in $(ls); do
           curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Alpha/${file}"
         done
