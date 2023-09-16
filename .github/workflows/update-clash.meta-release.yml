@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp
+        mkdir -p ./tmp ./Clash.Meta-Release
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -55,9 +55,8 @@ jobs:
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
-        mkdir -p ./Clash.Meta-release
-        rm -rf ./Clash.Meta-release/*
-        cp ./tmp/* ./Clash.Meta-release
+        rm -rf ./Clash.Meta-Release/*
+        cp ./tmp/* ./Clash.Meta-Release
         rm -rf ./tmp
 
     - name: Commit and push
@@ -69,7 +68,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./Clash.Meta-release || exit 1
+        cd ./Clash.Meta-Release || exit 1
         for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-release/${file}"
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Release/${file}"
         done
