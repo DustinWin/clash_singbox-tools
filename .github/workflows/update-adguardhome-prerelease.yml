@@ -10,7 +10,7 @@ on:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
       - ".github/workflows/update-clash.meta-release.yml"
-      - ".github/workflows/update-clash.meta-prerelease.yml"
+      - ".github/workflows/update-clash.meta-alpha.yml"
       - ".github/workflows/update-adguardhome-release.yml"
       - ".github/workflows/update-release.yml"
       - ".github/workflows/update-dashboard.yml"
