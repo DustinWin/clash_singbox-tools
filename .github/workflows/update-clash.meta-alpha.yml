@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp ./Clash.Meta-prerelease
+        mkdir -p ./tmp ./Clash.Meta-Alpha
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -55,8 +55,8 @@ jobs:
 
     - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
       run: |
-        rm -rf ./Clash.Meta-prerelease/*
-        cp -f ./tmp/* ./Clash.Meta-prerelease
+        rm -rf ./Clash.Meta-Alpha/*
+        cp -f ./tmp/* ./Clash.Meta-Alpha
         rm -rf ./tmp
 
     - name: Commit and push
@@ -70,5 +70,5 @@ jobs:
       run: |
         cd ./Clash.Meta-prerelease || exit 1
         for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-prerelease/${file}"
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-Alpha/${file}"
         done
