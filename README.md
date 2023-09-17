@@ -55,11 +55,11 @@ Dashboard 面板类型和文件名对应关系如下：
 |Yacd-meta 面板|`Yacd-meta.tar.gz`|
 |metacubexd 面板|`metacubexd.tar.gz`|
 
-如需要安装 Razord-meta 面板，则命令中的文件名须修改为 `Razord-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/Razord-meta.tar.gz`  
+如需要安装 Yacd-meta 面板，则命令中的文件名须修改为 `Yacd-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/Yacd-meta.tar.gz`  
 连接 SSH 后执行如下命令：
 ```
-curl -o /tmp/Yacd-meta.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/Yacd-meta.tar.gz
-mkdir -p $clashdir/ui && tar -zxf /tmp/Yacd-meta.tar.gz -C $clashdir/ui && rm -f /tmp/Yacd-meta.tar.gz
+curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Dashboard/metacubexd.tar.gz
+mkdir -p $clashdir/ui && tar -zxf /tmp/metacubexd.tar.gz -C $clashdir/ui && rm -f /tmp/metacubexd.tar.gz
 $clashdir/start.sh restart
 ```
 ## 4. 安装 AdGuardHome
