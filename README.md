@@ -45,7 +45,7 @@ curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https:/
 curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
 ```
 另存为 .bat 文件，右击并选择以管理员身份运行
-## 3. 导入 Dashboard 面板（以 ShellClash 安装 Yacd-meta 面板为例）
+## 3. 导入 Dashboard 面板（以 ShellClash 安装 metacubexd 面板为例）
 Dashboard 面板类型和文件名对应关系如下：
 |面板类型|文件名|
 |-----|-----|
