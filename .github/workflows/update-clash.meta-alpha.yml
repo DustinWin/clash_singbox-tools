@@ -39,17 +39,17 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.gz.*__;s_.*alpha-__')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.*\(alpha\)_\1_;s_.gz.*__')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<8;i++));do
-          wget "${download_url}/Prerelease-Alpha/clash.meta-linux-${archs[i]}-alpha-${download_version}.gz" -O - | gunzip -c > "./tmp/clash.meta-linux-${new_name[i]}"
+          wget "${download_url}/Prerelease-Alpha/clash.meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clash.meta-linux-${new_name[i]}"
           chmod +x "./tmp/clash.meta-linux-${new_name[i]}"
           "./tmp/upx-${upx_version_nov}-amd64_linux/upx" "./tmp/clash.meta-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-alpha-${download_version}.zip"
-        unzip "./tmp/clash.meta-windows-amd64-alpha-${download_version}.zip" -d ./tmp
+        wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
+        unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
