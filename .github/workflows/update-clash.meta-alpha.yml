@@ -39,7 +39,7 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.*\(alpha\)_\1_;s_.gz.*__')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's_.*\(alpha\)_\1_g;s_.gz.*__g')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
