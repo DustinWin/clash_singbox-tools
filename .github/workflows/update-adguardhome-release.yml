@@ -2,13 +2,15 @@ name: Update AdGuardHome Release
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * *"
+    - cron: "30 16 * * *"
   push:
     branches:
       - main
     paths-ignore:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-clashpremium-release.yml"
+      - ".github/workflows/update-clashpremium-prerelease.yml"
       - ".github/workflows/update-clash.meta-release.yml"
       - ".github/workflows/update-clash.meta-alpha.yml"
       - ".github/workflows/update-adguardhome-prerelease.yml"
