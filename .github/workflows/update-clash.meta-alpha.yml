@@ -53,7 +53,7 @@ jobs:
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
-    - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
+    - name: Move `Clash.Meta core` to `Clash.Meta-alpha` directory
       run: |
         rm -rf ./Clash.Meta-alpha/*
         cp -f ./tmp/* ./Clash.Meta-alpha
