@@ -42,12 +42,12 @@ jobs:
         archs=(386 amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(386 amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<9;i++));do
-          wget "${download_url}/clash-linux-${archs[i]}-${download_version}-latest.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
+          wget "${download_url}/clash-linux-${archs[i]}-latest.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
           chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/clash-windows-amd64-${download_version}-latest.zip"
-        unzip "./tmp/clash-windows-amd64-${download_version}-latest.zip" -d ./tmp
+        wget -P ./tmp "${download_url}/clash-windows-amd64-latest.zip"
+        unzip "./tmp/clash-windows-amd64-latest.zip" -d ./tmp
         mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
