@@ -45,7 +45,7 @@ jobs:
           wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
           mv -f ./tmp/AdGuardHome/AdGuardHome "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           chmod +x "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
-          "./tmp/upx-${upx_version_nov}-amd64_linux/upx" "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
         done
         wget -P ./tmp "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
         unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp
