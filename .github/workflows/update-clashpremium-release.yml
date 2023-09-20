@@ -41,9 +41,9 @@ jobs:
       run: |
         download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash/releases/tags/premium | grep 'linux-arm64' | head -n 1 | sed 's/.*-//g' | sed 's/.gz.*//g')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(386 amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        new_name=(386 amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<9;i++));do
+        archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        for((i=0;i<8;i++));do
           wget "${download_url}/${download_version}/clash-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
           chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
