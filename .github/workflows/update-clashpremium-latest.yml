@@ -19,7 +19,6 @@ on:
 
 env:
   download_url: https://release.dreamacro.workers.dev/latest
-  download_version: ''
 
 jobs:
   Update:
@@ -30,6 +29,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
+        echo "update_version=$(date +%Y-%m-%d)" >> ${GITHUB_ENV}
         mkdir -p ./tmp ./ClashPremium-latest
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
@@ -62,7 +62,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Clash Premium 内核 Latest 版至 ${download_version}" || exit 0
+        git add . && git commit -m "Clash Premium 内核 Latest 版更新于 ${update_version}" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
