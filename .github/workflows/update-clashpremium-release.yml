@@ -1,4 +1,4 @@
-name: Update Clash Premium
+name: Update Clash Premium Release
 on:
   workflow_dispatch:
   schedule:
