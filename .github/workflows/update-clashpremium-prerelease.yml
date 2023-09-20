@@ -1,0 +1,73 @@
+name: Update Clash Premium Pre-release
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 17 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome-prerelease.yml"
+      - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-clash.meta-alpha.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-clashpremium-release.yml"
+      - ".github/workflows/update-dashboard.yml"
+      - ".github/workflows/update-release.yml"
+
+env:
+  download_url: https://release.dreamacro.workers.dev/latest
+  download_version: ''
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Download and unzip `upx`
+      run: |
+        mkdir -p ./tmp ./ClashPremium-prerelease
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+        wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
+        rm -f ./tmp/*.tar.xz
+
+    - name: Download and compress `ClashPremium core`
+      run: |
+        archs=(386 amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        new_name=(386 amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        for((i=0;i<9;i++));do
+          wget "${download_url}/clash-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
+          chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
+        done
+        wget -P ./tmp "${download_url}/clash-windows-amd64-${download_version}.zip"
+        unzip "./tmp/clash-windows-amd64-${download_version}.zip" -d ./tmp
+        mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
+        rm -f ./tmp/*.zip
+        rm -rf ./tmp/upx*
+
+    - name: Move `ClashPremium core` to `ClashPremium-prerelease` directory
+      run: |
+        rm -rf ./ClashPremium-prerelease/*
+        cp -f ./tmp/* ./ClashPremium-prerelease
+        rm -rf ./tmp
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 Clash Premium 内核 Latest 版至 ${download_version}" || exit 0
+        git push -f
+
+    - name: Purge jsDelivr CDN
+      run: |
+        cd ./ClashPremium-prerelease || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/ClashPremium-prerelease/${file}"
+        done
