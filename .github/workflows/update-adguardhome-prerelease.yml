@@ -29,12 +29,10 @@ jobs:
     - name: Download and unzip `upx`
       run: |
         mkdir -p ./tmp ./AdGuardHome-prerelease
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
-        upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        echo "upx_version_nov=${upx_version_nov}" >> ${GITHUB_ENV}
-        wget -P ./tmp "https://github.com/upx/upx/releases/download/${upx_version}/upx-${upx_version_nov}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version_nov}-amd64_linux.tar.xz" -C ./tmp
+        wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
         rm -f ./tmp/*.tar.xz
 
     - name: Download and compress `AdGuardHome`
