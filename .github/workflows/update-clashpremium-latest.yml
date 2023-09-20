@@ -1,4 +1,4 @@
-name: Update Clash Premium Pre-release
+name: Update Clash Premium Latest
 on:
   workflow_dispatch:
   schedule:
@@ -30,7 +30,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp ./ClashPremium-prerelease
+        mkdir -p ./tmp ./ClashPremium-latest
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
         wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
@@ -42,20 +42,20 @@ jobs:
         archs=(386 amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(386 amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<9;i++));do
-          wget "${download_url}/clash-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
+          wget "${download_url}/clash-linux-${archs[i]}-${download_version}-latest.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
           chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/clash-windows-amd64-${download_version}.zip"
-        unzip "./tmp/clash-windows-amd64-${download_version}.zip" -d ./tmp
+        wget -P ./tmp "${download_url}/clash-windows-amd64-${download_version}-latest.zip"
+        unzip "./tmp/clash-windows-amd64-${download_version}-latest.zip" -d ./tmp
         mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
-    - name: Move `ClashPremium core` to `ClashPremium-prerelease` directory
+    - name: Move `ClashPremium core` to `ClashPremium-latest` directory
       run: |
-        rm -rf ./ClashPremium-prerelease/*
-        cp -f ./tmp/* ./ClashPremium-prerelease
+        rm -rf ./ClashPremium-latest/*
+        cp -f ./tmp/* ./ClashPremium-latest
         rm -rf ./tmp
 
     - name: Commit and push
@@ -67,7 +67,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./ClashPremium-prerelease || exit 1
+        cd ./ClashPremium-latest || exit 1
         for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/ClashPremium-prerelease/${file}"
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/ClashPremium-latest/${file}"
         done
