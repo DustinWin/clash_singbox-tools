@@ -39,12 +39,10 @@ jobs:
         run: |
           echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
           mkdir -p ./tmp ./publish
-          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
-          upx_version_nov=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
           echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-          echo "upx_version_nov=${upx_version_nov}" >> ${GITHUB_ENV}
-          wget -P ./tmp "https://github.com/upx/upx/releases/download/${upx_version}/upx-${upx_version_nov}-amd64_linux.tar.xz"
-          tar -xf "./tmp/upx-${upx_version_nov}-amd64_linux.tar.xz" -C ./tmp
+          wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
           rm -f ./tmp/*.tar.xz
 
       - name: Download and compress `Clash.Meta core`
@@ -53,7 +51,7 @@ jobs:
           echo "meta_download_version=${meta_download_version}" >> ${GITHUB_ENV}
           wget "${meta_download_url}/Prerelease-Alpha/clash.meta-linux-arm64-${meta_download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-armv8
           chmod +x ./tmp/clash.meta-linux-armv8
-          "./tmp/upx-${upx_version_nov}-amd64_linux/upx" ./tmp/clash.meta-linux-armv8
+          "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/clash.meta-linux-armv8
           wget -P ./tmp "${meta_download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${meta_download_version}.zip"
           unzip "./tmp/clash.meta-windows-amd64-${meta_download_version}.zip" -d ./tmp
           rm -f ./tmp/*.zip
@@ -64,7 +62,7 @@ jobs:
           echo "adguardhome_download_version=${adguardhome_download_version}" >> ${GITHUB_ENV}
           wget "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_linux_arm64.tar.gz" -O - | tar -xz -C ./tmp
           chmod +x ./tmp/AdGuardHome/AdGuardHome
-          "./tmp/upx-${upx_version_nov}-amd64_linux/upx" ./tmp/AdGuardHome/AdGuardHome
+          "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/AdGuardHome/AdGuardHome
           mv -f ./tmp/AdGuardHome/AdGuardHome ./tmp/AdGuardHome_linux_armv8
           wget -P ./tmp "${adguardhome_download_url}/${adguardhome_download_version}/AdGuardHome_windows_amd64.zip"
           unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp
