@@ -54,7 +54,7 @@ jobs:
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
-    - name: Move `Clash.Meta core` to `Clash.Meta-Core` directory
+    - name: Move `ClashPremium core` to `ClashPremium-release` directory
       run: |
         rm -rf ./ClashPremium-release/*
         cp -f ./tmp/* ./ClashPremium-release
