@@ -2,7 +2,7 @@ name: Update Clash Premium Latest
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 17 * * *"
+    - cron: "0 18 * * *"
   push:
     branches:
       - main
@@ -13,8 +13,8 @@ on:
       - ".github/workflows/update-adguardhome-release.yml"
       - ".github/workflows/update-clash.meta-alpha.yml"
       - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clashpremium-release.yml"
-      - ".github/workflows/update-dashboard.yml"
       - ".github/workflows/update-release.yml"
 
 env:
