@@ -10,11 +10,11 @@ on:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
       - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clash.meta-alpha.yml"
       - ".github/workflows/update-clash.meta-release.yml"
       - ".github/workflows/update-clashpremium-latest.yml"
       - ".github/workflows/update-clashpremium-release.yml"
-      - ".github/workflows/update-dashboard.yml"
       - ".github/workflows/update-release.yml"
 
 env:
