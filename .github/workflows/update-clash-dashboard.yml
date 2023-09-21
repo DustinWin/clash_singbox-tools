@@ -1,4 +1,4 @@
-name: Update Dashboard
+name: Update Clash dashboard
 on:
   workflow_dispatch:
   schedule:
@@ -46,12 +46,12 @@ jobs:
 
     - name: Download and `clash-dashboard` dashboard
       run: |
-        mkdir -p ./Dashboard ./tmp
+        mkdir -p ./Clash-dashboard ./tmp
         mkdir -p ./tmp/clash-dashboard
         curl -o ./tmp/clash-dashboard/gh-pages.zip -L https://github.com/Dreamacro/clash-dashboard/archive/refs/heads/gh-pages.zip
         unzip ./tmp/clash-dashboard/gh-pages.zip -d ./tmp/clash-dashboard
         tar -czf ./tmp/clash-dashboard/clash-dashboard.tar.gz -C ./tmp/clash-dashboard/clash-dashboard-gh-pages .
-        cp -f ./tmp/clash-dashboard/*.tar.gz ./Dashboard
+        cp -f ./tmp/clash-dashboard/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
@@ -63,7 +63,7 @@ jobs:
         curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
         unzip ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta
         tar -czf ./tmp/Razord-meta/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages .
-        cp -f ./tmp/Razord-meta/*.tar.gz ./Dashboard
+        cp -f ./tmp/Razord-meta/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
@@ -75,7 +75,7 @@ jobs:
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
         unzip ./tmp/yacd/gh-pages.zip -d ./tmp/yacd
         tar -czf ./tmp/yacd/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages .
-        cp -f ./tmp/yacd/*.tar.gz ./Dashboard
+        cp -f ./tmp/yacd/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
@@ -87,7 +87,7 @@ jobs:
         curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip
         unzip ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta
         tar -czf ./tmp/Yacd-meta/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages .
-        cp -f ./tmp/Yacd-meta/*.tar.gz ./Dashboard
+        cp -f ./tmp/Yacd-meta/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
@@ -99,7 +99,7 @@ jobs:
         curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
         unzip ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd
         tar -czf ./tmp/metacubexd/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages .
-        cp -f ./tmp/metacubexd/*.tar.gz ./Dashboard
+        cp -f ./tmp/metacubexd/*.tar.gz ./Clash-dashboard
         rm -rf ./tmp
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
@@ -108,7 +108,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./Dashboard || exit 1
+        cd ./Clash-dashboard || exit 1
         for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Dashboard/${file}"
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash-dashboard/${file}"
         done
