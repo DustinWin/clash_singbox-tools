@@ -30,7 +30,8 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v4
 
-      - uses: dev-drprasad/delete-tag-and-release@v1.0
+      - name: Delete current tag and release
+        uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
           tag_name: latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
