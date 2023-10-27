@@ -40,7 +40,7 @@ jobs:
 
       - name: Download and unzip `upx`
         run: |
-          echo "RELEASE_NAME=Released on $(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Released on $(date +'%Y-%m-%d %H:%M')" >> $GITHUB_ENV
           mkdir -p ./tmp ./publish
           upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
           echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
