@@ -66,7 +66,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 AdGuardHome Pre-release 版 至 ${download_version}" || exit 0
+        git add . && git commit -m "更新 AdGuardHome Pre-release 版至 ${download_version}" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
