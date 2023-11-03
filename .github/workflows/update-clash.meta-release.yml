@@ -1,8 +1,8 @@
 name: Update Clash.Meta Release
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 17 * * *"
+  # schedule:
+    # - cron: "0 17 * * *"
   push:
     branches:
       - main
