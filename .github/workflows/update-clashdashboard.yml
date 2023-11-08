@@ -17,6 +17,13 @@ on:
       - ".github/workflows/update-clashpremium-release.yml"
       - ".github/workflows/update-release.yml"
 
+env:
+  clash_dashboard_download_version: ''
+  Razord_meta_download_version: ''
+  yacd_download_version: ''
+  Yacd_meta_download_version: ''
+  metacubexd_download_version: ''
+
 jobs:
   Update:
     runs-on: ubuntu-latest
