@@ -1,8 +1,8 @@
 name: Update release
 on:
   workflow_dispatch:
-  # schedule:
-    # - cron: "0 19 * * *"
+  schedule:
+    - cron: "0 19 * * *"
   push:
     branches:
       - main
@@ -48,16 +48,16 @@ jobs:
           tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
           rm -f ./tmp/*.tar.xz
 
-      - name: Download and compress `Clash.Meta core Release`
-        run: |
-          meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
-          echo "meta_download_version=${meta_download_version}" >> ${GITHUB_ENV}
-          wget "${meta_download_url}/${meta_download_version}/clash.meta-linux-arm64-${meta_download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-armv8
-          chmod +x ./tmp/clash.meta-linux-armv8
-          "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/clash.meta-linux-armv8
-          wget -P ./tmp "${meta_download_url}/${meta_download_version}/clash.meta-windows-amd64-${meta_download_version}.zip"
-          unzip "./tmp/clash.meta-windows-amd64-${meta_download_version}.zip" -d ./tmp
-          rm -f ./tmp/*.zip
+      # - name: Download and compress `Clash.Meta core Release`
+        # run: |
+          # meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
+          # echo "meta_download_version=${meta_download_version}" >> ${GITHUB_ENV}
+          # wget "${meta_download_url}/${meta_download_version}/clash.meta-linux-arm64-${meta_download_version}.gz" -O - | gunzip -c > ./tmp/clash.meta-linux-armv8
+          # chmod +x ./tmp/clash.meta-linux-armv8
+          # "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/clash.meta-linux-armv8
+          # wget -P ./tmp "${meta_download_url}/${meta_download_version}/clash.meta-windows-amd64-${meta_download_version}.zip"
+          # unzip "./tmp/clash.meta-windows-amd64-${meta_download_version}.zip" -d ./tmp
+          # rm -f ./tmp/*.zip
 
       - name: Download and compress `AdGuardHome Pre-release`
         run: |
