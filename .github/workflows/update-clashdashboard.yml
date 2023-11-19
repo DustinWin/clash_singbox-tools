@@ -15,7 +15,6 @@ on:
       - ".github/workflows/update-clash.meta-release.yml"
       - ".github/workflows/update-clashpremium-latest.yml"
       - ".github/workflows/update-clashpremium-release.yml"
-      - ".github/workflows/update-release.yml"
 
 env:
   clash_dashboard_download_version: ''
