@@ -46,7 +46,7 @@ jobs:
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
         done
         wget -P ./tmp "${download_url}/clash-windows-amd64-latest.zip"
-        unzip "./tmp/clash-windows-amd64-latest.zip" -d ./tmp
+        unzip -o "./tmp/clash-windows-amd64-latest.zip" -d ./tmp
         mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
