@@ -42,9 +42,9 @@ chmod +x $clashdir/clash && $clashdir/start.sh restart
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im clash-meta*
 # Release 版
-curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://gh-proxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
+curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 # Pre-release 版
-curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://gh-proxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
+curl -o %PROGRAMFILES%\Clash Verge\clash-meta.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
 ```
 另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 安装 Clash dashboard 面板（以 ShellClash 安装 metacubexd 面板为例）
@@ -88,9 +88,9 @@ chmod +x /data/AdGuardHome/AdGuardHome
 连接 SSH 后执行如下命令：
 ```
 # Release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://gh-proxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
 # Pre-release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://gh-proxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
 chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s restart
 ```
