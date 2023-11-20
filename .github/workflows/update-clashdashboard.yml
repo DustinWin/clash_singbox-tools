@@ -48,7 +48,7 @@ jobs:
         mkdir -p ./Clash-dashboard ./tmp
         mkdir -p ./tmp/clash-dashboard
         curl -o ./tmp/clash-dashboard/gh-pages.zip -L https://github.com/Dreamacro/clash-dashboard/archive/refs/heads/gh-pages.zip
-        unzip ./tmp/clash-dashboard/gh-pages.zip -d ./tmp/clash-dashboard
+        unzip -o ./tmp/clash-dashboard/gh-pages.zip -d ./tmp/clash-dashboard
         tar -czf ./tmp/clash-dashboard/clash-dashboard.tar.gz -C ./tmp/clash-dashboard/clash-dashboard-gh-pages .
         cp -f ./tmp/clash-dashboard/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -60,7 +60,7 @@ jobs:
       run: |
         mkdir -p ./tmp/Razord-meta
         curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
-        unzip ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta
+        unzip -o ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta
         tar -czf ./tmp/Razord-meta/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages .
         cp -f ./tmp/Razord-meta/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -72,7 +72,7 @@ jobs:
       run: |
         mkdir -p ./tmp/yacd
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
-        unzip ./tmp/yacd/gh-pages.zip -d ./tmp/yacd
+        unzip -o ./tmp/yacd/gh-pages.zip -d ./tmp/yacd
         tar -czf ./tmp/yacd/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages .
         cp -f ./tmp/yacd/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -84,7 +84,7 @@ jobs:
       run: |
         mkdir -p ./tmp/Yacd-meta
         curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip
-        unzip ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta
+        unzip -o ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta
         tar -czf ./tmp/Yacd-meta/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages .
         cp -f ./tmp/Yacd-meta/*.tar.gz ./Clash-dashboard
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -96,7 +96,7 @@ jobs:
       run: |
         mkdir -p ./tmp/metacubexd
         curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
-        unzip ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd
+        unzip -o ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd
         tar -czf ./tmp/metacubexd/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages .
         cp -f ./tmp/metacubexd/*.tar.gz ./Clash-dashboard
         rm -rf ./tmp
