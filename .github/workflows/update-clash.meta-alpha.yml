@@ -48,7 +48,7 @@ jobs:
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clash.meta-linux-${new_name[i]}"
         done
         wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
-        unzip "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+        unzip -o "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
