@@ -28,7 +28,7 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        echo "update_version=$(date +%Y-%m-%d)" >> ${GITHUB_ENV}
+        echo "update_version=$(date -d '+8 hours' +%Y-%m-%d)" >> ${GITHUB_ENV}
         mkdir -p ./tmp ./ClashPremium-latest
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
