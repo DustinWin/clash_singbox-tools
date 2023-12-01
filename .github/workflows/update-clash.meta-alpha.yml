@@ -50,7 +50,7 @@ jobs:
         done
         wget -P ./tmp "${download_url}/Prerelease-Alpha/mihomo-windows-amd64-${download_version}.zip"
         unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp
-        mv -f mihomo-windows-amd64.exe clash.meta-windows-amd64.exe
+        mv -f ./tmp/mihomo-windows-amd64.exe ./tmp/clash.meta-windows-amd64.exe
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
