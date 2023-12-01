@@ -1,8 +1,8 @@
 name: Update Clash.Meta Release
 on:
   workflow_dispatch:
-  # schedule:
-    # - cron: "0 17 * * *"
+  schedule:
+    - cron: "0 17 * * *"
   push:
     branches:
       - main
@@ -17,7 +17,7 @@ on:
       - ".github/workflows/update-clashpremium-release.yml"
 
 env:
-  download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+  download_url: https://github.com/MetaCubeX/mihomo/releases/download
   download_version: ''
 
 jobs:
@@ -38,17 +38,19 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<8;i++)); do
-          wget "${download_url}/${download_version}/clash.meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clash.meta-linux-${new_name[i]}"
-          chmod +x "./tmp/clash.meta-linux-${new_name[i]}"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clash.meta-linux-${new_name[i]}"
+          wget "${download_url}/${download_version}/mihomo-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/mihomo-linux-${new_name[i]}"
+          chmod +x "./tmp/mihomo-linux-${new_name[i]}"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/mihomo-linux-${new_name[i]}"
+          mv -f "./tmp/mihomo-linux-${new_name[i]}" "./tmp/clash.meta-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/${download_version}/clash.meta-windows-amd64-${download_version}.zip"
-        unzip -o "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+        wget -P ./tmp "${download_url}/${download_version}/mihomo-windows-amd64-${download_version}.zip"
+        unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp
+        mv -f ./tmp/mihomo-windows-amd64.exe ./tmp/clash.meta-windows-amd64.exe
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
