@@ -1,8 +1,8 @@
 name: Update Clash.Meta Alpha
 on:
   workflow_dispatch:
-  # schedule:
-    # - cron: "30 16 * * *"
+  schedule:
+    - cron: "30 16 * * *"
   push:
     branches:
       - main
@@ -17,7 +17,7 @@ on:
       - ".github/workflows/update-clashpremium-release.yml"
 
 env:
-  download_url: https://github.com/MetaCubeX/Clash.Meta/releases/download
+  download_url: https://github.com/MetaCubeX/mihomo/releases/download
   download_version: ''
 
 jobs:
@@ -38,17 +38,19 @@ jobs:
 
     - name: Download and compress `Clash.Meta core`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Clash.Meta/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
+        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
         echo "download_version=${download_version}" >> ${GITHUB_ENV}
         archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<8;i++)); do
-          wget "${download_url}/Prerelease-Alpha/clash.meta-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clash.meta-linux-${new_name[i]}"
-          chmod +x "./tmp/clash.meta-linux-${new_name[i]}"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clash.meta-linux-${new_name[i]}"
+          wget "${download_url}/Prerelease-Alpha/mihomo-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/mihomo-linux-${new_name[i]}"
+          chmod +x "./tmp/mihomo-linux-${new_name[i]}"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/mihomo-linux-${new_name[i]}"
+          mv -f "./tmp/mihomo-linux-${new_name[i]}" "./tmp/clash.meta-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/Prerelease-Alpha/clash.meta-windows-amd64-${download_version}.zip"
-        unzip -o "./tmp/clash.meta-windows-amd64-${download_version}.zip" -d ./tmp
+        wget -P ./tmp "${download_url}/Prerelease-Alpha/mihomo-windows-amd64-${download_version}.zip"
+        unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp
+        mv -f mihomo-windows-amd64.exe clash.meta-windows-amd64.exe
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
