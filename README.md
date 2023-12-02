@@ -1,4 +1,4 @@
-**请低调使用，已正常更新**
+**请低调使用，Clash.Meta 内核已正常更新**
 # 更新 [Clash Premium 内核](https://github.com/Dreamacro/clash/releases/tag/premium)、[Clash.Meta 内核](https://github.com/MetaCubeX/Clash.Meta)、[Clash](https://github.com/Dreamacro/clash) dashboard 面板和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 每天凌晨 0-3 点（北京时间）自动构建生成：
