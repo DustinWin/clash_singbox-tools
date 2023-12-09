@@ -29,11 +29,11 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp ./AdGuardHome-prerelease
+        mkdir -p ./tmp/ ./AdGuardHome-prerelease/
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
+        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
         rm -f ./tmp/*.tar.xz
 
     - name: Download and compress `AdGuardHome`
@@ -43,13 +43,13 @@ jobs:
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++)); do
-          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp
+          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp/
           mv -f ./tmp/AdGuardHome/AdGuardHome "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           chmod +x "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
-        unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp
+        wget -P ./tmp/ "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
+        unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp/
         rm -f ./tmp/*.zip
         mv -f ./tmp/AdGuardHome/AdGuardHome.exe ./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe
         rm -rf ./tmp/upx*
@@ -58,8 +58,8 @@ jobs:
       run: |
         rm -rf ./AdGuardHome-prerelease/*
         rm -f ./tmp/AdGuardHome/*.sig
-        cp -f ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-prerelease
-        rm -rf ./tmp
+        cp -f ./tmp/AdGuardHome/AdGuardHome* ./AdGuardHome-prerelease/
+        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
@@ -70,7 +70,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./AdGuardHome-prerelease || exit 1
+        cd ./AdGuardHome-prerelease/ || exit 1
         for file in $(ls); do
           curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/AdGuardHome-prerelease/${file}"
         done
