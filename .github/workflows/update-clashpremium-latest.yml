@@ -29,11 +29,11 @@ jobs:
     - name: Download and unzip `upx`
       run: |
         echo "update_version=$(date -d '+8 hours' +%Y-%m-%d)" >> ${GITHUB_ENV}
-        mkdir -p ./tmp ./ClashPremium-latest
+        mkdir -p ./tmp/ ./ClashPremium-latest/
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
+        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
         rm -f ./tmp/*.tar.xz
 
     - name: Download and compress `ClashPremium core`
@@ -45,8 +45,8 @@ jobs:
           chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/clash-windows-amd64-latest.zip"
-        unzip -o "./tmp/clash-windows-amd64-latest.zip" -d ./tmp
+        wget -P ./tmp/ "${download_url}/clash-windows-amd64-latest.zip"
+        unzip -o "./tmp/clash-windows-amd64-latest.zip" -d ./tmp/
         mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
@@ -54,8 +54,8 @@ jobs:
     - name: Move `ClashPremium core` to `ClashPremium-latest` directory
       run: |
         rm -rf ./ClashPremium-latest/*
-        cp -f ./tmp/* ./ClashPremium-latest
-        rm -rf ./tmp
+        cp -f ./tmp/* ./ClashPremium-latest/
+        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
@@ -66,7 +66,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./ClashPremium-latest || exit 1
+        cd ./ClashPremium-latest/ || exit 1
         for file in $(ls); do
           curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/ClashPremium-latest/${file}"
         done
