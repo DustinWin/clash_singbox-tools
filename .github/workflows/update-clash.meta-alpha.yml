@@ -29,11 +29,11 @@ jobs:
 
     - name: Download and unzip `upx`
       run: |
-        mkdir -p ./tmp ./Clash.Meta-alpha
+        mkdir -p ./tmp/ ./Clash.Meta-alpha/
         upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp
+        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
         rm -f ./tmp/*.tar.xz
 
     - name: Download and compress `Clash.Meta core`
@@ -48,8 +48,8 @@ jobs:
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/mihomo-linux-${new_name[i]}"
           mv -f "./tmp/mihomo-linux-${new_name[i]}" "./tmp/clash.meta-linux-${new_name[i]}"
         done
-        wget -P ./tmp "${download_url}/Prerelease-Alpha/mihomo-windows-amd64-${download_version}.zip"
-        unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp
+        wget -P ./tmp/ "${download_url}/Prerelease-Alpha/mihomo-windows-amd64-${download_version}.zip"
+        unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp/
         mv -f ./tmp/mihomo-windows-amd64.exe ./tmp/clash.meta-windows-amd64.exe
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
@@ -57,8 +57,8 @@ jobs:
     - name: Move `Clash.Meta core` to `Clash.Meta-alpha` directory
       run: |
         rm -rf ./Clash.Meta-alpha/*
-        cp -f ./tmp/* ./Clash.Meta-alpha
-        rm -rf ./tmp
+        cp -f ./tmp/* ./Clash.Meta-alpha/
+        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
@@ -69,7 +69,7 @@ jobs:
 
     - name: Purge jsDelivr CDN
       run: |
-        cd ./Clash.Meta-alpha || exit 1
+        cd ./Clash.Meta-alpha/ || exit 1
         for file in $(ls); do
           curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-alpha/${file}"
         done
