@@ -97,7 +97,7 @@ chmod +x /data/AdGuardHome/AdGuardHome
 ```
 # 三、 配置 ShellClash 定时任务
 可以在 ShellClash 里添加定时更新 Clash.Meta 内核、metacubexd 面板和 AdGuardHome 的任务  
-连接 SSH 后运行 `vi $CRASHDIR/task/task.user`，按一下 Ins 键（Insert 键），粘贴如下内容：
+1. 连接 SSH 后执行 `vi $CRASHDIR/task/task.user`，按一下 Ins 键（Insert 键），粘贴如下内容：
 - 注：留意链接后缀是否与 CPU 架构匹配
 
 ```
@@ -105,5 +105,5 @@ chmod +x /data/AdGuardHome/AdGuardHome
 202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
 203#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
-按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车  
-进入 ShellClash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
+2. 按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车
+3. 执行 `crash`，进入 ShellClash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
