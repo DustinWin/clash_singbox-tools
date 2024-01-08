@@ -101,8 +101,9 @@ chmod +x /data/AdGuardHome/AdGuardHome
 - 注：留意链接后缀是否与 CPU 架构匹配
 
 ```
-201#30 3 * * 1,3,5 curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1#每周一、三、五早上 3 点半更新 Clash.Meta 内核
-202#0 4 * * 1,3,5 curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#每周一、三、五早上 4 点更新 metacubexd 面板
-203#30 4 * * 1,3,5 curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#每周一、三、五早上 4 点半更新 AdGuardHome
+201#curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1#更新Clash.Meta内核
+202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
+203#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
-按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车
+按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车  
+进入 ShellClash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
