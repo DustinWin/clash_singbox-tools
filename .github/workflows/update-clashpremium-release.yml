@@ -15,8 +15,8 @@ on:
       - ".github/workflows/update-clash.meta-release.yml"
       - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clashpremium-latest.yml"
-      - ".github/workflows/update-singbox-release.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
+      - ".github/workflows/update-singbox-release.yml"
 
 env:
   download_url: https://release.dreamacro.workers.dev
