@@ -45,10 +45,10 @@ jobs:
         new_name=(amd64 amd64v3 armv7 armv8)
         for((i=0;i<4;i++)); do
           wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-linux-${archs[i]}.tar.gz"
-          tar -zxf "./tmp/sing-box-${download_version}-linux-${archs[i]}.tar.gz" ./tmp/
-          chmod +x "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box-${download_version}-linux-${archs[i]}/sing-box"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box-${download_version}-linux-${archs[i]}/sing-box"
-          mv -f "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box-${download_version}-linux-${archs[i]}/sing-box" "./tmp/sing-box-linux-${new_name[i]}"
+          tar -zxf "./tmp/sing-box-${download_version}-linux-${archs[i]}.tar.gz" -C ./tmp/
+          chmod +x "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
+          mv -f "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box" "./tmp/sing-box-linux-${new_name[i]}"
         done
         wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-windows-amd64.zip"
         unzip -o "./tmp/sing-box-${download_version}-windows-amd64.zip" -d ./tmp/
