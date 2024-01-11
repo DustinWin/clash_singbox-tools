@@ -2,7 +2,7 @@ name: Update Clash.Meta Alpha
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 16 * * *"
+    - cron: "0 16 * * *"
   push:
     branches:
       - main
