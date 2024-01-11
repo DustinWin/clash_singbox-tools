@@ -2,7 +2,7 @@ name: Update sing-box Release
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * *"
+    - cron: "30 18 * * *"
   push:
     branches:
       - main
@@ -59,7 +59,7 @@ jobs:
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
 
-    - name: Move `Clash.Meta core` to `Clash.Meta-release` directory
+    - name: Move `sing-box core` to `sing-box-release` directory
       run: |
         rm -rf ./sing-box-release/*
         cp -f ./tmp/* ./sing-box-release/
