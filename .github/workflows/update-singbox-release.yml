@@ -1,0 +1,80 @@
+name: Update sing-box Release
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 17 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome-prerelease.yml"
+      - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-clash.meta-alpha.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-clashpremium-latest.yml"
+      - ".github/workflows/update-clashpremium-release.yml"
+
+env:
+  download_url: https://github.com/SagerNet/sing-box/releases/download
+  download_version: ''
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Download and unzip `upx`
+      run: |
+        mkdir -p ./tmp/ ./sing-box-release/
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+        rm -f ./tmp/*.tar.xz
+
+    - name: Download and compress `singbox core`
+      run: |
+        download_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+        echo "download_version=${download_version}" >> ${GITHUB_ENV}
+        archs=(amd64 amd64v3 armv7 arm64)
+        new_name=(amd64 amd64v3 armv7 armv8)
+        for((i=0;i<4;i++)); do
+          wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-linux-${archs[i]}.tar.gz"
+          tar -zxf "./tmp/sing-box-${download_version}-linux-${archs[i]}.tar.gz" ./tmp/
+          chmod +x "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
+          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
+          mv -f "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box" "./tmp/sing-box-linux-${new_name[i]}"
+        done
+        wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-windows-amd64.zip"
+        unzip -o "./tmp/sing-box-${download_version}-windows-amd64.zip" -d ./tmp/
+        mv -f ./tmp/sing-box-${download_version}-windows-amd64/sing-box.exe ./tmp/sing-box-windows-amd64.exe
+        wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-windows-amd64v3.zip"
+        unzip -o "./tmp/sing-box-${download_version}-windows-amd64v3.zip" -d ./tmp/
+        mv -f ./tmp/sing-box-${download_version}-windows-amd64v3/sing-box.exe ./tmp/sing-box-windows-amd64v3.exe
+        rm -f ./tmp/*.zip
+        rm -rf ./tmp/upx*
+
+    - name: Move `Clash.Meta core` to `Clash.Meta-release` directory
+      run: |
+        rm -rf ./sing-box-release/*
+        cp -f ./tmp/* ./sing-box-release/
+        rm -rf ./tmp*
+
+    - name: Commit and push
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add . && git commit -m "更新 sing-box 内核 Release 版至 ${download_version}" || exit 0
+        git push -f
+
+    - name: Purge jsDelivr CDN
+      run: |
+        cd ./sing-box-release/ || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/sing-box-release/${file}"
+        done
