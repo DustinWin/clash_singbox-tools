@@ -44,8 +44,7 @@ jobs:
         archs=(amd64 amd64v3 armv7 arm64)
         new_name=(amd64 amd64v3 armv7 armv8)
         for((i=0;i<4;i++)); do
-          wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-linux-${archs[i]}.tar.gz"
-          tar -zxf "./tmp/sing-box-${download_version}-linux-${archs[i]}.tar.gz" -C ./tmp/
+          wget "${download_url}/v${download_version}/sing-box-${download_version}-linux-${archs[i]}.tar.gz" -O - | tar -zxf - -C ./tmp/
           chmod +x "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
           mv -f "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box" "./tmp/sing-box-linux-${new_name[i]}"
@@ -58,6 +57,7 @@ jobs:
         mv -f ./tmp/sing-box-${download_version}-windows-amd64v3/sing-box.exe ./tmp/sing-box-windows-amd64v3.exe
         rm -f ./tmp/*.zip
         rm -rf ./tmp/upx*
+        rm -rf ./tmp/sing-box-${download_version}-*
 
     - name: Move `sing-box core` to `sing-box-release` directory
       run: |
