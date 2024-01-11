@@ -2,7 +2,7 @@ name: Update Clash Premium Latest
 on:
   workflow_dispatch:
   # schedule:
-    # - cron: "0 18 * * *"
+    # - cron: "30 17 * * *"
   push:
     branches:
       - main
@@ -15,6 +15,8 @@ on:
       - ".github/workflows/update-clash.meta-release.yml"
       - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clashpremium-release.yml"
+      - ".github/workflows/update-singbox-release.yml"
+      - ".github/workflows/update-singbox-prerelease.yml"
 
 env:
   download_url: https://release.dreamacro.workers.dev/latest
