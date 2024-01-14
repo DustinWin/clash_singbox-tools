@@ -26,14 +26,14 @@ CPU 架构和内核下载链接后缀对应关系如下：
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
-如 CPU 架构为 ARMv7，则下载链接须修改为：`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv7`
-和 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-alpha/clash.meta-linux-armv7`  
+如 CPU 架构为 ARMv7，则下载链接须修改为：`https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-release/clash.meta-linux-armv7`
+和 `https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-alpha/clash.meta-linux-armv7`  
 连接 SSH 后执行如下命令：
 ```
 # Release 版
-curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv8
+curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-release/clash.meta-linux-armv8
 # Alpha 版
-curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-alpha/clash.meta-linux-armv8
+curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-alpha/clash.meta-linux-armv8
 chmod +x $CRASHDIR/clash && $CRASHDIR/start.sh restart
 ```
 ## 2. 导入内核 Windows 版（以 [Clash Verge](https://github.com/MetaCubeX/clash-verge) 导入 Clash.Meta 内核为例）
@@ -43,9 +43,9 @@ taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im Clash-Verge*
 taskkill /f /t /im mihomo*
 # Release 版
-curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
+curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 # Pre-release 版
-curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
+curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
 ```
 另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 安装 Clash dashboard 面板（以 ShellClash 安装 metacubexd 面板为例）
@@ -58,10 +58,10 @@ Clash dashboard 面板类型和文件名对应关系如下：
 |Yacd-meta 面板|`Yacd-meta.tar.gz`|
 |metacubexd 面板|`metacubexd.tar.gz`|
 
-如需要安装 Yacd-meta 面板，则命令中的文件名须修改为 `Yacd-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/Yacd-meta.tar.gz`  
+如需要安装 Yacd-meta 面板，则命令中的文件名须修改为 `Yacd-meta.tar.gz` 且下载链接修改为 `https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/Yacd-meta.tar.gz`  
 连接 SSH 后执行如下命令：
 ```
-curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/metacubexd.tar.gz
+curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz
 mkdir -p $CRASHDIR/ui && tar -zxf /tmp/metacubexd.tar.gz -C $CRASHDIR/ui && rm -f /tmp/metacubexd.tar.gz
 $CRASHDIR/start.sh restart
 ```
@@ -72,15 +72,15 @@ AdGuardHome CPU 架构和链接后缀对应关系如下：
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
 
 如 CPU 架构为 ARMv7，则下载链接须修改为：  
-`https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-release/AdGuardHome_linux_armv7` 和 `https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv7`  
+`https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-release/AdGuardHome_linux_armv7` 和 `https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv7`  
 ① 安装 AdGuardHome  
 连接 SSH 后执行如下命令：
 ```
 mkdir -p /data/AdGuardHome
 # Release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-release/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-release/AdGuardHome_linux_armv8
 # Pre-release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
 chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s install
 /data/AdGuardHome/AdGuardHome -s start
@@ -89,9 +89,9 @@ chmod +x /data/AdGuardHome/AdGuardHome
 连接 SSH 后执行如下命令：
 ```
 # Release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
 # Pre-release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash-tools/main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
 chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s restart
 ```
@@ -101,9 +101,9 @@ chmod +x /data/AdGuardHome/AdGuardHome
 - 注：留意链接后缀是否与 CPU 架构匹配
 
 ```
-201#curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1#更新Clash.Meta内核
-202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
-203#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
+201#curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1#更新Clash.Meta内核
+202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
+203#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
 2. 按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车
 3. 执行 `crash`，进入 ShellClash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
