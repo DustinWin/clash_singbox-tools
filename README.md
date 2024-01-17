@@ -20,7 +20,7 @@
 - 2. 查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
 
 # 二、 使用方法
-## 1. 导入内核 Linux 版（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入 Clash.Meta 内核为例）
+## 1. 导入内核到 Linux 端（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入 Clash.Meta 内核为例）
 CPU 架构和内核下载链接后缀对应关系如下：
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
@@ -36,18 +36,18 @@ curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-t
 curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-alpha/clash.meta-linux-armv8
 chmod +x $CRASHDIR/clash && $CRASHDIR/start.sh restart
 ```
-## 2. 导入内核 Windows 版（以 [Clash Verge](https://github.com/MetaCubeX/clash-verge) 导入 Clash.Meta 内核为例，默认安装路径）
-编辑文本文档，粘贴如下内容：
+## 2. 导入内核到 Windows 端（以 [Clash Verge](https://github.com/MetaCubeX/clash-verge) 导入 Clash.Meta 内核为例，且 Clash Verge 为默认安装路径）
+以管理员身份打开 CMD 命令提示符，执行如下命令：
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im Clash-Verge*
 taskkill /f /t /im clash-meta*
 # Release 版
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
-# Pre-release 版
+# Alpha 版
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
+pause
 ```
-另存为 .bat 文件，右击并选择以管理员身份运行
 ## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
 Clash dashboard 面板类型和文件名对应关系如下：
 |面板类型|文件名|
