@@ -20,7 +20,7 @@
 - 2. 查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
 
 # 二、 使用方法
-## 1. 导入内核 Linux 版（以 [ShellClash](https://github.com/juewuy/ShellCrash) 导入 Clash.Meta 内核为例）
+## 1. 导入内核 Linux 版（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入 Clash.Meta 内核为例）
 CPU 架构和内核下载链接后缀对应关系如下：
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
@@ -36,19 +36,19 @@ curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-t
 curl -o $CRASHDIR/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-alpha/clash.meta-linux-armv8
 chmod +x $CRASHDIR/clash && $CRASHDIR/start.sh restart
 ```
-## 2. 导入内核 Windows 版（以 [Clash Verge](https://github.com/MetaCubeX/clash-verge) 导入 Clash.Meta 内核为例）
+## 2. 导入内核 Windows 版（以 [Clash Verge](https://github.com/MetaCubeX/clash-verge) 导入 Clash.Meta 内核为例，默认安装路径）
 编辑文本文档，粘贴如下内容：
 ```
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im Clash-Verge*
-taskkill /f /t /im mihomo*
+taskkill /f /t /im clash-meta*
 # Release 版
-curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
+curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 # Pre-release 版
-curl -o %PROGRAMFILES%\Clash Verge\mihomo.exe -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
+curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
 ```
 另存为 .bat 文件，右击并选择以管理员身份运行
-## 3. 安装 Clash dashboard 面板（以 ShellClash 安装 metacubexd 面板为例）
+## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
 Clash dashboard 面板类型和文件名对应关系如下：
 |面板类型|文件名|
 |-----|-----|
@@ -95,15 +95,17 @@ curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.
 chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s restart
 ```
-# 三、 配置 ShellClash 定时任务
-可以在 ShellClash 里添加定时更新 Clash.Meta 内核、metacubexd 面板和 AdGuardHome 的任务  
+# 三、 配置 ShellCrash 定时任务
+可以在 ShellCrash 里添加定时更新 Clash.Meta 内核、metacubexd 面板和 AdGuardHome 的任务  
 1. 连接 SSH 后执行 `vi $CRASHDIR/task/task.user`，按一下 Ins 键（Insert 键），粘贴如下内容：
-- 注：留意链接后缀是否与 CPU 架构匹配
+注：
+- 1. 留意链接后缀是否与 CPU 架构匹配
+- 2. ShellCrash 安装路径为 */data/ShellCrash*
 
 ```
-201#curl -o /data/clash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/clash/clash && /data/clash/start.sh restart >/dev/null 2>&1#更新Clash.Meta内核
-202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/clash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/clash/ui && rm -f /tmp/metacubexd.tar.gz && /data/clash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
+201#curl -o /data/ShellCrash/clash -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash.Meta-release/clash.meta-linux-armv8 && chmod +x /data/ShellCrash/clash && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新Clash.Meta内核
+202#curl -o /tmp/metacubexd.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz && rm -rf /data/ShellCrash/ui/* && tar -zxf /tmp/metacubexd.tar.gz -C /data/ShellCrash/ui && rm -f /tmp/metacubexd.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
 203#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && chmod +x /data/AdGuardHome/AdGuardHome && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
 2. 按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车
-3. 执行 `crash`，进入 ShellClash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
+3. 执行 `crash`，进入 ShellCrash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
