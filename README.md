@@ -46,7 +46,6 @@ taskkill /f /t /im clash-meta*
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-release/clash.meta-windows-amd64.exe
 # Alpha 版
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/Clash.Meta-alpha/clash.meta-windows-amd64.exe
-pause
 ```
 ## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
 Clash dashboard 面板类型和文件名对应关系如下：
