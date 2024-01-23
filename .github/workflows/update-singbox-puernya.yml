@@ -26,9 +26,6 @@ jobs:
     outputs:
       version: ${{steps.go.outputs.version}}
     steps:
-      - name: Clone Repository
-        uses: actions/checkout@main
-    
       - name: get latest go version
         id: go
         run: |
@@ -142,6 +139,9 @@ jobs:
     env: 
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
+      - name: Clone Repository
+        uses: actions/checkout@main
+
       - name: Get upx
         run: |
           wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
