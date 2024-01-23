@@ -2,23 +2,24 @@ name: Update sing-box PuerNya
 
 on:
   workflow_dispatch:
-    inputs:
-      tag1:
-        description: 'project name of sing-box, such as SagerNet/sing-box'
-        required: true
-        type: string
-      tag2:
-        description: 'tag or branches of sing-box, such as v1.7.8 or dev-next'
-        required: true
-        type: string
-      tag3:
-        description: 'a new prerelease name or not, if value=0, then only upload-artifact'
-        required: false
-        type: string
-      tag4:
-        description: 'build tags'
-        required: false
-        type: string
+  schedule:
+    - cron: "30 18 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome-prerelease.yml"
+      - ".github/workflows/update-adguardhome-release.yml"
+      - ".github/workflows/update-clash.meta-alpha.yml"
+      - ".github/workflows/update-clash.meta-release.yml"
+      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-clashpremium-latest.yml"
+      - ".github/workflows/update-clashpremium-release.yml"
+      - ".github/workflows/update-singbox-prerelease.yml"
+      - ".github/workflows/update-singbox-release.yml"
+
 jobs:
   go:
     runs-on: ubuntu-latest
@@ -34,20 +35,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: go
     env:
-      REPO: ${{ github.event.inputs.tag1 }}
-      TAGS: ${{ github.event.inputs.tag4 }}
+      REPO: SagerNet/sing-box
     outputs:
       version: ${{steps.sing-box.outputs.version}}
       tags: ${{steps.sing-box.outputs.tags}}
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4
         with:
-          repository: ${{ github.event.inputs.tag1 }}
-          ref: ${{ github.event.inputs.tag2 }}
+          repository: SagerNet/sing-box
+          ref: dev-next
           fetch-depth: 0
 
       - name: setup go
-        uses: actions/setup-go@v4.1.0
+        uses: actions/setup-go@v5
         with:
           go-version: ${{needs.go.outputs.version}}
 
@@ -57,17 +57,9 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=${{ github.event.inputs.tag2 }}
+          [ -z "$version" ] &&  version=dev-next
           echo version=$version >> $GITHUB_OUTPUT
-          if [ -z "$TAGS" ];then
-            if [ "$REPO" = 'PuerNya/sing-box' ];then
-                echo tags=with_quic,with_shadowsocksr,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
-            else
-                echo tags=with_quic,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
-            fi
-          else
-            echo tags=$TAGS >> $GITHUB_OUTPUT
-          fi
+
   cross:
     strategy:
       matrix:
@@ -120,8 +112,8 @@ jobs:
       - name: Checkout sing-box
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          repository: ${{ github.event.inputs.tag1 }}
-          ref: ${{ github.event.inputs.tag2 }}
+          repository: SagerNet/sing-box
+          ref: dev-next
           fetch-depth: 1
           
       - name: Setup Go
@@ -145,23 +137,28 @@ jobs:
       - sing-box
     runs-on: ubuntu-latest
     env: 
-      RELEASE: ${{ github.event.inputs.tag3 }}
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
-      - name: Download and unzip `upx`
+      - name: Get upx
         run: |
-          mkdir -p ./tmp/
-          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-          rm -f ./tmp/*.tar.xz
+          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
+          wget https://github.com/upx/upx/releases/download/v3.93/upx-3.93-amd64_linux.tar.xz
+          tar xf upx-3.96-amd64_linux.tar.xz
+          tar xf upx-3.93-amd64_linux.tar.xz
           
       - name: Download file from workspace
         uses: actions/download-artifact@v4
         with:
           path: ./tmp
           
+      - name: Download and unzip `upx`
+        run: |
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+          rm -f ./tmp/*.tar.xz
+
       - name: Zip core by upx
         run: |      
           archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
@@ -169,33 +166,15 @@ jobs:
           for((i=0;i<7;i++));do
             mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/singbox-linux-${new_name[i]}
             chmod +x ./tmp/singbox-linux-${new_name[i]}
-            if [ "${archs[i]}" != "armv5" ];then
-              if [[ ${archs[i]} = mips* ]];then
-                "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/singbox-linux-${new_name[i]}
-              fi
-            fi
+            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/singbox-linux-${new_name[i]}
           done
-          rm -fr upx*  
-          rm -fr ./tmp/core.tar.gz
-          echo ${VERSION} > ./tmp/version
+          mkdir -p ./sing-box-puernya/
+          mv -f ./tmp/singbox* ./sing-box-puernya/
+          rm -rf ./tmp* 
 
-      - name: Create Release and Upload Release Asset
-        if: ${{ env.RELEASE != '0' }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: singbox_core${{ github.event.inputs.tag3 }}
-          name: singbox_core${{ github.event.inputs.tag3 }}
-          body: "The ${{env.VERSION}} version of ${{ github.event.inputs.tag1 }} \n这是${{ github.event.inputs.tag1 }}的${{env.VERSION}}版本内核文件\nhttps://github.com/${{ github.event.inputs.tag1 }}/releases \nZip by upx\n使用了upx进行压缩\nOnly support for ShellCrash\n仅限于ShellCrash项目使用"
-          draft: false
-          prerelease: true
-          files: |
-            ./tmp/* 
-            
-      - name: upload artifact
-        if: ${{ env.RELEASE == '0' }}
-        uses: actions/upload-artifact@v4.1.0
-        with:
-          name: sing-box-${{env.VERSION}}-${{matrix.jobs.output}}
-          path: |
-            ./tmp/sing-box*
-          compression-level: 9 
+      - name: Commit and push `sing-box`
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "更新 sing-box 内核 PuerNya 版至 ${VERSION}"
+          git push -f
