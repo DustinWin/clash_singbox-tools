@@ -17,6 +17,7 @@ on:
       - ".github/workflows/update-clashpremium-latest.yml"
       - ".github/workflows/update-clashpremium-release.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
+      - ".github/workflows/update-singbox-puernya.yml"
 
 env:
   download_url: https://github.com/SagerNet/sing-box/releases/download
