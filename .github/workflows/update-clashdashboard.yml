@@ -2,7 +2,7 @@ name: Update Clash dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 17 * * *"
+    - cron: "30 16 * * *"
   push:
     branches:
       - main
@@ -16,6 +16,7 @@ on:
       - ".github/workflows/update-clashpremium-latest.yml"
       - ".github/workflows/update-clashpremium-release.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
+      - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
 env:
