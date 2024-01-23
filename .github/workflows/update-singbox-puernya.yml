@@ -26,6 +26,9 @@ jobs:
     outputs:
       version: ${{steps.go.outputs.version}}
     steps:
+      - name: Clone Repository
+        uses: actions/checkout@main
+    
       - name: get latest go version
         id: go
         run: |
@@ -178,3 +181,10 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git add . && git commit -m "更新 sing-box 内核 PuerNya 版至 ${VERSION}"
           git push -f
+
+      - name: Purge jsDelivr CDN
+        run: |
+          cd ./sing-box-puernya/ || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/sing-box-puernya/${file}"
+          done
