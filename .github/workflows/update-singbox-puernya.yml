@@ -34,8 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: 
       - go
-    env:
-      REPO: PuerNya/sing-box
     outputs:
       version: ${{steps.sing-box.outputs.version}}
       tags: ${{steps.sing-box.outputs.tags}}
@@ -94,7 +92,17 @@ jobs:
           - name: linux-mipsel-hardfloat
             goos: linux
             goarch: mipsle
-            gomips: hardfloat   
+            gomips: hardfloat
+
+          # windows
+          - name: windows-amd64
+            goos: windows
+            goarch: amd64
+            goamd64: v1
+          - name: windows-amd64-v3
+            goos: windows
+            goarch: amd64
+            goamd64: v3
 
       fail-fast: false
     runs-on: ubuntu-latest
@@ -154,6 +162,7 @@ jobs:
           wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
           tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
           rm -f ./tmp/*.tar.xz
+
       - name: Zip core by `upx`
         run: |
           archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
@@ -163,6 +172,10 @@ jobs:
             chmod +x ./tmp/sing-box-linux-${new_name[i]}
             "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
           done
+
+      - name: Move files
+        run: |
+          ls -R
           mkdir -p ./sing-box-puernya/
           mv -f ./tmp/sing-box* ./sing-box-puernya/
           rm -rf ./tmp* 
