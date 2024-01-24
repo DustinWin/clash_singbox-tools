@@ -67,20 +67,25 @@ jobs:
             goos: linux
             goarch: amd64
             goamd64: v1
-          - name: linux-386
+          - name: linux-amd64-v3
             goos: linux
-            goarch: 386
-          - name: linux-arm64
-            goos: linux
-            goarch: arm64
+            goarch: amd64
+            goamd64: v3
           - name: linux-armv5
             goos: linux
             goarch: arm
             goarm: 5
+          - name: linux-armv6
+            goos: linux
+            goarch: arm
+            goarm: 6
           - name: linux-armv7
             goos: linux
             goarch: arm
             goarm: 7
+          - name: linux-arm64
+            goos: linux
+            goarch: arm64
           - name: linux-mips-softfloat
             goos: linux
             goarch: mips
@@ -122,7 +127,7 @@ jobs:
         with:
           repository: PuerNya/sing-box
           ref: building
-          fetch-depth: 0
+          fetch-depth: 1
           
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -165,9 +170,9 @@ jobs:
 
       - name: Zip core by `upx`
         run: |
-          archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
-          new_name=(amd64 armv5 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-          for((i=0;i<7;i++));do
+          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<9;i++));do
             mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
             chmod +x ./tmp/sing-box-linux-${new_name[i]}
             "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
