@@ -110,7 +110,7 @@ jobs:
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
       - name: Checkout sing-box
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
           ref: dev-next
@@ -141,13 +141,6 @@ jobs:
     steps:
       - name: Clone Repository
         uses: actions/checkout@main
-
-      - name: Get upx
-        run: |
-          wget https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
-          wget https://github.com/upx/upx/releases/download/v3.93/upx-3.93-amd64_linux.tar.xz
-          tar xf upx-3.96-amd64_linux.tar.xz
-          tar xf upx-3.93-amd64_linux.tar.xz
           
       - name: Download file from workspace
         uses: actions/download-artifact@v4
@@ -162,17 +155,17 @@ jobs:
           tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
           rm -f ./tmp/*.tar.xz
 
-      - name: Zip core by upx
+      - name: Zip core by `upx`
         run: |      
           archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
           new_name=(amd64 armv5 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<7;i++));do
-            mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/singbox-linux-${new_name[i]}
-            chmod +x ./tmp/singbox-linux-${new_name[i]}
-            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/singbox-linux-${new_name[i]}
+            mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
+            chmod +x ./tmp/sing-box-linux-${new_name[i]}
+            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
           done
           mkdir -p ./sing-box-puernya/
-          mv -f ./tmp/singbox* ./sing-box-puernya/
+          mv -f ./tmp/sing-box* ./sing-box-puernya/
           rm -rf ./tmp* 
 
       - name: Commit and push `sing-box`
