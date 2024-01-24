@@ -100,9 +100,9 @@ jobs:
             goos: windows
             goarch: amd64
             goamd64: v1
-          - name: windows-amd64v3
+          - name: windows-amd64-v3
             goos: windows
-            goarch: amd64v3
+            goarch: amd64-v3
             goamd64: v3
 
       fail-fast: false
