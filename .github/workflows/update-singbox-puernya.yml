@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: PuerNya/sing-box
-          ref: dev-next
+          ref: building
           fetch-depth: 0
 
       - name: setup go
@@ -57,7 +57,7 @@ jobs:
           git remote add sekai https://github.com/PuerNya/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=dev-next
+          [ -z "$version" ] &&  version=building
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=with_quic,with_shadowsocksr,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
   cross:
@@ -113,7 +113,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: PuerNya/sing-box
-          ref: dev-next
+          ref: building
           fetch-depth: 1
           
       - name: Setup Go
