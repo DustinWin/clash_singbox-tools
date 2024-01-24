@@ -4,7 +4,7 @@
 1. Clash Premium Release 版和 Latest 版内核
 2. Clash.Meta Release 版和 Alpha 版内核
 3. sing-box Release 版和 Pre-release 版内核
-4. sing-box PuerNya 版内核（支持 providers 代理集合）
+4. sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
 5. Clash dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
 
 |面板类型|在线地址|
@@ -23,14 +23,14 @@
 # 二、 使用方法
 ## 1. 导入内核到 Linux 端（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入内核为例）
 **Clash.Meta 内核下载链接后缀和 CPU 架构对应关系如下：**
-|CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
+|CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8&ARM64&AArch64)|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|-----|
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
 **sing-box 内核下载链接后缀和 CPU 架构对应关系如下：**
-|CPU 架构|AMD64|AMD64v3|ARMv7|ARMv8|
-|-----|-----|-----|-----|-----|
-|**链接后缀**|`amd64`|`amd64v3`|`armv7`|`armv8`|
+|CPU 架构|AMD64|AMD64v3|ARMv5|ARMv6|ARMv7|ARMv8&ARM64&AArch64)|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
+|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+|**链接后缀**|`amd64`|`amd64v3`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
 连接 SSH 后执行如下命令：
 ```
