@@ -1,4 +1,4 @@
-name: Test Sing-Box Core for ShellCrash
+name: Update sing-box PuerNya
 on:
   workflow_dispatch:
   schedule:
@@ -39,14 +39,14 @@ jobs:
       version: ${{steps.sing-box.outputs.version}}
       tags: ${{steps.sing-box.outputs.tags}}
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: v1.8.4
+          ref: dev-next
           fetch-depth: 0
 
       - name: setup go
-        uses: actions/setup-go@v4.1.0
+        uses: actions/setup-go@v5
         with:
           go-version: ${{needs.go.outputs.version}}
 
@@ -56,17 +56,8 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=v1.8.4
+          [ -z "$version" ] &&  version=dev-next
           echo version=$version >> $GITHUB_OUTPUT
-          if [ -z "$TAGS" ];then
-            if [ "$REPO" = 'PuerNya/sing-box' ];then
-                echo tags=with_quic,with_shadowsocksr,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
-            else
-                echo tags=with_quic,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
-            fi
-          else
-            echo tags=$TAGS >> $GITHUB_OUTPUT
-          fi
   cross:
     strategy:
       matrix:
@@ -117,10 +108,10 @@ jobs:
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
       - name: Checkout sing-box
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: v1.8.4
+          ref: dev-next
           fetch-depth: 1
           
       - name: Setup Go
@@ -132,7 +123,11 @@ jobs:
         id: build
         run: go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./cmd/sing-box
         
-
+      - name: Upload file to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: sing-box
           
   push_prerelease:
     needs: 
@@ -140,25 +135,25 @@ jobs:
       - sing-box
     runs-on: ubuntu-latest
     env: 
-      RELEASE: ${{ github.event.inputs.tag3 }}
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
-      - name: Download and unzip `upx`
-        run: |
-          mkdir -p ./tmp/ ./sing-box-release/
-          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-          rm -f ./tmp/*.tar.xz
+      - name: Clone Repository
+        uses: actions/checkout@main
           
       - name: Download file from workspace
         uses: actions/download-artifact@v4
         with:
           path: ./tmp
           
-      - name: Zip core by upx
-        run: |      
+      - name: Download and unzip `upx`
+        run: |
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+          rm -f ./tmp/*.tar.xz
+      - name: Zip core by `upx`
+        run: |
           archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
           new_name=(amd64 armv5 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<7;i++));do
@@ -166,11 +161,9 @@ jobs:
             chmod +x ./tmp/sing-box-linux-${new_name[i]}
             "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
           done
-          rm -rf ./tmp/upx*
-          rm -rf ./tmp/core.tar.gz
-          echo ${VERSION} > ./tmp/version
           mkdir -p ./sing-box-puernya/
           mv -f ./tmp/sing-box* ./sing-box-puernya/
+          rm -rf ./tmp* 
 
       - name: Commit and push `sing-box`
         run: |
