@@ -20,13 +20,15 @@ on:
       - ".github/workflows/update-singbox-release.yml"
 
 jobs:
-  build:
+  singbox:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.singbox.outputs.version }}
     steps:
-      - name: Set variables
+      - name: get latest sing-box version
+        id: singbox
         run: |
-          download_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-          echo "download_version=${download_version}" >> ${GITHUB_ENV}
+          echo singbox_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g') >> $GITHUB_OUTPUT
 
   go:
     runs-on: ubuntu-latest
@@ -50,7 +52,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: ${{ download_version }}
+          ref: ${{ steps.singbox.outputs.version }}
           fetch-depth: 0
 
       - name: setup go
@@ -64,7 +66,7 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=${{ download_version }}
+          [ -z "$version" ] &&  version=${{ steps.singbox.outputs.version }}
           echo version=$version >> $GITHUB_OUTPUT
   cross:
     strategy:
@@ -119,7 +121,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: ${{ download_version }}
+          ref: ${{ steps.singbox.outputs.version }}
           fetch-depth: 1
           
       - name: Setup Go
