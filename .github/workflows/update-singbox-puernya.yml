@@ -20,16 +20,6 @@ on:
       - ".github/workflows/update-singbox-release.yml"
 
 jobs:
-  singbox:
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.singbox.outputs.version }}
-    steps:
-      - name: get latest sing-box version
-        id: singbox
-        run: |
-          echo version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g') >> $GITHUB_OUTPUT
-
   go:
     runs-on: ubuntu-latest
     outputs:
@@ -43,18 +33,17 @@ jobs:
   sing-box:
     runs-on: ubuntu-latest
     needs: 
-      - singbox
       - go
     env:
-      REPO: SagerNet/sing-box
+      REPO: PuerNya/sing-box
     outputs:
       version: ${{steps.sing-box.outputs.version}}
       tags: ${{steps.sing-box.outputs.tags}}
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: SagerNet/sing-box
-          ref: ${{ needs.singbox.outputs.version }}
+          repository: PuerNya/sing-box
+          ref: dev-next
           fetch-depth: 0
 
       - name: setup go
@@ -65,11 +54,12 @@ jobs:
       - name: get sing-box version
         id: sing-box
         run: |
-          git remote add sekai https://github.com/SagerNet/sing-box.git
+          git remote add sekai https://github.com/PuerNya/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=${{ needs.singbox.outputs.version }}
+          [ -z "$version" ] &&  version=dev-next
           echo version=$version >> $GITHUB_OUTPUT
+          echo tags=with_quic,with_shadowsocksr,with_ech,with_utls,with_reality_server,with_clash_api >> $GITHUB_OUTPUT
   cross:
     strategy:
       matrix:
@@ -108,9 +98,7 @@ jobs:
 
       fail-fast: false
     runs-on: ubuntu-latest
-    needs: 
-      - singbox
-      - sing-box
+    needs: sing-box
     env:
       GOOS: ${{ matrix.goos }}
       GOARCH: ${{ matrix.goarch }}
@@ -124,8 +112,8 @@ jobs:
       - name: Checkout sing-box
         uses: actions/checkout@v4
         with:
-          repository: SagerNet/sing-box
-          ref: ${{ needs.singbox.outputs.version }}
+          repository: PuerNya/sing-box
+          ref: dev-next
           fetch-depth: 1
           
       - name: Setup Go
