@@ -28,7 +28,7 @@ jobs:
       - name: get latest sing-box version
         id: singbox
         run: |
-          echo version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g') >> $GITHUB_OUTPUT
 
   go:
     runs-on: ubuntu-latest
