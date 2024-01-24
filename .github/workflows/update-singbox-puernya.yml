@@ -1,5 +1,4 @@
 name: Update sing-box PuerNya
-
 on:
   workflow_dispatch:
   schedule:
@@ -156,14 +155,14 @@ jobs:
         with:
           path: ./tmp
 
-    - name: Download and unzip `upx`
-      run: |
-        mkdir -p ./tmp/ ./sing-box-release/
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
+      - name: Download and unzip `upx`
+        run: |
+          mkdir -p ./tmp/ ./sing-box-release/
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+          rm -f ./tmp/*.tar.xz
 
       - name: Zip core by upx
         run: |
