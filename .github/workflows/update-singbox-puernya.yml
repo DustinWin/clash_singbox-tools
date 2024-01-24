@@ -143,8 +143,8 @@ jobs:
         with:
           name: ${{ matrix.name }}
           path: 
-            sing-box
-            sing-box.exe
+            sing-box*
+          compression-level: 9
           
   push_prerelease:
     needs: 
