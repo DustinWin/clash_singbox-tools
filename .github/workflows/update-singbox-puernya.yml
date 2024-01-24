@@ -94,7 +94,16 @@ jobs:
           - name: linux-mipsel-hardfloat
             goos: linux
             goarch: mipsle
-            gomips: hardfloat   
+            gomips: hardfloat
+          # Windows
+          - name: windows-amd64
+            goos: windows
+            goarch: amd64
+            goamd64: v1
+          - name: windows-amd64v3
+            goos: windows
+            goarch: amd64v3
+            goamd64: v3
 
       fail-fast: false
     runs-on: ubuntu-latest
