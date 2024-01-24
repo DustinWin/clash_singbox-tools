@@ -165,7 +165,8 @@ jobs:
           rm -f ./tmp/*.tar.xz
 
       - name: Zip core by `upx`
-        run: |      
+        run: |     
+          ls -R
           mv -f ./tmp/windows-amd64/sing-box.exe ./tmp/sing-box-windows-amd64.exe
           mv -f ./tmp/windows-amd64v3/sing-box.exe ./tmp/sing-box-windows-amd64v3.exe
           archs=(amd64 armv5 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
