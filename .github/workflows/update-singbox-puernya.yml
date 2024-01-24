@@ -122,7 +122,7 @@ jobs:
         with:
           repository: PuerNya/sing-box
           ref: building
-          fetch-depth: 1
+          fetch-depth: 0
           
       - name: Setup Go
         uses: actions/setup-go@v5
