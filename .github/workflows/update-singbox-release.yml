@@ -55,7 +55,7 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] &&  version=building
+          [ -z "$version" ] &&  version=main-next
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=$TAGS >> $GITHUB_OUTPUT
 
@@ -193,7 +193,7 @@ jobs:
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add . && git commit -m "更新 sing-box 内核 PuerNya 版至 v${VERSION}"
+          git add . && git commit -m "更新 sing-box 内核 Release 版至 v${VERSION}"
           git push -f
 
       - name: Purge jsDelivr CDN
