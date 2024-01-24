@@ -142,7 +142,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path: sing-box
+          path: 
+            sing-box
+            sing-box.exe
           
   push_prerelease:
     needs: 
