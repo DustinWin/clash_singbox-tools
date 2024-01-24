@@ -19,64 +19,186 @@ on:
       - ".github/workflows/update-singbox-prerelease.yml"
       - ".github/workflows/update-singbox-puernya.yml"
 
-env:
-  download_url: https://github.com/SagerNet/sing-box/releases/download
-  download_version: ''
-
 jobs:
-  Update:
+  go:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{steps.go.outputs.version}}
     steps:
-    - name: Clone Repository
-      uses: actions/checkout@main
+      - name: Get `Go` latest version
+        id: go
+        run: |
+          echo version=$(curl -s https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g') >> $GITHUB_OUTPUT
 
-    - name: Download and unzip `upx`
-      run: |
-        mkdir -p ./tmp/ ./sing-box-release/
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
+  sing-box:
+    runs-on: ubuntu-latest
+    needs:
+      - go
+    outputs:
+      version: ${{steps.sing-box.outputs.version}}
+      tags: ${{steps.sing-box.outputs.tags}}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: SagerNet/sing-box
+          ref: main-next
+          fetch-depth: 0
 
-    - name: Download and compress `singbox core`
-      run: |
-        download_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(amd64 amd64v3 armv7 arm64)
-        new_name=(amd64 amd64v3 armv7 armv8)
-        for((i=0;i<4;i++)); do
-          wget "${download_url}/v${download_version}/sing-box-${download_version}-linux-${archs[i]}.tar.gz" -O - | tar -zxf - -C ./tmp/
-          chmod +x "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box"
-          mv -f "./tmp/sing-box-${download_version}-linux-${archs[i]}/sing-box" "./tmp/sing-box-linux-${new_name[i]}"
-        done
-        wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-windows-amd64.zip"
-        unzip -o "./tmp/sing-box-${download_version}-windows-amd64.zip" -d ./tmp/
-        mv -f ./tmp/sing-box-${download_version}-windows-amd64/sing-box.exe ./tmp/sing-box-windows-amd64.exe
-        wget -P ./tmp/ "${download_url}/v${download_version}/sing-box-${download_version}-windows-amd64v3.zip"
-        unzip -o "./tmp/sing-box-${download_version}-windows-amd64v3.zip" -d ./tmp/
-        mv -f ./tmp/sing-box-${download_version}-windows-amd64v3/sing-box.exe ./tmp/sing-box-windows-amd64v3.exe
-        rm -f ./tmp/*.zip
-        rm -rf ./tmp/upx*
-        rm -rf ./tmp/sing-box-${download_version}-*
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{needs.go.outputs.version}}
 
-    - name: Move `sing-box core` to `sing-box-release` directory
-      run: |
-        rm -rf ./sing-box-release/*
-        cp -f ./tmp/* ./sing-box-release/
-        rm -rf ./tmp*
+      - name: Get `sing-box` version
+        id: sing-box
+        run: |
+          git remote add sekai https://github.com/SagerNet/sing-box.git
+          git fetch --tags sekai
+          version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
+          [ -z "$version" ] &&  version=building
+          echo version=$version >> $GITHUB_OUTPUT
+          echo tags=$TAGS >> $GITHUB_OUTPUT
 
-    - name: Commit and push
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 sing-box 内核 Release 版至 ${download_version}" || exit 0
-        git push -f
+  cross:
+    strategy:
+      matrix:
+        include:
+          # linux
+          - name: linux-amd64
+            goos: linux
+            goarch: amd64
+            goamd64: v1
+          - name: linux-amd64-v3
+            goos: linux
+            goarch: amd64
+            goamd64: v3
+          - name: linux-armv5
+            goos: linux
+            goarch: arm
+            goarm: 5
+          - name: linux-armv6
+            goos: linux
+            goarch: arm
+            goarm: 6
+          - name: linux-armv7
+            goos: linux
+            goarch: arm
+            goarm: 7
+          - name: linux-arm64
+            goos: linux
+            goarch: arm64
+          - name: linux-mips-softfloat
+            goos: linux
+            goarch: mips
+            gomips: softfloat
+          - name: linux-mipsel-softfloat
+            goos: linux
+            goarch: mipsle
+            gomips: softfloat
+          - name: linux-mipsel-hardfloat
+            goos: linux
+            goarch: mipsle
+            gomips: hardfloat
+          # windows
+          - name: windows-amd64
+            goos: windows
+            goarch: amd64
+            goamd64: v1
+          - name: windows-amd64-v3
+            goos: windows
+            goarch: amd64
+            goamd64: v3
 
-    - name: Purge jsDelivr CDN
-      run: |
-        cd ./sing-box-release/ || exit 1
-        for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/sing-box-release/${file}"
-        done
+      fail-fast: false
+    runs-on: ubuntu-latest
+    needs: sing-box
+    env:
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+      GOAMD64: ${{ matrix.goamd64 }}
+      GOARM: ${{ matrix.goarm }}
+      GOMIPS: ${{ matrix.gomips }}
+      CGO_ENABLED: 0
+      TAGS: ${{needs.sing-box.outputs.tags}}
+      VERSION: ${{needs.sing-box.outputs.version}}
+    steps:
+      - name: Checkout sing-box
+        uses: actions/checkout@v4
+        with:
+          repository: SagerNet/sing-box
+          ref: main-next
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+
+      - name: build core
+        id: build
+        run: go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./cmd/sing-box
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path:
+            sing-box*
+          compression-level: 9
+
+  push_release:
+    needs:
+      - cross
+      - sing-box
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{needs.sing-box.outputs.version}}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@main
+
+      - name: Download files from workspace
+        uses: actions/download-artifact@v4
+        with:
+          path: ./tmp
+
+      - name: Download and unzip `upx`
+        run: |
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+          rm -f ./tmp/*.tar.xz
+
+      - name: Zip core by `upx`
+        run: |
+          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<9;i++));do
+            mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
+            chmod +x ./tmp/sing-box-linux-${new_name[i]}
+            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
+          done
+
+      - name: Move files
+        run: |
+          mkdir -p ./sing-box-release/
+          rm -rf ./sing-box-release/*
+          mv -f ./tmp/sing-box* ./sing-box-release/
+          mv -f ./tmp/windows-amd64/sing-box.exe ./sing-box-release/sing-box-windows-amd64.exe
+          mv -f ./tmp/windows-amd64-v3/sing-box.exe ./sing-box-release/sing-box-windows-amd64v3.exe
+          rm -rf ./tmp* 
+
+      - name: Commit and push `sing-box`
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "更新 sing-box 内核 PuerNya 版至 v${VERSION}"
+          git push -f
+
+      - name: Purge jsDelivr CDN
+        run: |
+          cd ./sing-box-release/ || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/sing-box-release/${file}"
+          done
