@@ -1,8 +1,6 @@
 name: Update Clash Premium Release
 on:
   workflow_dispatch:
-  # schedule:
-    # - cron: "30 17 * * *"
   push:
     branches:
       - main
@@ -38,7 +36,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Clash Premium 内核 Release 版至 ${download_version}" || exit 0
+        git add . && git commit -m "Clash Premium 内核 Release 版" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
