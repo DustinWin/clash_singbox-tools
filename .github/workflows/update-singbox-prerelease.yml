@@ -160,7 +160,7 @@ jobs:
       - name: Download files from workspace
         uses: actions/download-artifact@v4
         with:
-          path: ./tmp
+          path: ./tmp/
 
       - name: Download and unzip `upx`
         run: |
@@ -176,7 +176,7 @@ jobs:
           new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<9;i++));do
             chmod +x ./tmp/linux-${archs[i]}/sing-box
-            tar --no-same-owner -czf ./tmp/sing-box-linux-${new_name[i]}.tar.gz -C ./tmp ./linux-${archs[i]}/sing-box
+            tar --no-same-owner -czf ./tmp/sing-box-linux-${new_name[i]}.tar.gz -C ./tmp/ ./linux-${archs[i]}/sing-box
           done
 
       - name: Zip core by `upx`
