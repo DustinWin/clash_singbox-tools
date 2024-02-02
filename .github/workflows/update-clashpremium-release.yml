@@ -19,10 +19,6 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  download_url: https://release.dreamacro.workers.dev
-  download_version: ''
-
 jobs:
   Update:
     runs-on: ubuntu-latest
@@ -30,37 +26,13 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Download and unzip `upx`
+    - name: Zip core by `tar`
       run: |
-        mkdir -p ./tmp/ ./ClashPremium-release/
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
-
-    - name: Download and compress `ClashPremium core`
-      run: |
-        download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash/releases/tags/premium | grep 'linux-arm64' | head -n 1 | sed 's/.*-//g' | sed 's/.gz.*//g')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<8;i++)); do
-          wget "${download_url}/${download_version}/clash-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
-          chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
+        archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+        for((i=0;i<8;i++));do
+          chmod +x ./ClashPremium-release/clashpremium-linux-${archs[i]}
+          tar --no-same-owner -czf ./ClashPremium-release/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-release/ ./clashpremium-linux-${archs[i]}
         done
-        wget -P ./tmp/ "${download_url}/${download_version}/clash-windows-amd64-${download_version}.zip"
-        unzip -o "./tmp/clash-windows-amd64-${download_version}.zip" -d ./tmp/
-        mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
-        rm -f ./tmp/*.zip
-        rm -rf ./tmp/upx*
-
-    - name: Move `ClashPremium core` to `ClashPremium-release` directory
-      run: |
-        rm -rf ./ClashPremium-release/*
-        cp -f ./tmp/* ./ClashPremium-release/
-        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
