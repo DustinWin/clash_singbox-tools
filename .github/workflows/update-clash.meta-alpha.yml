@@ -149,7 +149,7 @@ jobs:
       - name: Download files from workspace
         uses: actions/download-artifact@v4
         with:
-          path: ./tmp
+          path: ./tmp/
 
       - name: Download and unzip `upx`
         run: |
@@ -166,7 +166,7 @@ jobs:
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
             chmod +x ./tmp/linux-${archs[i]}/meta
-            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp ./linux-${archs[i]}/meta
+            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp/ ./linux-${archs[i]}/meta
           done
 
       - name: Zip core by `upx`
