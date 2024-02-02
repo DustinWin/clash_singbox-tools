@@ -26,10 +26,10 @@ jobs:
 
     - name: Zip core by `tar`
       run: |
-        archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+        archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<8;i++));do
           chmod +x ./ClashPremium-latest/clashpremium-linux-${archs[i]}
-          tar --no-same-owner -czf ./ClashPremium-latest/clash.meta-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./clashpremium-linux-${archs[i]}
+          tar --no-same-owner -czf ./ClashPremium-latest/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./clashpremium-linux-${archs[i]}
         done
 
     - name: Commit and push
