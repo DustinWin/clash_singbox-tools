@@ -135,7 +135,7 @@ jobs:
             meta*
           compression-level: 9
 
-  push_release:
+  push_alpha:
     needs:
       - cross
       - meta
