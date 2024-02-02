@@ -19,60 +19,184 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  download_url: https://github.com/MetaCubeX/mihomo/releases/download
-  download_version: ''
-
 jobs:
-  Update:
+  go:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{steps.go.outputs.version}}
     steps:
-    - name: Clone Repository
-      uses: actions/checkout@main
+      - name: Get `Go` latest version
+        id: go
+        run: |
+          echo version=$(curl -s https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g') >> $GITHUB_OUTPUT
 
-    - name: Download and unzip `upx`
-      run: |
-        mkdir -p ./tmp/ ./Clash.Meta-alpha/
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
+  meta:
+    runs-on: ubuntu-latest
+    needs:
+      - go
+    outputs:
+      version: ${{steps.meta.outputs.version}}
+      tags: ${{steps.meta.outputs.tags}}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Alpha
+          fetch-depth: 0
 
-    - name: Download and compress `Clash.Meta core`
-      run: |
-        download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
-        archs=(amd64-compatible armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<8;i++)); do
-          wget "${download_url}/Prerelease-Alpha/mihomo-linux-${archs[i]}-${download_version}.gz" -O - | gunzip -c > "./tmp/mihomo-linux-${new_name[i]}"
-          chmod +x "./tmp/mihomo-linux-${new_name[i]}"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/mihomo-linux-${new_name[i]}"
-          mv -f "./tmp/mihomo-linux-${new_name[i]}" "./tmp/clash.meta-linux-${new_name[i]}"
-        done
-        wget -P ./tmp/ "${download_url}/Prerelease-Alpha/mihomo-windows-amd64-${download_version}.zip"
-        unzip -o "./tmp/mihomo-windows-amd64-${download_version}.zip" -d ./tmp/
-        mv -f ./tmp/mihomo-windows-amd64.exe ./tmp/clash.meta-windows-amd64.exe
-        rm -f ./tmp/*.zip
-        rm -rf ./tmp/upx*
+      - name: setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{needs.go.outputs.version}}
 
-    - name: Move `Clash.Meta core` to `Clash.Meta-alpha` directory
-      run: |
-        rm -rf ./Clash.Meta-alpha/*
-        cp -f ./tmp/* ./Clash.Meta-alpha/
-        rm -rf ./tmp*
+      - name: Get `meta` version
+        id: meta
+        run: |
+          version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
+          echo version=$version >> $GITHUB_OUTPUT
+          echo tags=$TAGS >> $GITHUB_OUTPUT
 
-    - name: Commit and push
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Clash.Meta 内核 Alpha 版至 ${download_version}" || exit 0
-        git push -f
+  cross:
+    strategy:
+      matrix:
+        include:
+          # linux
+          - name: linux-amd64
+            goos: linux
+            goarch: amd64
+            goamd64: v1
+          - name: linux-armv5
+            goos: linux
+            goarch: arm
+            goarm: 5
+          - name: linux-armv6
+            goos: linux
+            goarch: arm
+            goarm: 6
+          - name: linux-armv7
+            goos: linux
+            goarch: arm
+            goarm: 7
+          - name: linux-arm64
+            goos: linux
+            goarch: arm64
+          - name: linux-mips-softfloat
+            goos: linux
+            goarch: mips
+            gomips: softfloat
+          - name: linux-mipsel-softfloat
+            goos: linux
+            goarch: mipsle
+            gomips: softfloat
+          - name: linux-mipsel-hardfloat
+            goos: linux
+            goarch: mipsle
+            gomips: hardfloat
+          # windows
+          - name: windows-amd64
+            goos: windows
+            goarch: amd64
+            goamd64: v1
 
-    - name: Purge jsDelivr CDN
-      run: |
-        cd ./Clash.Meta-alpha/ || exit 1
-        for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-alpha/${file}"
-        done
+      fail-fast: false
+    runs-on: ubuntu-latest
+    needs: meta
+    env:
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+      GOAMD64: ${{ matrix.goamd64 }}
+      GOARM: ${{ matrix.goarm }}
+      GOMIPS: ${{ matrix.gomips }}
+      CGO_ENABLED: 0
+      TAGS: ${{needs.meta.outputs.tags}}
+      VERSION: ${{needs.meta.outputs.version}}
+    steps:
+      - name: Checkout meta
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Alpha
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ steps.go.outputs.version }}
+
+      - name: build core
+        id: build
+        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path:
+            meta*
+          compression-level: 9
+
+  push_release:
+    needs:
+      - cross
+      - meta
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{needs.meta.outputs.version}}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@main
+
+      - name: Download files from workspace
+        uses: actions/download-artifact@v4
+        with:
+          path: ./tmp
+
+      - name: Download and unzip `upx`
+        run: |
+          mkdir -p ./tmp/ ./Clash.Meta-alpha/
+          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
+          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
+          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
+          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
+          rm -f ./tmp/*.tar.xz
+
+      - name: Zip core by `tar`
+        run: |
+          archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<8;i++));do
+            chmod +x ./tmp/linux-${archs[i]}/meta
+            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp ./linux-${archs[i]}/meta
+          done
+
+      - name: Zip core by `upx`
+        run: |
+          archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<8;i++));do
+            mv -f ./tmp/linux-${archs[i]}/meta ./tmp/clash.meta-linux-${new_name[i]}
+            chmod +x ./tmp/clash.meta-linux-${new_name[i]}
+            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/clash.meta-linux-${new_name[i]}
+          done
+
+      - name: Move files
+        run: |
+          mkdir -p ./Clash.Meta-alpha/
+          rm -rf ./Clash.Meta-alpha/*
+          mv -f ./tmp/clash.meta* ./Clash.Meta-alpha/
+          mv -f ./tmp/windows-amd64/meta ./Clash.Meta-alpha/clash.meta-windows-amd64.exe
+          rm -rf ./tmp* 
+
+      - name: Commit and push
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add . && git commit -m "更新 Clash.Meta 内核 Alpha 版至 ${VERSION}" || exit 0
+          git push -f
+
+      - name: Purge jsDelivr CDN
+        run: |
+          cd ./Clash.Meta-alpha/ || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-alpha/${file}"
+          done
