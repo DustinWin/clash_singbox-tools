@@ -1,8 +1,6 @@
 name: Update Clash Premium Latest
 on:
   workflow_dispatch:
-  # schedule:
-    # - cron: "0 17 * * *"
   push:
     branches:
       - main
@@ -19,9 +17,6 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  download_url: https://release.dreamacro.workers.dev/latest
-
 jobs:
   Update:
     runs-on: ubuntu-latest
@@ -29,42 +24,19 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Download and unzip `upx`
+    - name: Zip core by `tar`
       run: |
-        echo "update_version=$(date -d '+8 hours' +%Y-%m-%d)" >> ${GITHUB_ENV}
-        mkdir -p ./tmp/ ./ClashPremium-latest/
-        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-        wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-        tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
-
-    - name: Download and compress `ClashPremium core`
-      run: |
-        archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<8;i++)); do
-          wget "${download_url}/clash-linux-${archs[i]}-latest.gz" -O - | gunzip -c > "./tmp/clashpremium-linux-${new_name[i]}"
-          chmod +x "./tmp/clashpremium-linux-${new_name[i]}"
-          "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/clashpremium-linux-${new_name[i]}"
+        archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+        for((i=0;i<8;i++));do
+          chmod +x ./ClashPremium-latest/clashpremium-linux-${archs[i]}
+          tar --no-same-owner -czf ./ClashPremium-latest/clash.meta-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./clashpremium-linux-${archs[i]}
         done
-        wget -P ./tmp/ "${download_url}/clash-windows-amd64-latest.zip"
-        unzip -o "./tmp/clash-windows-amd64-latest.zip" -d ./tmp/
-        mv -f "./tmp/clash-windows-amd64.exe" "./tmp/clashpremium-windows-amd64.exe"
-        rm -f ./tmp/*.zip
-        rm -rf ./tmp/upx*
-
-    - name: Move `ClashPremium core` to `ClashPremium-latest` directory
-      run: |
-        rm -rf ./ClashPremium-latest/*
-        cp -f ./tmp/* ./ClashPremium-latest/
-        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "Clash Premium 内核 Latest 版更新于 ${update_version}" || exit 0
+        git add . && git commit -m "Clash Premium 内核 Latest 版" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
