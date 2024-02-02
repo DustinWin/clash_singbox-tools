@@ -91,11 +91,11 @@ jobs:
             goos: linux
             goarch: mips
             gomips: softfloat
-          - name: linux-mipsel-softfloat
+          - name: linux-mipsle-softfloat
             goos: linux
             goarch: mipsle
             gomips: softfloat
-          - name: linux-mipsel-hardfloat
+          - name: linux-mipsle-hardfloat
             goos: linux
             goarch: mipsle
             gomips: hardfloat
@@ -172,7 +172,7 @@ jobs:
 
       - name: Zip core by `tar`
         run: |
-          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<9;i++));do
             chmod +x ./tmp/linux-${archs[i]}/sing-box
@@ -181,7 +181,7 @@ jobs:
 
       - name: Zip core by `upx`
         run: |
-          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsel-hardfloat mipsel-softfloat)
+          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<9;i++));do
             mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
