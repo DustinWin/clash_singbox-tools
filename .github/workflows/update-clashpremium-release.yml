@@ -33,6 +33,7 @@ jobs:
           chmod +x ./tmp/CrashCore
           tar --no-same-owner -czf ./ClashPremium-release/clashpremium-linux-${archs[i]}.tar.gz -C ./tmp/ ./CrashCore
         done
+        rm -rf ./tmp*
 
     - name: Commit and push
       run: |
