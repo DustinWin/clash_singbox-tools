@@ -165,8 +165,9 @@ jobs:
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
-            chmod +x ./tmp/linux-${archs[i]}/meta
-            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp/ ./linux-${archs[i]}/meta
+            cp -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
+            chmod +x ./tmp/CrashCore
+            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
           done
 
       - name: Zip core by `upx`
@@ -174,7 +175,7 @@ jobs:
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
-            mv -f ./tmp/linux-${archs[i]}/meta ./tmp/clash.meta-linux-${new_name[i]}
+            cp -f ./tmp/linux-${archs[i]}/meta ./tmp/clash.meta-linux-${new_name[i]}
             chmod +x ./tmp/clash.meta-linux-${new_name[i]}
             "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/clash.meta-linux-${new_name[i]}
           done
