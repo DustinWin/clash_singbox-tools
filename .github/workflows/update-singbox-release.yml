@@ -175,8 +175,9 @@ jobs:
           archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<9;i++));do
-            chmod +x ./tmp/linux-${archs[i]}/sing-box
-            tar --no-same-owner -czf ./tmp/sing-box-linux-${new_name[i]}.tar.gz -C ./tmp/ ./linux-${archs[i]}/sing-box
+            cp -f ./tmp/linux-${archs[i]}/sing-box ./tmp/CrashCore
+            chmod +x ./tmp/CrashCore
+            tar --no-same-owner -czf ./tmp/sing-box-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
           done
 
       - name: Zip core by `upx`
@@ -184,7 +185,7 @@ jobs:
           archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<9;i++));do
-            mv -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
+            cp -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
             chmod +x ./tmp/sing-box-linux-${new_name[i]}
             "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
           done
