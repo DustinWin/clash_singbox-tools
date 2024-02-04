@@ -96,7 +96,6 @@ jobs:
           - name: windows-amd64
             goos: windows
             goarch: amd64
-            goamd64: v1
 
       fail-fast: false
     runs-on: ubuntu-latest
