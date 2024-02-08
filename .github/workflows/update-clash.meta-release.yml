@@ -93,10 +93,10 @@ jobs:
             goarch: mipsle
             gomips: hardfloat
           # windows
-          - name: windows-amd64-compatible
+          - name: windows-amd64
             goos: windows
             goarch: amd64
-            goamd64: v1
+            goamd64: v3
 
       fail-fast: false
     runs-on: ubuntu-latest
@@ -184,7 +184,7 @@ jobs:
           mkdir -p ./Clash.Meta-release/
           rm -rf ./Clash.Meta-release/*
           mv -f ./tmp/clash.meta* ./Clash.Meta-release/
-          mv -f ./tmp/windows-amd64-compatible/meta ./Clash.Meta-release/clash.meta-windows-amd64.exe
+          mv -f ./tmp/windows-amd64/meta ./Clash.Meta-release/clash.meta-windows-amd64.exe
           rm -rf ./tmp* 
 
       - name: Commit and push
