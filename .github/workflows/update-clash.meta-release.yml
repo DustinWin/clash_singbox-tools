@@ -95,7 +95,7 @@ jobs:
           # windows
           - name: windows-amd64-compatible
             goos: windows
-            goarch: amd64-compatible
+            goarch: amd64
             goamd64: v1
 
       fail-fast: false
