@@ -173,6 +173,14 @@ jobs:
         with:
           path: ./tmp/
 
+      - name: Download core
+        run: |
+          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<9;i++));do
+            cp -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
+          done
+
       - name: Zip core by `tar`
         run: |
           archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
