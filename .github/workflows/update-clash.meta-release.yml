@@ -119,10 +119,15 @@ jobs:
         with:
           go-version: ${{ needs.go.outputs.version }}
 
+      - name: Set ENV
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          echo "BUILDTIME=$(date)" >> $GITHUB_ENV
+        shell: bash
+
       - name: Build core
         id: build
-        run: |
-          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta
+        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -s -w -buildid=" -tags "${TAGS}" -o meta
 
       - name: Upload files to workspace
         uses: actions/upload-artifact@v4
