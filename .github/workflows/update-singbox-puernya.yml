@@ -138,9 +138,9 @@ jobs:
       - name: Checkout sing repository
         uses: actions/checkout@v4
         with:
+          repository: PuerNya/sing
           ref: fix-interface
           path: sing
-          repository: PuerNya/sing
 
       - name: Replace sing
         run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
