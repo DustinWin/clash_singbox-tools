@@ -60,6 +60,7 @@ jobs:
     strategy:
       matrix:
         include:
+          # Linux
           - name: linux-amd64
             goos: linux
             goarch: amd64
@@ -91,6 +92,11 @@ jobs:
             goos: linux
             goarch: mipsle
             gomips: hardfloat
+          # Windows
+          - name: windows-amd64-compatible
+            goos: windows
+            goarch: amd64
+            goamd64: v1
           - name: windows-amd64
             goos: windows
             goarch: amd64
@@ -172,6 +178,7 @@ jobs:
           mkdir -p ./Clash.Meta-release/
           rm -rf ./Clash.Meta-release/*
           mv -f ./tmp/clash.meta* ./Clash.Meta-release/
+          mv -f ./tmp/windows-amd64-compatible/meta ./Clash.Meta-release/clash.meta-windows-amd64-compatible.exe
           mv -f ./tmp/windows-amd64/meta ./Clash.Meta-release/clash.meta-windows-amd64.exe
           rm -rf ./tmp* 
 
