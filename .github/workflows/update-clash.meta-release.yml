@@ -107,6 +107,17 @@ jobs:
       TAGS: ${{needs.meta.outputs.tags}}
       VERSION: ${{needs.meta.outputs.version}}
     steps:
+      - name: Checkout meta
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Meta
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
       - name: Build core
         id: build
         run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta
