@@ -128,7 +128,7 @@ jobs:
       - name: Build core
         id: build
         run: |
-          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}"
+          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./
           ls -R
 
       - name: Upload files to workspace
