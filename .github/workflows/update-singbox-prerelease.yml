@@ -44,7 +44,7 @@ jobs:
           ref: dev-next
           fetch-depth: 0
 
-      - name: setup go
+      - name: Setup go
         uses: actions/setup-go@v5
         with:
           go-version: ${{needs.go.outputs.version}}
@@ -57,7 +57,7 @@ jobs:
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           [ -z "$version" ] && version=dev-next
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags=$TAGS >> $GITHUB_OUTPUT
+          echo tags=with_clash_api,with_quic >> $GITHUB_OUTPUT
 
   cross:
     strategy:
@@ -111,7 +111,9 @@ jobs:
 
       fail-fast: false
     runs-on: ubuntu-latest
-    needs: sing-box
+    needs: 
+      - go
+      - sing-box
     env:
       GOOS: ${{ matrix.goos }}
       GOARCH: ${{ matrix.goarch }}
@@ -119,6 +121,7 @@ jobs:
       GOARM: ${{ matrix.goarm }}
       GOMIPS: ${{ matrix.gomips }}
       CGO_ENABLED: 0
+      REPO: SagerNet/sing-box
       TAGS: ${{needs.sing-box.outputs.tags}}
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
@@ -132,9 +135,9 @@ jobs:
       - name: Setup `Go`
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ steps.go.outputs.version }}
+          go-version: ${{ needs.go.outputs.version }}
 
-      - name: build core
+      - name: Build core
         id: build
         run: go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./cmd/sing-box
 
@@ -162,14 +165,6 @@ jobs:
         with:
           path: ./tmp/
 
-      - name: Download and unzip `upx`
-        run: |
-          upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//g' | sed 's/",$//g')
-          echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
-          wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
-          tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-          rm -f ./tmp/*.tar.xz
-
       - name: Zip core by `tar`
         run: |
           archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
@@ -178,16 +173,6 @@ jobs:
             cp -f ./tmp/linux-${archs[i]}/sing-box ./tmp/CrashCore
             chmod +x ./tmp/CrashCore
             tar --no-same-owner -czf ./tmp/sing-box-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
-          done
-
-      - name: Zip core by `upx`
-        run: |
-          archs=(amd64 amd64-v3 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-          new_name=(amd64 amd64v3 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-          for((i=0;i<9;i++));do
-            cp -f ./tmp/linux-${archs[i]}/sing-box ./tmp/sing-box-linux-${new_name[i]}
-            chmod +x ./tmp/sing-box-linux-${new_name[i]}
-            "./tmp/upx-${upx_version}-amd64_linux/upx" ./tmp/sing-box-linux-${new_name[i]}
           done
 
       - name: Move files
