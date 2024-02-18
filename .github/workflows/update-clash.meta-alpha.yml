@@ -53,7 +53,7 @@ jobs:
         run: |
           version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags=$TAGS >> $GITHUB_OUTPUT
+          echo tags='' >> $GITHUB_OUTPUT
 
   cross:
     strategy:
@@ -118,9 +118,15 @@ jobs:
         with:
           go-version: ${{ steps.go.outputs.version }}
 
+      - name: Set ENV
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          echo "BUILDTIME=$(date)" >> $GITHUB_ENV
+        shell: bash
+
       - name: Build core
         id: build
-        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta
+        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -s -w -buildid=" -tags "${TAGS}" -o meta
 
       - name: Upload files to workspace
         uses: actions/upload-artifact@v4
