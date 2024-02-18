@@ -129,12 +129,6 @@ jobs:
             meta*
           compression-level: 9
 
-      - name: Download core for windows
-        run: |
-          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/mihomo-windows-amd64-go120-${VERSION}.zip"
-          unzip -o ./tmp/mihomo-windows-amd64-go120-${VERSION}.zip -d ./tmp/
-          rm -f ./tmp/*.zip
-
   push_alpha:
     needs:
       - cross
@@ -150,6 +144,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./tmp/
+
+      - name: Download core for windows
+        run: |
+          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/mihomo-windows-amd64-go120-${VERSION}.zip"
+          unzip -o ./tmp/mihomo-windows-amd64-go120-${VERSION}.zip -d ./tmp/
+          mv -f ./tmp/mihomo-windows-amd64-go120.exe ./tmp/clash.meta-windows-amd64.exe
+          rm -f ./tmp/*.zip
 
       - name: Zip core by `tar`
         run: |
