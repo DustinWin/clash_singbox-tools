@@ -147,7 +147,7 @@ jobs:
 
       - name: Download core for windows
         run: |
-          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/v1.18.1/mihomo-windows-amd64-go120-${VERSION}.zip"
+          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/${VERSION}/mihomo-windows-amd64-go120-${VERSION}.zip"
           unzip -o ./tmp/mihomo-windows-amd64-go120-${VERSION}.zip -d ./tmp/
           mv -f ./tmp/mihomo-windows-amd64-go120.exe ./tmp/clash.meta-windows-amd64.exe
           rm -f ./tmp/*.zip
