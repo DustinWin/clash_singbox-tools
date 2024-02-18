@@ -53,12 +53,13 @@ jobs:
         run: |
           version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags='' >> $GITHUB_OUTPUT
+          echo tags=with_gvisor >> $GITHUB_OUTPUT
 
   cross:
     strategy:
       matrix:
         include:
+          # Linux
           - name: linux-amd64
             goos: linux
             goarch: amd64
@@ -90,6 +91,15 @@ jobs:
             goos: linux
             goarch: mipsle
             gomips: hardfloat
+          # Windows
+          - name: windows-amd64-compatible
+            goos: windows
+            goarch: amd64
+            goamd64: v1
+          - name: windows-amd64
+            goos: windows
+            goarch: amd64
+            goamd64: v3
 
       fail-fast: false
     runs-on: ubuntu-latest
@@ -152,13 +162,6 @@ jobs:
         with:
           path: ./tmp/
 
-      - name: Download core for windows
-        run: |
-          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/mihomo-windows-amd64-go120-${VERSION}.zip"
-          unzip -o ./tmp/mihomo-windows-amd64-go120-${VERSION}.zip -d ./tmp/
-          mv -f ./tmp/mihomo-windows-amd64-go120.exe ./tmp/clash.meta-windows-amd64.exe
-          rm -f ./tmp/*.zip
-
       - name: Zip core by `tar`
         run: |
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
@@ -174,6 +177,8 @@ jobs:
           mkdir -p ./Clash.Meta-alpha/
           rm -rf ./Clash.Meta-alpha/*
           mv -f ./tmp/clash.meta* ./Clash.Meta-alpha/
+          mv -f ./tmp/windows-amd64-compatible/meta ./Clash.Meta-alpha/clash.meta-windows-amd64-compatible.exe
+          mv -f ./tmp/windows-amd64/meta ./Clash.Meta-alpha/clash.meta-windows-amd64.exe
           rm -rf ./tmp* 
 
       - name: Commit and push
