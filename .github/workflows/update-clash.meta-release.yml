@@ -127,7 +127,9 @@ jobs:
 
       - name: Build core
         id: build
-        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}"
+        run: |
+          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}"
+          ls -R
 
       - name: Upload files to workspace
         uses: actions/upload-artifact@v4
@@ -155,7 +157,6 @@ jobs:
 
       - name: Zip core by `tar`
         run: |
-          ls -R
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
