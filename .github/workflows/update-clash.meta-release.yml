@@ -97,7 +97,6 @@ jobs:
         id: build
         run: |
           go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta.exe
-          ls -R
 
       - name: Upload files to workspace
         uses: actions/upload-artifact@v4
@@ -125,9 +124,10 @@ jobs:
 
       - name: Move files
         run: |
+          ls -R
           mkdir -p ./Clash.Meta-release/
           rm -rf ./Clash.Meta-release/*
-          mv -f ./tmp/windows-amd64/meta ./Clash.Meta-release/clash.meta-windows-amd64.exe
+          mv -f ./tmp/windows-amd64/meta* ./Clash.Meta-release/clash.meta-windows-amd64.exe
           rm -rf ./tmp* 
 
       - name: Commit and push
