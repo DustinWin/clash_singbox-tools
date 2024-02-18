@@ -57,7 +57,7 @@ jobs:
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           [ -z "$version" ] && version=main-next
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags=$TAGS >> $GITHUB_OUTPUT
+          echo tags=with_clash_api,with_quic >> $GITHUB_OUTPUT
 
   cross:
     strategy:
@@ -111,7 +111,9 @@ jobs:
 
       fail-fast: false
     runs-on: ubuntu-latest
-    needs: sing-box
+    needs:
+      - go
+      - sing-box
     env:
       GOOS: ${{ matrix.goos }}
       GOARCH: ${{ matrix.goarch }}
@@ -132,9 +134,9 @@ jobs:
       - name: Setup `Go`
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ steps.go.outputs.version }}
+          go-version: ${{ needs.go.outputs.version }}
 
-      - name: build core
+      - name: Build core
         id: build
         run: go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./cmd/sing-box
 
