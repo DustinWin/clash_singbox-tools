@@ -155,6 +155,7 @@ jobs:
 
       - name: Zip core by `tar`
         run: |
+          ls -R
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
