@@ -60,11 +60,37 @@ jobs:
     strategy:
       matrix:
         include:
-          # Windows
-          - name: windows-amd64
-            goos: windows
+          - name: linux-amd64
+            goos: linux
             goarch: amd64
-            goamd64: v3
+            goamd64: v1
+          - name: linux-armv5
+            goos: linux
+            goarch: arm
+            goarm: 5
+          - name: linux-armv6
+            goos: linux
+            goarch: arm
+            goarm: 6
+          - name: linux-armv7
+            goos: linux
+            goarch: arm
+            goarm: 7
+          - name: linux-arm64
+            goos: linux
+            goarch: arm64
+          - name: linux-mips-softfloat
+            goos: linux
+            goarch: mips
+            gomips: softfloat
+          - name: linux-mipsle-softfloat
+            goos: linux
+            goarch: mipsle
+            gomips: softfloat
+          - name: linux-mipsle-hardfloat
+            goos: linux
+            goarch: mipsle
+            gomips: hardfloat
 
       fail-fast: false
     runs-on: ubuntu-latest
@@ -96,7 +122,7 @@ jobs:
       - name: Build core
         id: build
         run: |
-          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta.exe
+          go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" -o meta
 
       - name: Upload files to workspace
         uses: actions/upload-artifact@v4
@@ -122,12 +148,28 @@ jobs:
         with:
           path: ./tmp/
 
+      - name: Download core for windows
+        run: |
+          wget -P ./tmp/ "https://github.com/MetaCubeX/mihomo/releases/download/${VERSION}/mihomo-windows-amd64-go120-${VERSION}.zip"
+          unzip -o ./tmp/mihomo-windows-amd64-go120-${VERSION}.zip -d ./tmp/
+          mv -f ./tmp/mihomo-windows-amd64-go120.exe ./tmp/clash.meta-windows-amd64.exe
+          rm -f ./tmp/*.zip
+
+      - name: Zip core by `tar`
+        run: |
+          archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          for((i=0;i<8;i++));do
+            cp -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
+            chmod +x ./tmp/CrashCore
+            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
+          done
+
       - name: Move files
         run: |
-          ls -R
           mkdir -p ./Clash.Meta-release/
           rm -rf ./Clash.Meta-release/*
-          mv -f ./tmp/windows-amd64/meta* ./Clash.Meta-release/clash.meta-windows-amd64.exe
+          mv -f ./tmp/clash.meta* ./Clash.Meta-release/
           rm -rf ./tmp* 
 
       - name: Commit and push
