@@ -32,8 +32,7 @@ jobs:
 
   sing-box:
     runs-on: ubuntu-latest
-    needs:
-      - go
+    needs: go
     outputs:
       version: ${{steps.sing-box.outputs.version}}
       tags: ${{steps.sing-box.outputs.tags}}
@@ -121,7 +120,6 @@ jobs:
       GOARM: ${{ matrix.goarm }}
       GOMIPS: ${{ matrix.gomips }}
       CGO_ENABLED: 0
-      REPO: SagerNet/sing-box
       TAGS: ${{needs.sing-box.outputs.tags}}
       VERSION: ${{needs.sing-box.outputs.version}}
     steps:
