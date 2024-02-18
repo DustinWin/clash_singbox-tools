@@ -54,7 +54,7 @@ jobs:
         run: |
           version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags=$TAGS >> $GITHUB_OUTPUT
+          echo tags='' >> $GITHUB_OUTPUT
 
   cross:
     strategy:
