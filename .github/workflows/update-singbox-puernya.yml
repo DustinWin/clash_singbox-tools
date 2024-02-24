@@ -187,7 +187,6 @@ jobs:
         run: |
           mkdir -p ./sing-box-puernya/
           rm -rf ./sing-box-puernya/*
-          mv -f ./tmp/sing-box* ./sing-box-puernya/
           mv -f ./tmp/windows-amd64/sing-box.exe ./sing-box-puernya/sing-box-windows-amd64.exe
           mv -f ./tmp/windows-amd64-v3/sing-box.exe ./sing-box-puernya/sing-box-windows-amd64v3.exe
           rm -rf ./tmp* 
