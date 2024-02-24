@@ -14,12 +14,12 @@
 
 # 二、 使用方法
 ## 1. 导入内核到 Linux 端（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入内核为例）
-**mihomo 内核下载链接后缀和 CPU 架构对应关系如下：**
+**mihomo 内核下载链接后缀和 CPU 架构对应关系如下表：**
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8&ARM64&AArch64|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|:---:|-----|-----|-----|
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
-**sing-box 内核下载链接后缀和 CPU 架构对应关系如下：**
+**sing-box 内核下载链接后缀和 CPU 架构对应关系如下表：**
 |CPU 架构|AMD64|AMD64v3|ARMv5|ARMv6|ARMv7|ARMv8&ARM64&AArch64|mips-softfloat|mipsle-hardfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|:---:|-----|-----|-----|
 |**链接后缀**|`amd64`|`amd64v3`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
@@ -67,7 +67,7 @@ curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghpr
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/mihomo-alpha/mihomo-windows-amd64.exe
 ```
 ## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
-**Clash dashboard 面板对应文件名和在线地址关系如下：**
+**Clash dashboard 面板对应文件名和在线地址关系如下表：**
 |面板类型|文件名|在线地址|
 |-----|-----|-----|
 |Clash 官方面板|`clash-dashboard.tar.gz`|https://clash.razord.top|
@@ -81,7 +81,7 @@ curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghpr
 curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && $CRASHDIR/start.sh restart
 ```
 ## 4. 安装 AdGuardHome
-AdGuardHome CPU 架构和链接后缀对应关系如下：
+**AdGuardHome CPU 架构和链接后缀对应关系如下表：**
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-softfloat|
 |-----|-----|-----|-----|-----|-----|-----|-----|
 |**链接后缀**|`amd64`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-softfloat`|
