@@ -6,15 +6,7 @@
 3. sing-box Release 版和 Pre-release 版内核
 4. sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
 5. Clash dashboard 面板：[Clash 官方面板](https://github.com/Dreamacro/clash-dashboard)、[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
-
-|面板类型|在线地址|
-|-----|-----|
-|Clash 官方面板|http://clash.razord.top|
-|Razord-meta 面板|http://clash.metacubex.one|
-|yacd 面板|http://yacd.haishan.me|
-|Yacd-meta 面板|http://yacd.metacubex.one|
-|metacubexd 面板|http://d.metacubex.one|
-4. AdGuardHome Release 版和 Pre-release 版
+5. AdGuardHome Release 版和 Pre-release 版
 
 **注：**
 - 1. 本教程中的下载链接以 CPU 架构 ARMv8 为例，请注意修改链接后缀
@@ -75,14 +67,14 @@ curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghpr
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/mihomo-alpha/mihomo-windows-amd64.exe
 ```
 ## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
-Clash dashboard 面板类型和文件名对应关系如下：
-|面板类型|文件名|
-|-----|-----|
-|Clash 官方面板|`clash-dashboard.tar.gz`|
-|Razord-meta 面板|`Razord-meta.tar.gz`|
-|yacd 面板|`yacd.tar.gz`|
-|Yacd-meta 面板|`Yacd-meta.tar.gz`|
-|metacubexd 面板|`metacubexd.tar.gz`|
+Clash dashboard 面板对应文件名和在线地址关系如下：
+|面板类型|文件名|在线地址|
+|-----|-----|-----|
+|Clash 官方面板|`clash-dashboard.tar.gz`|https://clash.razord.top|
+|Razord-meta 面板|`Razord-meta.tar.gz`|https://clash.metacubex.one|
+|yacd 面板|`yacd.tar.gz`|https://yacd.haishan.me|
+|Yacd-meta 面板|`Yacd-meta.tar.gz`|https://yacd.metacubex.one|
+|metacubexd 面板|`metacubexd.tar.gz`|https://metacubex.github.io/metacubexd|
 
 连接 SSH 后执行如下命令：
 ```
