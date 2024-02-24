@@ -67,7 +67,7 @@ curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghpr
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta-alpha.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/mihomo-alpha/mihomo-windows-amd64.exe
 ```
 ## 3. 安装 Clash dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
-Clash dashboard 面板对应文件名和在线地址关系如下：
+**Clash dashboard 面板对应文件名和在线地址关系如下：**
 |面板类型|文件名|在线地址|
 |-----|-----|-----|
 |Clash 官方面板|`clash-dashboard.tar.gz`|https://clash.razord.top|
