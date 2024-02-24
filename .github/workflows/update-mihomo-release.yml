@@ -1,4 +1,4 @@
-name: Update Clash.Meta Release
+name: Update mihomo Release
 on:
   workflow_dispatch:
   schedule:
@@ -11,10 +11,10 @@ on:
       - ".github/workflows/delete-old-workflows.yml"
       - ".github/workflows/update-adguardhome-prerelease.yml"
       - ".github/workflows/update-adguardhome-release.yml"
-      - ".github/workflows/update-clash.meta-alpha.yml"
       - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clashpremium-latest.yml"
       - ".github/workflows/update-clashpremium-release.yml"
+      - ".github/workflows/update-mihomo-alpha.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
@@ -170,28 +170,27 @@ jobs:
           for((i=0;i<8;i++));do
             mv -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
             chmod +x ./tmp/CrashCore
-            tar --no-same-owner -czf ./tmp/clash.meta-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
+            tar --no-same-owner -czf ./tmp/mihomo-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
           done
 
       - name: Move files
         run: |
-          mkdir -p ./Clash.Meta-release/
-          rm -rf ./Clash.Meta-release/*
-          mv -f ./tmp/clash.meta* ./Clash.Meta-release/
-          mv -f ./tmp/windows-amd64-compatible/meta ./Clash.Meta-release/clash.meta-windows-amd64-compatible.exe
-          mv -f ./tmp/windows-amd64/meta ./Clash.Meta-release/clash.meta-windows-amd64.exe
+          mkdir -p ./mihomo-release/
+          rm -rf ./mihomo-release/*
+          mv -f ./tmp/windows-amd64-compatible/meta ./mihomo-release/mihomo-windows-amd64-compatible.exe
+          mv -f ./tmp/windows-amd64/meta ./mihomo-release/mihomo-windows-amd64.exe
           rm -rf ./tmp* 
 
       - name: Commit and push
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git add . && git commit -m "更新 Clash.Meta 内核 Release 版至 ${VERSION}" || exit 0
+          git add . && git commit -m "更新 mihomo 内核 Release 版至 ${VERSION}" || exit 0
           git push -f
 
       - name: Purge jsDelivr CDN
         run: |
-          cd ./Clash.Meta-release/ || exit 1
+          cd ./mihomo-release/ || exit 1
           for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/Clash.Meta-release/${file}"
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/mihomo-release/${file}"
           done
