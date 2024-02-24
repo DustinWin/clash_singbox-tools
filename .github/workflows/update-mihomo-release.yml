@@ -177,6 +177,7 @@ jobs:
         run: |
           mkdir -p ./mihomo-release/
           rm -rf ./mihomo-release/*
+          mv -f ./tmp/mihomo-linux* ./mihomo-release/
           mv -f ./tmp/windows-amd64-compatible/meta ./mihomo-release/mihomo-windows-amd64-compatible.exe
           mv -f ./tmp/windows-amd64/meta ./mihomo-release/mihomo-windows-amd64.exe
           rm -rf ./tmp* 
