@@ -169,13 +169,14 @@ jobs:
           for((i=0;i<8;i++));do
             mv -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
             chmod +x ./tmp/CrashCore
-            tar --no-same-owner -czf ./mihomo-alpha/mihomo-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
+            tar --no-same-owner -czf ./tmp/mihomo-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
           done
 
       - name: Move files
         run: |
           mkdir -p ./mihomo-alpha/
           rm -rf ./mihomo-alpha/*
+          mv -f ./tmp/mihomo-linux* ./mihomo-alpha/
           mv -f ./tmp/windows-amd64-compatible/meta ./mihomo-alpha/mihomo-windows-amd64-compatible.exe
           mv -f ./tmp/windows-amd64/meta ./mihomo-alpha/mihomo-windows-amd64.exe
           rm -rf ./tmp* 
