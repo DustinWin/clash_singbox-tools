@@ -177,6 +177,7 @@ jobs:
         run: |
           mkdir -p ./sing-box-release/
           rm -rf ./sing-box-release/*
+          mv -f ./tmp/sing-box-linux* ./sing-box-release/
           mv -f ./tmp/windows-amd64/sing-box.exe ./sing-box-release/sing-box-windows-amd64.exe
           mv -f ./tmp/windows-amd64-v3/sing-box.exe ./sing-box-release/sing-box-windows-amd64v3.exe
           rm -rf ./tmp* 
