@@ -167,9 +167,9 @@ jobs:
           archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
           for((i=0;i<8;i++));do
-            cp -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
+            mv -f ./tmp/linux-${archs[i]}/meta ./tmp/CrashCore
             chmod +x ./tmp/CrashCore
-            tar --no-same-owner -czf ./tmp/mihomo-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
+            tar --no-same-owner -czf ./mihomo-alpha/mihomo-linux-${new_name[i]}.tar.gz -C ./tmp/ ./CrashCore
           done
 
       - name: Move files
