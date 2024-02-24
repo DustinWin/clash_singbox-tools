@@ -33,6 +33,7 @@
 |**链接后缀**|`amd64`|`amd64v3`|`armv5`|`armv6`|`armv7`|`armv8`|`mips-softfloat`|`mipsle-hardfloat`|`mipsle-softfloat`|
 
 ① 首次导入  
+连接 SSH 后执行如下命令：
 ```
 # mihomo 内核 Release 版
 curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/mihomo-release/mihomo-linux-armv8.tar.gz | tar -zx -C /tmp/ && mv -f /tmp/CrashCore /tmp/mihomo-linux-armv8 && crash
