@@ -2,7 +2,7 @@ name: Update Clash dashboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 15 * * *"
+    - cron: "30 16 * * *"
   push:
     branches:
       - main
