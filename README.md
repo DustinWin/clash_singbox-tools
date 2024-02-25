@@ -122,5 +122,5 @@ chmod +x /data/AdGuardHome/AdGuardHome
 204#curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/Clash-dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
 205#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/AdGuardHome-prerelease/AdGuardHome_linux_armv8 && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
-2. 按一下 Esc 键（退出键），输入英文冒号`:`，继续输入 `wq` 并回车
+2. 按一下 Esc 键（退出键），输入英文冒号 `:`，继续输入 `wq` 并回车
 3. 执行 `crash`，进入 ShellCrash->5 配置自动任务->1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
