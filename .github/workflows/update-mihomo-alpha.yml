@@ -2,7 +2,7 @@ name: Update mihomo Alpha
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 15 * * *"
+    - cron: "0 17 * * *"
   push:
     branches:
       - main
