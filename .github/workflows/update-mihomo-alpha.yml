@@ -51,7 +51,7 @@ jobs:
       - name: Get `meta` version
         id: meta
         run: |
-          version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/.gz.*//g')
+          version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/tags/Prerelease-Alpha | grep 'linux-arm64' | head -n 1 | sed 's/.*\(alpha\)/\1/g' | sed 's/\..*//g')
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=with_gvisor >> $GITHUB_OUTPUT
 
