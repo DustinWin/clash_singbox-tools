@@ -19,10 +19,6 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
-  download_version: ''
-
 jobs:
   Update:
     runs-on: ubuntu-latest
@@ -33,7 +29,8 @@ jobs:
     - name: Download and unzip `upx`
       run: |
         mkdir -p ./tmp/ ./AdGuardHome-prerelease/
-        echo "upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//' | sed 's/".*//')" >> ${GITHUB_ENV}
+        upx_version=$(curl -sSL https://api.github.com/repos/upx/upx/releases/latest | grep 'tag_name' | sed 's/.*v//' | sed 's/".*//')
+        echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
         wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
         tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
         rm -f ./tmp/*.tar.xz
@@ -45,12 +42,12 @@ jobs:
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++)); do
-          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp/
+          wget "https://github.com/AdguardTeam/AdGuardHome/releases/download/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp/
           mv -f ./tmp/AdGuardHome/AdGuardHome "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           chmod +x "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
         done
-        wget -P ./tmp/ "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
+        wget -P ./tmp/ "https://github.com/AdguardTeam/AdGuardHome/releases/download/${download_version}/AdGuardHome_windows_amd64.zip"
         unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp/
         rm -f ./tmp/*.zip
         mv -f ./tmp/AdGuardHome/AdGuardHome.exe ./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe
