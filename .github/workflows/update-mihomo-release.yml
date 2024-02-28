@@ -52,7 +52,7 @@ jobs:
       - name: Get `meta` version
         id: meta
         run: |
-          version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
+          version=meta-$(git rev-parse --short HEAD)
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=with_gvisor,with_lwip >> $GITHUB_OUTPUT
 
