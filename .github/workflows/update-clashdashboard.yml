@@ -19,12 +19,6 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  Razord_meta_download_version: ''
-  yacd_download_version: ''
-  Yacd_meta_download_version: ''
-  metacubexd_download_version: ''
-
 jobs:
   Update:
     runs-on: ubuntu-latest
@@ -34,14 +28,13 @@ jobs:
 
     - name: Get version
       run: |
-        Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed 's/.*v/v/' | sed 's/".*//')
+        razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed 's/.*v/v/' | sed 's/".*//')
+        echo "razord_meta_download_version=${razord_meta_download_version}" >> ${GITHUB_ENV}
         yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
-        Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
-        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
-        # echo "clash_dashboard_download_version=${clash_dashboard_download_version}" >> ${GITHUB_ENV}
-        echo "Razord_meta_download_version=${Razord_meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
-        echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
+        yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
+        echo "yacd_meta_download_version=${yacd_meta_download_version}" >> ${GITHUB_ENV}
+        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
         echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
 
     - name: Download and compress `Razord-meta` dashboard
@@ -52,7 +45,7 @@ jobs:
         tar -czf ./Clash-dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Razord-meta 至 ${razord_meta_download_version}" || exit 0
         git push -f
 
     - name: Download and compress `yacd` dashboard
@@ -74,7 +67,7 @@ jobs:
         tar -czf ./Clash-dashboard/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Yacd-meta 至 ${yacd_meta_download_version}" || exit 0
         git push -f
 
     - name: Download and compress `metacubexd` dashboard
