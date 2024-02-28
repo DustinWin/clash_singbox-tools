@@ -19,10 +19,6 @@ on:
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
 
-env:
-  download_url: https://github.com/AdguardTeam/AdGuardHome/releases/download
-  download_version: ''
-
 jobs:
   Update:
     runs-on: ubuntu-latest
@@ -37,25 +33,22 @@ jobs:
         echo "upx_version=${upx_version}" >> ${GITHUB_ENV}
         wget -P ./tmp/ "https://github.com/upx/upx/releases/download/v${upx_version}/upx-${upx_version}-amd64_linux.tar.xz"
         tar -xf "./tmp/upx-${upx_version}-amd64_linux.tar.xz" -C ./tmp/
-        rm -f ./tmp/*.tar.xz
 
     - name: Download and compress `AdGuardHome`
       run: |
-        download_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
-        echo "download_version=${download_version}" >> ${GITHUB_ENV}
+        adguardhome_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
+        echo "adguardhome_version=${adguardhome_version}" >> ${GITHUB_ENV}
         archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
         new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
         for((i=0;i<7;i++)); do
-          wget "${download_url}/${download_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp/
+          wget "https://github.com/AdguardTeam/AdGuardHome/releases/download/${adguardhome_version}/AdGuardHome_linux_${archs[i]}.tar.gz" -O - | tar -xz -C ./tmp/
           mv -f ./tmp/AdGuardHome/AdGuardHome "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           chmod +x "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
           "./tmp/upx-${upx_version}-amd64_linux/upx" "./tmp/AdGuardHome/AdGuardHome_linux_${new_name[i]}"
         done
-        wget -P ./tmp/ "${download_url}/${download_version}/AdGuardHome_windows_amd64.zip"
+        wget -P ./tmp/ "https://github.com/AdguardTeam/AdGuardHome/releases/download/${adguardhome_version}/AdGuardHome_windows_amd64.zip"
         unzip -o ./tmp/AdGuardHome_windows_amd64.zip -d ./tmp/
-        rm -f ./tmp/*.zip
         mv -f ./tmp/AdGuardHome/AdGuardHome.exe ./tmp/AdGuardHome/AdGuardHome_windows_amd64.exe
-        rm -rf ./tmp/upx*
 
     - name: Move `AdGuardHome` to `AdGuardHome` directory
       run: |
@@ -68,7 +61,7 @@ jobs:
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 AdGuardHome Release 版至 ${download_version}" || exit 0
+        git add . && git commit -m "更新 AdGuardHome Release 版至 ${adguardhome_version}" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
