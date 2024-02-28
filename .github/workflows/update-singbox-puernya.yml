@@ -142,8 +142,8 @@ jobs:
           ref: fix-interface
           path: sing
 
-      - name: Replace sing
-        run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
+      # - name: Replace sing
+        # run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
 
       - name: Build core
         id: build
