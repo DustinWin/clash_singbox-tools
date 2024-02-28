@@ -52,7 +52,7 @@ jobs:
       - name: Get `meta` version
         id: meta
         run: |
-          version=meta-$(git rev-parse --short HEAD)
+          version=$(git describe --tags)
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=with_gvisor,with_lwip >> $GITHUB_OUTPUT
 
