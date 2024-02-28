@@ -20,7 +20,6 @@ on:
       - ".github/workflows/update-singbox-release.yml"
 
 env:
-  # clash_dashboard_download_version: ''
   Razord_meta_download_version: ''
   yacd_download_version: ''
   Yacd_meta_download_version: ''
@@ -35,36 +34,22 @@ jobs:
 
     - name: Get version
       run: |
-        # clash_dashboard_download_version=$(curl -sSL https://api.github.com/repos/Dreamacro/clash-dashboard/tags | grep 'name' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//g')
-        Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed 's/.*v/v/g' | sed 's/",$//g')
-        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
-        Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
-        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed 's/.*v/v/g' | sed 's/",$//g')
+        Razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed 's/.*v/v/' | sed 's/".*//')
+        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
+        Yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
+        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed 's/.*v/v/' | sed 's/".*//')
         # echo "clash_dashboard_download_version=${clash_dashboard_download_version}" >> ${GITHUB_ENV}
         echo "Razord_meta_download_version=${Razord_meta_download_version}" >> ${GITHUB_ENV}
         echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
         echo "Yacd_meta_download_version=${Yacd_meta_download_version}" >> ${GITHUB_ENV}
         echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
 
-    # - name: Download and compress `clash-dashboard` dashboard
-      # run: |
-        # mkdir -p ./Clash-dashboard/ ./tmp/clash-dashboard/
-        # curl -o ./tmp/clash-dashboard/gh-pages.zip -L https://github.com/Dreamacro/clash-dashboard/archive/refs/heads/gh-pages.zip
-        # unzip -o ./tmp/clash-dashboard/gh-pages.zip -d ./tmp/clash-dashboard/
-        # tar -czf ./tmp/clash-dashboard/clash-dashboard.tar.gz -C ./tmp/clash-dashboard/clash-dashboard-gh-pages/ .
-        # cp -f ./tmp/clash-dashboard/*.tar.gz ./Clash-dashboard/
-        # git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        # git config --global user.name "github-actions[bot]"
-        # git add . && git commit -m "更新 clash-dashboard 至 ${clash_dashboard_download_version}" || exit 0
-        # git push -f
-
     - name: Download and compress `Razord-meta` dashboard
       run: |
         mkdir -p ./Clash-dashboard/ ./tmp/Razord-meta/
         curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta/
-        tar -czf ./tmp/Razord-meta/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
-        cp -f ./tmp/Razord-meta/*.tar.gz ./Clash-dashboard/
+        tar -czf ./Clash-dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Razord-meta 至 ${Razord_meta_download_version}" || exit 0
@@ -75,8 +60,7 @@ jobs:
         mkdir -p ./tmp/yacd/
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/yacd/gh-pages.zip -d ./tmp/yacd/
-        tar -czf ./tmp/yacd/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .
-        cp -f ./tmp/yacd/*.tar.gz ./Clash-dashboard/
+        tar -czf ./Clash-dashboard/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
@@ -87,8 +71,7 @@ jobs:
         mkdir -p ./tmp/Yacd-meta/
         curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta/
-        tar -czf ./tmp/Yacd-meta/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
-        cp -f ./tmp/Yacd-meta/*.tar.gz ./Clash-dashboard/
+        tar -czf ./Clash-dashboard/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Yacd-meta 至 ${Yacd_meta_download_version}" || exit 0
@@ -99,8 +82,7 @@ jobs:
         mkdir -p ./tmp/metacubexd/
         curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd/
-        tar -czf ./tmp/metacubexd/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages/ .
-        cp -f ./tmp/metacubexd/*.tar.gz ./Clash-dashboard/
+        tar -czf ./Clash-dashboard/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages/ .
         rm -rf ./tmp*
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
