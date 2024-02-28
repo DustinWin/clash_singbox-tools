@@ -45,7 +45,7 @@ jobs:
         tar -czf ./Clash-dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Razord-meta 至 ${razord_meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Razord-meta 面板至 ${razord_meta_download_version}" || exit 0
         git push -f
 
     - name: Download and compress `yacd` dashboard
@@ -56,7 +56,7 @@ jobs:
         tar -czf ./Clash-dashboard/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 yacd 至 ${yacd_download_version}" || exit 0
+        git add . && git commit -m "更新 yacd 面板至 ${yacd_download_version}" || exit 0
         git push -f
 
     - name: Download and compress `Yacd-meta` dashboard
@@ -67,7 +67,7 @@ jobs:
         tar -czf ./Clash-dashboard/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 Yacd-meta 至 ${yacd_meta_download_version}" || exit 0
+        git add . && git commit -m "更新 Yacd-meta 面板至 ${yacd_meta_download_version}" || exit 0
         git push -f
 
     - name: Download and compress `metacubexd` dashboard
@@ -79,7 +79,7 @@ jobs:
         rm -rf ./tmp*
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
-        git add . && git commit -m "更新 metacubexd 至 ${metacubexd_download_version}" || exit 0
+        git add . && git commit -m "更新 metacubexd 面板至 ${metacubexd_download_version}" || exit 0
         git push -f
 
     - name: Purge jsDelivr CDN
