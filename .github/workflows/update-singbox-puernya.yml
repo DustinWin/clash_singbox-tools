@@ -51,10 +51,9 @@ jobs:
       - name: Get `sing-box` version
         id: sing-box
         run: |
-          git remote add sekai https://github.com/PuerNya/sing-box.git
+          git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          [ -z "$version" ] && version=building
           echo version=$version >> $GITHUB_OUTPUT
           echo tags=with_quic,with_dhcp,with_wireguard,with_shadowsocksr,with_ech,with_utls,with_reality_server,with_clash_api,with_gvisor >> $GITHUB_OUTPUT
 
@@ -142,8 +141,8 @@ jobs:
           ref: fix-interface
           path: sing
 
-      # - name: Replace sing
-        # run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
+      - name: Replace sing
+        run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
 
       - name: Build core
         id: build
