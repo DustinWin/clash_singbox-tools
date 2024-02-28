@@ -28,7 +28,7 @@ jobs:
       - name: Get `Go` latest version
         id: go
         run: |
-          echo version=$(curl -s https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep '"version"' | head -1 | awk -F'"' '{print $4}') >> $GITHUB_OUTPUT
 
   sing-box:
     runs-on: ubuntu-latest
