@@ -134,6 +134,17 @@ jobs:
         with:
           go-version: ${{ needs.go.outputs.version }}
 
+      - name: Checkout sing repository
+        uses: actions/checkout@v4
+        with:
+          repository: PuerNya/sing
+          ref: fix-interface
+          path: sing
+
+      - name: Replace sing
+        if: ${{ env.REPO == 'PuerNya/sing-box' }}
+        run: sed -i 's/^\/\/replace github.com.*$/replace github.com\/sagernet\/sing => .\/sing/' go.mod
+
       - name: Build core
         id: build
         run: go build -v -trimpath -ldflags "-X 'github.com/sagernet/sing-box/constant.Version=${VERSION}' -s -w -buildid=" -tags "${TAGS}" ./cmd/sing-box
