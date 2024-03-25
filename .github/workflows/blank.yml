@@ -24,7 +24,7 @@ jobs:
         rm -f ./ClashPremium-latest/*.tar.gz
         cp -f ./ClashPremium-latest/* ./tmp/ClashPremium-latest/
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<7)); do
+        for((i=0;i<7;i++)); do
           ./tmp/upx-4.2.2-amd64_linux/upx -d ./ClashPremium-latest/clashpremium-linux-${archs[i]}
           mv -f ./ClashPremium-latest/clashpremium-linux-${archs[i]} ./ClashPremium-latest/CrashCore
           tar -czf ./ClashPremium-latest/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
@@ -47,7 +47,7 @@ jobs:
         rm -f ./ClashPremium-release/*.tar.gz
         cp -f ./ClashPremium-release/* ./tmp/ClashPremium-release/
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
-        for((i=0;i<7)); do
+        for((i=0;i<7;i++)); do
           ./tmp/upx-4.2.2-amd64_linux/upx -d ./ClashPremium-release/clashpremium-linux-${archs[i]}
           mv -f ./ClashPremium-release/clashpremium-linux-${archs[i]} ./ClashPremium-release/CrashCore
           tar -czf ./ClashPremium-release/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-release/ ./CrashCore
