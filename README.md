@@ -27,7 +27,7 @@
 ① 首次导入  
 连接 SSH 后执行如下命令：
 ```
-# mihomo 内核 Release 版
+# mihomo 内核 Meta 版
 curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/mihomo-meta/mihomo-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 # mihomo 内核 Alpha 版
 curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/mihomo-alpha/mihomo-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
@@ -42,7 +42,7 @@ curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/sing-box-
 ② 升级导入  
 连接 SSH 后执行如下命令：
 ```
-# mihomo 内核 Release 版
+# mihomo 内核 Meta 版
 curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/mihomo-meta/mihomo-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 # mihomo 内核 Alpha 版
 curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/mihomo-alpha/mihomo-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
@@ -59,7 +59,7 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clas
 taskkill /f /t /im "Clash Verge*"
 taskkill /f /t /im Clash-Verge*
 taskkill /f /t /im clash-meta*
-# mihomo 内核 Release 版
+# mihomo 内核 Meta 版
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/mihomo-meta/mihomo-windows-amd64-compatible.exe
 curl -o "%LOCALAPPDATA%\Clash Verge\clash-meta.exe" -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/mihomo-meta/mihomo-windows-amd64.exe
 # mihomo 内核 Alpha 版
