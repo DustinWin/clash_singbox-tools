@@ -18,18 +18,19 @@ jobs:
 
     - name: ClashPremium-latest
       run: |
-        mkdir -p ./tmp/
+        mkdir -p ./tmp/ClashPremium-latest/
         curl -o ./tmp/upx.tar.xz -L https://github.com/upx/upx/releases/download/v4.2.2/upx-4.2.2-amd64_linux.tar.xz
         tar -xf ./tmp/upx.tar.xz -C ./tmp/
         rm -f ./ClashPremium-latest/*.tar.gz
-        cd ./ClashPremium-latest/
+        cp -f ./ClashPremium-latest/* ./tmp/ClashPremium-latest/
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<7)); do
-          ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
-          mv -f ./clashpremium-linux-${archs[i]} ./CrashCore
-          tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
+          ./tmp/upx-4.2.2-amd64_linux/upx -d ./ClashPremium-latest/clashpremium-linux-${archs[i]}
+          mv -f ./ClashPremium-latest/clashpremium-linux-${archs[i]} ./ClashPremium-latest/CrashCore
+          tar -czf ./ClashPremium-latest/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
         done
-        rm -rf ../tmp*
+        cp -f ./tmp/ClashPremium-latest/* ./ClashPremium-latest/
+        rm -rf ./tmp*
 
     - name: ClashPremium-latest
       run: |
@@ -40,18 +41,19 @@ jobs:
 
     - name: ClashPremium-release
       run: |
-        mkdir -p ./tmp/
+        mkdir -p ./tmp/ClashPremium-release/
         curl -o ./tmp/upx.tar.xz -L https://github.com/upx/upx/releases/download/v4.2.2/upx-4.2.2-amd64_linux.tar.xz
         tar -xf ./tmp/upx.tar.xz -C ./tmp/
         rm -f ./ClashPremium-release/*.tar.gz
-        cd ./ClashPremium-release/
+        cp -f ./ClashPremium-release/* ./tmp/ClashPremium-release/
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<7)); do
-          ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
-          mv -f ./clashpremium-linux-${archs[i]} ./CrashCore
-          tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
+          ./tmp/upx-4.2.2-amd64_linux/upx -d ./ClashPremium-release/clashpremium-linux-${archs[i]}
+          mv -f ./ClashPremium-release/clashpremium-linux-${archs[i]} ./ClashPremium-release/CrashCore
+          tar -czf ./ClashPremium-release/clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-release/ ./CrashCore
         done
-        rm -rf ../tmp*
+        cp -f ./tmp/ClashPremium-release/* ./ClashPremium-release/
+        rm -rf ./tmp*
 
     - name: ClashPremium-latest
       run: |
