@@ -12,8 +12,6 @@ on:
       - ".github/workflows/update-adguardhome-prerelease.yml"
       - ".github/workflows/update-adguardhome-release.yml"
       - ".github/workflows/update-clashdashboard.yml"
-      - ".github/workflows/update-clashpremium-latest.yml"
-      - ".github/workflows/update-clashpremium-release.yml"
       - ".github/workflows/update-mihomo-alpha.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
       - ".github/workflows/update-singbox-puernya.yml"
@@ -175,11 +173,11 @@ jobs:
 
       - name: Move files
         run: |
-          mkdir -p ./mihomo-release/
-          rm -rf ./mihomo-release/*
-          mv -f ./tmp/mihomo-linux* ./mihomo-release/
-          mv -f ./tmp/windows-amd64-compatible/meta ./mihomo-release/mihomo-windows-amd64-compatible.exe
-          mv -f ./tmp/windows-amd64/meta ./mihomo-release/mihomo-windows-amd64.exe
+          mkdir -p ./mihomo-meta/
+          rm -rf ./mihomo-meta/*
+          mv -f ./tmp/mihomo-linux* ./mihomo-meta/
+          mv -f ./tmp/windows-amd64-compatible/meta ./mihomo-meta/mihomo-windows-amd64-compatible.exe
+          mv -f ./tmp/windows-amd64/meta ./mihomo-meta/mihomo-windows-amd64.exe
           rm -rf ./tmp* 
 
       - name: Commit and push
@@ -191,7 +189,7 @@ jobs:
 
       - name: Purge jsDelivr CDN
         run: |
-          cd ./mihomo-release/ || exit 1
+          cd ./mihomo-meta/ || exit 1
           for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/mihomo-release/${file}"
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/mihomo-meta/${file}"
           done
