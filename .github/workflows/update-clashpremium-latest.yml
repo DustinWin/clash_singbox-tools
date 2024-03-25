@@ -12,7 +12,7 @@ on:
       - ".github/workflows/update-clashdashboard.yml"
       - ".github/workflows/update-clashpremium-release.yml"
       - ".github/workflows/update-mihomo-alpha.yml"
-      - ".github/workflows/update-mihomo-release.yml"
+      - ".github/workflows/update-mihomo-meta.yml"
       - ".github/workflows/update-singbox-prerelease.yml"
       - ".github/workflows/update-singbox-puernya.yml"
       - ".github/workflows/update-singbox-release.yml"
