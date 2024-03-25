@@ -28,7 +28,7 @@ jobs:
           ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
           tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
         done
-        rm -rf ./tmp*
+        rm -rf ../tmp*
 
     - name: ClashPremium-latest
       run: |
@@ -49,7 +49,7 @@ jobs:
           ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
           tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
         done
-        rm -rf ./tmp*
+        rm -rf ../tmp*
 
     - name: ClashPremium-latest
       run: |
