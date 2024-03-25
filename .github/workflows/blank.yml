@@ -26,6 +26,7 @@ jobs:
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<7)); do
           ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
+          mv -f ./clashpremium-linux-${archs[i]} ./CrashCore
           tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
         done
         rm -rf ../tmp*
@@ -47,6 +48,7 @@ jobs:
         archs=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
         for((i=0;i<7)); do
           ../tmp/upx-4.2.2-amd64_linux/upx -d ./clashpremium-linux-${archs[i]}
+          mv -f ./clashpremium-linux-${archs[i]} ./CrashCore
           tar -czf ./clashpremium-linux-${archs[i]}.tar.gz -C ./ClashPremium-latest/ ./CrashCore
         done
         rm -rf ../tmp*
