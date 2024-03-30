@@ -53,7 +53,7 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clas
 # sing-box 内核 PuerNya 版
 curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@main/sing-box-puernya/sing-box-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 ```
-## 2. 导入内核到 Windows 端（以 [Clash Verge](https://github.com/clash-verge-rev/clash-verge-rev) 导入 mihomo 内核为例，且 Clash Verge 为默认安装路径）
+## 2. 导入内核到 Windows 端（以 [Clash Verge](https://github.com/clash-verge-rev/clash-verge-rev) 导入 mihomo 内核为例）
 以管理员身份打开 CMD 命令提示符，执行如下命令：
 ```
 taskkill /f /t /im "Clash Verge*"
