@@ -1,4 +1,4 @@
-# 更新 [Clash Premium 内核](https://github.com/Dreamacro/clash/releases/tag/premium)、[mihomo 内核](https://github.com/MetaCubeX/mihomo)、[sing-box 内核](https://github.com/SagerNet/sing-box)、[sing-box PuerNya 版内核](https://github.com/PuerNya/sing-box)、[Clash](https://github.com/Dreamacro/clash) dashboard 面板和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
+# 更新 [Clash Premium 内核](https://github.com/Dreamacro/clash/releases/tag/premium)、[mihomo 内核](https://github.com/MetaCubeX/mihomo)、[sing-box 内核](https://github.com/SagerNet/sing-box)、[sing-box PuerNya 版内核](https://github.com/PuerNya/sing-box/tree/building)、[Clash](https://github.com/Dreamacro/clash) dashboard 面板和 [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 每天凌晨（北京时间）自动构建生成：
 1. Clash Premium Release 版和 Latest 版内核（已停更）
