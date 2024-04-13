@@ -105,7 +105,6 @@ chmod +x /data/AdGuardHome/AdGuardHome
 curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/AdGuardHome-release/AdGuardHome_linux_armv8
 # AdGuardHome Pre-release 版
 curl -o /data/AdGuardHome/AdGuardHome -L https://mirror.ghproxy.com/https://raw.githubusercontent.com/DustinWin/clash_singbox-tools/main/AdGuardHome-prerelease/AdGuardHome_linux_armv8
-chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s restart
 ```
 # 三、 配置 ShellCrash 定时任务
