@@ -181,6 +181,7 @@ jobs:
 
       - name: Commit and push
         run: |
+          cd ./mihomo-alpha/ || exit 1
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add . && git commit -m "更新 mihomo 内核 Alpha 版至 ${VERSION}" || exit 0
