@@ -57,6 +57,7 @@ jobs:
 
     - name: Commit and push
       run: |
+        cd ./AdGuardHome-prerelease/ || exit 1
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 AdGuardHome Pre-release 版至 ${adguardhome_version}" || exit 0
