@@ -41,6 +41,7 @@ jobs:
         curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta/
         tar -czf ./Clash-dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
+        cd ./Clash-dashboard/ || exit 1
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Razord-meta 面板至 ${razord_meta_download_version}" || exit 0
@@ -52,6 +53,7 @@ jobs:
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/yacd/gh-pages.zip -d ./tmp/yacd/
         tar -czf ./Clash-dashboard/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .
+        cd ./Clash-dashboard/ || exit 1
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 yacd 面板至 ${yacd_download_version}" || exit 0
@@ -63,6 +65,7 @@ jobs:
         curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta/
         tar -czf ./Clash-dashboard/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
+        cd ./Clash-dashboard/ || exit 1
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 Yacd-meta 面板至 ${yacd_meta_download_version}" || exit 0
@@ -75,6 +78,7 @@ jobs:
         unzip -o ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd/
         tar -czf ./Clash-dashboard/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages/ .
         rm -rf ./tmp*
+        cd ./Clash-dashboard/ || exit 1
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         git add . && git commit -m "更新 metacubexd 面板至 ${metacubexd_download_version}" || exit 0
