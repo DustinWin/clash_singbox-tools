@@ -52,7 +52,7 @@ jobs:
         run: |
           version=$(git describe --tags)
           echo version=$version >> $GITHUB_OUTPUT
-          echo tags=with_gvisor,with_lwip >> $GITHUB_OUTPUT
+          echo tags=with_gvisor >> $GITHUB_OUTPUT
 
   cross:
     strategy:
