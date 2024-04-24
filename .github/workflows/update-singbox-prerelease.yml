@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev-next
+          ref: dev
           fetch-depth: 0
 
       - name: Setup go
@@ -124,7 +124,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev-next
+          ref: dev
           fetch-depth: 1
 
       - name: Setup `Go`
