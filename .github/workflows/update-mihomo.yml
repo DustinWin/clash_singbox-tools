@@ -1,0 +1,276 @@
+name: Update mihomo
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 18 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome.yml"
+      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-singbox.yml"
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.go.outputs.version }}
+    steps:
+      - name: Get `Go` latest version
+        id: go
+        run: |
+          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep '"version"' | head -1 | awk -F'"' '{print $4}') >> $GITHUB_OUTPUT
+
+  meta:
+    runs-on: ubuntu-latest
+    needs: go
+    outputs:
+      meta_version: ${{ steps.meta.outputs.meta_version }}
+      meta_tags: ${{ steps.meta.outputs.meta_tags }}
+    steps:
+      - name: Checkout `Meta`
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Meta
+          fetch-depth: 0
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Get `mihomo Meta` version
+        id: meta
+        run: |
+          meta_version=$(git describe --tags --abbrev=0 HEAD)
+          echo meta_version=$meta_version >> $GITHUB_OUTPUT
+          echo meta_tags=with_gvisor >> $GITHUB_OUTPUT
+
+  meta_cross:
+    strategy:
+      matrix:
+        include:
+          # Linux
+          - { name: linux-amd64, goos: linux, goarch: amd64, goamd64: v1 }
+          - { name: linux-amd64-v3, goos: linux, goarch: amd64, goamd64: v3 }
+          - { name: linux-armv5, goos: linux, goarch: arm, goarm: 5 }
+          - { name: linux-armv6, goos: linux, goarch: arm, goarm: 6 }
+          - { name: linux-armv7, goos: linux, goarch: arm, goarm: 7 }
+          - { name: linux-arm64, goos: linux, goarch: arm64 }
+          - { name: linux-mips-softfloat, goos: linux, goarch: mips, gomips: softfloat }
+          - { name: linux-mipsle-softfloat, goos: linux, goarch: mipsle, gomips: softfloat }
+          - { name: linux-mipsle-hardfloat, goos: linux, goarch: mipsle, gomips: hardfloat }
+          # Windows
+          - { name: windows-amd64, goos: windows, goarch: amd64, goamd64: v1 }
+          - { name: windows-amd64-v3, goos: windows, goarch: amd64, goamd64: v3 }
+          - { name: windows-arm64, goos: windows, goarch: arm64 }
+
+      fail-fast: false
+    runs-on: ubuntu-latest
+    needs:
+      - go
+      - meta
+    env:
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+      GOAMD64: ${{ matrix.goamd64 }}
+      GOARM: ${{ matrix.goarm }}
+      GOMIPS: ${{ matrix.gomips }}
+      CGO_ENABLED: 0
+      meta_TAGS: ${{ needs.meta.outputs.meta_tags }}
+      meta_VERSION: ${{ needs.meta.outputs.meta_version }}
+    steps:
+      - name: Checkout `Meta`
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Meta
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Set ENV
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          echo "BUILDTIME=$(date)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Build `mihomo Meta` core
+        id: build
+        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${meta_VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -s -w -buildid=" -tags "${meta_TAGS}" -o meta
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: mihomo-meta-${{ matrix.name }}
+          path: meta*
+          compression-level: 9
+
+  alpha:
+    runs-on: ubuntu-latest
+    needs: go
+    outputs:
+      alpha_version: ${{ steps.alpha.outputs.alpha_version }}
+      alpha_tags: ${{ steps.alpha.outputs.alpha_tags }}
+    steps:
+      - name: Checkout `Alpha`
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Alpha
+          fetch-depth: 0
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Get `mihomo Alpha` version
+        id: alpha
+        run: |
+          alpha_version=alpha-$(git rev-parse --short HEAD)
+          echo alpha_version=$alpha_version >> $GITHUB_OUTPUT
+          echo alpha_tags=with_gvisor >> $GITHUB_OUTPUT
+
+  alpha_cross:
+    strategy:
+      matrix:
+        include:
+          # Linux
+          - { name: linux-amd64, goos: linux, goarch: amd64, goamd64: v1 }
+          - { name: linux-amd64-v3, goos: linux, goarch: amd64, goamd64: v3 }
+          - { name: linux-armv5, goos: linux, goarch: arm, goarm: 5 }
+          - { name: linux-armv6, goos: linux, goarch: arm, goarm: 6 }
+          - { name: linux-armv7, goos: linux, goarch: arm, goarm: 7 }
+          - { name: linux-arm64, goos: linux, goarch: arm64 }
+          - { name: linux-mips-softfloat, goos: linux, goarch: mips, gomips: softfloat }
+          - { name: linux-mipsle-softfloat, goos: linux, goarch: mipsle, gomips: softfloat }
+          - { name: linux-mipsle-hardfloat, goos: linux, goarch: mipsle, gomips: hardfloat }
+          # Windows
+          - { name: windows-amd64, goos: windows, goarch: amd64, goamd64: v1 }
+          - { name: windows-amd64-v3, goos: windows, goarch: amd64, goamd64: v3 }
+          - { name: windows-arm64, goos: windows, goarch: arm64 }
+
+      fail-fast: false
+    runs-on: ubuntu-latest
+    needs:
+      - go
+      - alpha
+    env:
+      GOOS: ${{ matrix.goos }}
+      GOARCH: ${{ matrix.goarch }}
+      GOAMD64: ${{ matrix.goamd64 }}
+      GOARM: ${{ matrix.goarm }}
+      GOMIPS: ${{ matrix.gomips }}
+      CGO_ENABLED: 0
+      alpha_TAGS: ${{ needs.alpha.outputs.alpha_tags }}
+      alpha_VERSION: ${{ needs.alpha.outputs.alpha_version }}
+    steps:
+      - name: Checkout `Alpha`
+        uses: actions/checkout@v4
+        with:
+          repository: MetaCubeX/mihomo
+          ref: Alpha
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Set ENV
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          echo "BUILDTIME=$(date)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Build `mihomo Alpha` core
+        id: build
+        run: go build -v -trimpath -ldflags "-X 'github.com/metacubex/mihomo/constant.Version=${alpha_VERSION}' -X 'github.com/metacubex/mihomo/constant.BuildTime=${BUILDTIME}' -s -w -buildid=" -tags "${alpha_TAGS}" -o meta
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: mihomo-alpha-${{ matrix.name }}
+          path: meta*
+          compression-level: 9
+
+  push_mihomo:
+    needs:
+      - meta_cross
+      - meta
+      - alpha_cross
+      - alpha
+    runs-on: ubuntu-latest
+    env:
+      meta_VERSION: ${{ needs.meta.outputs.meta_version }}
+      alpha_VERSION: ${{ needs.alpha.outputs.alpha_version }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@main
+
+      - name: Download files from workspace
+        uses: actions/download-artifact@v4
+        with:
+          path: ./tmp-mihomo/
+
+      - name: Zip `mihomo` cores by `tar`
+        run: |
+          mkdir -p ./tmp-mihomo/compress/
+          archs=(amd64 armv5 armv6 armv7 arm64 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          new_name=(amd64 armv5 armv6 armv7 armv8 mips-softfloat mipsle-hardfloat mipsle-softfloat)
+          # `Meta` cores
+          for ((i = 0; i < 8; i++)); do
+            mv -f "./tmp-mihomo/mihomo-meta-linux-${archs[i]}/meta" ./tmp-mihomo/CrashCore
+            chmod +x ./tmp-mihomo/CrashCore
+            tar --no-same-owner -czf "./tmp-mihomo/compress/mihomo-meta-linux-${new_name[i]}.tar.gz" -C ./tmp-mihomo/ ./CrashCore
+          done
+
+          # `Alpha` cores
+          for ((i = 0; i < 8; i++)); do
+            mv -f "./tmp-mihomo/mihomo-alpha-linux-${archs[i]}/meta" ./tmp-mihomo/CrashCore
+            chmod +x ./tmp-mihomo/CrashCore
+            tar --no-same-owner -czf "./tmp-mihomo/compress/mihomo-alpha-linux-${new_name[i]}.tar.gz" -C ./tmp-mihomo/ ./CrashCore
+          done
+
+      - name: Move `mihomo` cores
+        run: |
+          mkdir -p ./mihomo/
+          mv -f ./tmp-mihomo/compress/* ./mihomo/
+          # `Meta` cores for Windows
+          mv -f ./tmp-mihomo/mihomo-meta-windows-amd64/meta ./mihomo/mihomo-meta-windows-amd64.exe
+          mv -f ./tmp-mihomo/mihomo-meta-windows-amd64-v3/meta ./mihomo/mihomo-meta-windows-amd64v3.exe
+          mv -f ./tmp-mihomo/mihomo-meta-windows-arm64/meta ./mihomo/mihomo-meta-windows-arm64.exe
+
+          # `Alpha` cores for Windows
+          mv -f ./tmp-mihomo/mihomo-alpha-windows-amd64/meta ./mihomo/mihomo-alpha-windows-amd64.exe
+          mv -f ./tmp-mihomo/mihomo-alpha-windows-amd64-v3/meta ./mihomo/mihomo-alpha-windows-amd64v3.exe
+          mv -f ./tmp-mihomo/mihomo-alpha-windows-arm64/meta ./mihomo/mihomo-alpha-windows-arm64.exe
+          rm -rf ./tmp*
+
+      - name: Release and upload `mihomo` assets
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          release_name: mihomo
+          tag: mihomo
+          overwrite: true
+          body: |
+            [mihomo](https://github.com/MetaCubeX/mihomo) Meta 版和 Alpha 版内核
+            更新 Meta 版至 ${{ env.meta_VERSION }}，更新 Alpha 版至 ${{ env.alpha_VERSION }}
+          file_glob: true
+          file: ./mihomo/*
+
+      - name: Purge jsDelivr CDN
+        run: |
+          cd ./mihomo/ || exit 1
+          for file in $(ls); do
+            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@mihomo/${file}"
+          done

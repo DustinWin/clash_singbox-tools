@@ -1,0 +1,278 @@
+name: Update AdGuard Home
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 17 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-mihomo.yml"
+      - ".github/workflows/update-singbox.yml"
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.go.outputs.version }}
+    steps:
+      - name: Get `Go` latest version
+        id: go
+        run: |
+          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep '"version"' | head -1 | awk -F'"' '{print $4}') >> $GITHUB_OUTPUT
+
+  node:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.node.outputs.version }}
+    steps:
+      - name: Get `Node` latest version (LTS)
+        id: node
+        run: |
+          echo version=$(curl -sSL https://nodejs.org/dist/index.json | jq -r 'map(select(.lts != false)) | .[0].version') >> $GITHUB_OUTPUT
+
+  release:
+    runs-on: ubuntu-latest
+    needs: go
+    outputs:
+      release_version: ${{ steps.release.outputs.release_version }}
+    steps:
+      - name: Checkout `beta-v0.107`
+        uses: actions/checkout@v4
+        with:
+          repository: AdguardTeam/AdGuardHome
+          ref: beta-v0.107
+          fetch-depth: 0
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Get `AdGuard Home Release` version
+        id: release
+        run: |
+          release_version=$(git describe --tags --abbrev=0 HEAD)
+          echo release_version=$release_version >> $GITHUB_OUTPUT
+
+  release_cross:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # Linux
+          - { name: linux_amd64, goos: linux, goarch: amd64, goamd64: v1 }
+          - { name: linux_armv5, goos: linux, goarch: arm, goarm: 5 }
+          - { name: linux_armv6, goos: linux, goarch: arm, goarm: 6 }
+          - { name: linux_armv7, goos: linux, goarch: arm, goarm: 7 }
+          - { name: linux_arm64, goos: linux, goarch: arm64 }
+          - { name: linux_mips_softfloat, goos: linux, goarch: mips, gomips: softfloat }
+          - { name: linux_mipsle_softfloat, goos: linux, goarch: mipsle, gomips: softfloat }
+          # Windows
+          - { name: windows_amd64, goos: windows, goarch: amd64, goamd64: v1 }
+          - { name: windows_arm64, goos: windows, goarch: arm64 }
+
+      fail-fast: false
+    needs:
+      - go
+      - node
+      - release
+    env:
+      release_VERSION: ${{ needs.release.outputs.release_version }}
+    steps:
+      - name: Checkout `beta-v0.107`
+        uses: actions/checkout@v4
+        with:
+          repository: AdguardTeam/AdGuardHome
+          ref: beta-v0.107
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Adapt `Go` version
+        run: |
+          go get go@${{ needs.go.outputs.version }}
+          go mod tidy
+
+      - name: Setup `Node`
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.node.outputs.version }}
+
+      - name: Setup `Snapcraft`
+        run: |
+          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+
+      - name: Build `AdGuard Home Release`
+        id: build
+        run: |
+          make SIGN=0 VERBOSE=1 ARCH=${{ matrix.goarch }} OS=${{ matrix.goos }} CHANNEL=release VERSION=${{ env.release_VERSION }} GOTOOLCHAIN=local build-release
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: AdGuardHome_release_${{ matrix.name }}
+          path: '**/AdGuardHome/AdGuardHome*'
+          compression-level: 9
+
+  beta:
+    runs-on: ubuntu-latest
+    needs: go
+    outputs:
+      beta_version: ${{ steps.beta.outputs.beta_version }}
+    steps:
+      - name: Checkout `beta-v0.108`
+        uses: actions/checkout@v4
+        with:
+          repository: AdguardTeam/AdGuardHome
+          ref: beta-v0.108
+          fetch-depth: 0
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Get `AdGuard Home Beta` version
+        id: beta
+        run: |
+          beta_version=$(git describe --tags --abbrev=0 HEAD)
+          echo beta_version=$beta_version >> $GITHUB_OUTPUT
+
+  beta_cross:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # Linux
+          - { name: linux_amd64, goos: linux, goarch: amd64, goamd64: v1 }
+          - { name: linux_armv5, goos: linux, goarch: arm, goarm: 5 }
+          - { name: linux_armv6, goos: linux, goarch: arm, goarm: 6 }
+          - { name: linux_armv7, goos: linux, goarch: arm, goarm: 7 }
+          - { name: linux_arm64, goos: linux, goarch: arm64 }
+          - { name: linux_mips_softfloat, goos: linux, goarch: mips, gomips: softfloat }
+          - { name: linux_mipsle_softfloat, goos: linux, goarch: mipsle, gomips: softfloat }
+          # Windows
+          - { name: windows_amd64, goos: windows, goarch: amd64, goamd64: v1 }
+          - { name: windows_arm64, goos: windows, goarch: arm64 }
+
+      fail-fast: false
+    needs:
+      - go
+      - node
+      - beta
+    env:
+      beta_VERSION: ${{ needs.beta.outputs.beta_version }}
+    steps:
+      - name: Checkout `beta-v0.108`
+        uses: actions/checkout@v4
+        with:
+          repository: AdguardTeam/AdGuardHome
+          ref: beta-v0.108
+          fetch-depth: 1
+
+      - name: Setup `Go`
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ needs.go.outputs.version }}
+
+      - name: Adapt `Go` version
+        run: |
+          go get go@${{ needs.go.outputs.version }}
+          go mod tidy
+
+      - name: Setup `Node`
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.node.outputs.version }}
+
+      - name: Setup `Snapcraft`
+        run: |
+          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+
+      - name: Build `AdGuard Home Beta`
+        id: build
+        run: |
+          make SIGN=0 VERBOSE=1 ARCH=${{ matrix.goarch }} OS=${{ matrix.goos }} CHANNEL=beta VERSION=${{ env.beta_VERSION }} GOTOOLCHAIN=local build-release
+
+      - name: Upload files to workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: AdGuardHome_beta_${{ matrix.name }}
+          path: '**/AdGuardHome/AdGuardHome*'
+          compression-level: 9
+
+  push_adguardhome:
+      needs:
+        - release_cross
+        - release
+        - beta_cross
+        - beta
+      runs-on: ubuntu-latest
+      env:
+        release_VERSION: ${{ needs.release.outputs.release_version }}
+        beta_VERSION: ${{ needs.beta.outputs.beta_version }}
+      steps:
+        - name: Clone Repository
+          uses: actions/checkout@main
+
+        - name: Download files from workspace
+          uses: actions/download-artifact@v4
+          with:
+            path: ./tmp-AdGuardHome/
+
+        - name: Batch move and rename `AdGuard Home` files
+          run: |
+            mkdir -p ./tmp-AdGuardHome/compress/
+            archs=(amd64 armv5 armv6 armv7 arm64 mips_softfloat mipsle_softfloat)
+            new_name=(amd64 armv5 armv6 armv7 armv8 mips_softfloat mipsle_softfloat)
+            for ((i = 0; i < 7; i++)); do
+              mv -f "./tmp-AdGuardHome/AdGuardHome_release_linux_${archs[i]}/dist/AdGuardHome_linux_${archs[i]//v/_}/AdGuardHome/AdGuardHome" "./tmp-AdGuardHome/compress/AdGuardHome_release_linux_${new_name[i]}"
+              mv -f "./tmp-AdGuardHome/AdGuardHome_beta_linux_${archs[i]}/dist/AdGuardHome_linux_${archs[i]//v/_}/AdGuardHome/AdGuardHome" "./tmp-AdGuardHome/compress/AdGuardHome_beta_linux_${new_name[i]}"
+            done
+            chmod +x ./tmp-AdGuardHome/compress/*
+
+        - name: Setup `upx` and compress `AdGuard Home` files
+          uses: crazy-max/ghaction-upx@v3
+          with:
+            version: latest
+            files: ./tmp-AdGuardHome/compress/*
+
+        - name: Move `AdGuard Home` files
+          run: |
+            mkdir -p ./AdGuardHome/
+            mv -f ./tmp-AdGuardHome/compress/* ./AdGuardHome/
+            # `Release` for Windows
+            mv -f ./tmp-AdGuardHome/AdGuardHome_release_windows_amd64/dist/AdGuardHome_windows_amd64/AdGuardHome/AdGuardHome.exe ./AdGuardHome/AdGuardHome_release_windows_amd64.exe
+            mv -f ./tmp-AdGuardHome/AdGuardHome_release_windows_arm64/dist/AdGuardHome_windows_arm64/AdGuardHome/AdGuardHome.exe ./AdGuardHome/AdGuardHome_release_windows_arm64.exe
+
+            # `Beta` for Windows
+            mv -f ./tmp-AdGuardHome/AdGuardHome_beta_windows_amd64/dist/AdGuardHome_windows_amd64/AdGuardHome/AdGuardHome.exe ./AdGuardHome/AdGuardHome_beta_windows_amd64.exe
+            mv -f ./tmp-AdGuardHome/AdGuardHome_beta_windows_arm64/dist/AdGuardHome_windows_arm64/AdGuardHome/AdGuardHome.exe ./AdGuardHome/AdGuardHome_beta_windows_arm64.exe
+            rm -rf ./tmp*
+
+        - name: Release and upload `AdGuardHome` assets
+          uses: svenstaro/upload-release-action@v2
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            release_name: AdGuardHome
+            tag: AdGuardHome
+            overwrite: true
+            body: |
+              [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) Release 版和 Beta 版
+              更新 AdGuard Home Release 版至 ${{ env.release_VERSION }}，更新 AdGuard Home Beta 版至 ${{ env.beta_VERSION }}
+            file_glob: true
+            file: ./AdGuardHome/*
+
+        - name: Purge jsDelivr CDN
+          run: |
+            cd ./AdGuardHome/ || exit 1
+            for file in $(ls); do
+              curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@AdGuardHome/${file}"
+            done

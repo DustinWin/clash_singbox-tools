@@ -1,0 +1,84 @@
+name: Update Clash Dashboard
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 17 * * *"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - ".github/workflows/delete-old-workflows.yml"
+      - ".github/workflows/update-adguardhome.yml"
+      - ".github/workflows/update-mihomo.yml"
+      - ".github/workflows/update-singbox.yml"
+
+jobs:
+  Update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@main
+
+    - name: Get version
+      run: |
+        razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed -e 's/.*v/v/' -e 's/".*//')
+        echo "razord_meta_download_version=${razord_meta_download_version}" >> ${GITHUB_ENV}
+        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
+        echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
+        yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
+        echo "yacd_meta_download_version=${yacd_meta_download_version}" >> ${GITHUB_ENV}
+        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
+        echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
+
+    - name: Download and compress `Razord-meta` dashboard
+      run: |
+        mkdir -p ./Dashboard/ ./tmp/Razord-meta/
+        curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
+        unzip -o ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta/
+        tar -czf ./Dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
+
+    - name: Download and compress `yacd` dashboard
+      run: |
+        mkdir -p ./tmp/yacd/
+        curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
+        unzip -o ./tmp/yacd/gh-pages.zip -d ./tmp/yacd/
+        tar -czf ./Dashboard/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .
+
+    - name: Download and compress `Yacd-meta` dashboard
+      run: |
+        mkdir -p ./tmp/Yacd-meta/
+        curl -o ./tmp/Yacd-meta/gh-pages.zip -L https://github.com/MetaCubeX/Yacd-meta/archive/refs/heads/gh-pages.zip
+        unzip -o ./tmp/Yacd-meta/gh-pages.zip -d ./tmp/Yacd-meta/
+        tar -czf ./Dashboard/Yacd-meta.tar.gz -C ./tmp/Yacd-meta/Yacd-meta-gh-pages/ .
+
+    - name: Download and compress `metacubexd` dashboard
+      run: |
+        mkdir -p ./tmp/metacubexd/
+        curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
+        unzip -o ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd/
+        tar -czf ./Dashboard/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages/ .
+        rm -rf ./tmp*
+
+    - name: Release and upload `Dashboard` assets
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        release_name: Dashboard
+        tag: Dashboard
+        overwrite: true
+        body: |
+          Clash Dashboard，包括：[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
+          更新 Razord-meta 面板至 ${{ env.razord_meta_download_version }}
+          更新 yacd 面板至 ${{ env.yacd_download_version }}
+          更新 Yacd-meta 面板至 ${{ env.yacd_meta_download_version }}
+          更新 metacubexd 面板至 ${{ env.metacubexd_download_version }}
+        file_glob: true
+        file: ./Dashboard/*
+
+    - name: Purge jsDelivr CDN
+      run: |
+        cd ./Dashboard/ || exit 1
+        for file in $(ls); do
+          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@Dashboard/${file}"
+        done
