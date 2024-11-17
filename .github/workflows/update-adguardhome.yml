@@ -39,6 +39,7 @@ jobs:
     needs: go
     outputs:
       release_version: ${{ steps.release.outputs.release_version }}
+      release_time: ${{ steps.release.outputs.release_time }}
     steps:
       - name: Checkout `beta-v0.107`
         uses: actions/checkout@v4
@@ -52,11 +53,13 @@ jobs:
         with:
           go-version: ${{ needs.go.outputs.version }}
 
-      - name: Get `AdGuard Home Release` version
+      - name: Get `AdGuard Home Release` version and time
         id: release
         run: |
           release_version=$(git describe --tags --abbrev=0 HEAD)
-          echo release_version=$release_version >> $GITHUB_OUTPUT
+          echo "release_version=$release_version" >> $GITHUB_OUTPUT
+          release_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${release_version})
+          echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
     runs-on: ubuntu-latest
@@ -88,7 +91,6 @@ jobs:
         with:
           repository: AdguardTeam/AdGuardHome
           ref: beta-v0.107
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -126,6 +128,7 @@ jobs:
     needs: go
     outputs:
       beta_version: ${{ steps.beta.outputs.beta_version }}
+      beta_time: ${{ steps.beta.outputs.beta_time }}
     steps:
       - name: Checkout `beta-v0.108`
         uses: actions/checkout@v4
@@ -139,11 +142,13 @@ jobs:
         with:
           go-version: ${{ needs.go.outputs.version }}
 
-      - name: Get `AdGuard Home Beta` version
+      - name: Get `AdGuard Home Beta` version and time
         id: beta
         run: |
           beta_version=$(git describe --tags --abbrev=0 HEAD)
-          echo beta_version=$beta_version >> $GITHUB_OUTPUT
+          echo "beta_version=$beta_version" >> $GITHUB_OUTPUT
+          beta_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${beta_version})
+          echo "beta_time=$beta_time" >> $GITHUB_OUTPUT
 
   beta_cross:
     runs-on: ubuntu-latest
@@ -175,7 +180,6 @@ jobs:
         with:
           repository: AdguardTeam/AdGuardHome
           ref: beta-v0.108
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -217,7 +221,9 @@ jobs:
       runs-on: ubuntu-latest
       env:
         release_VERSION: ${{ needs.release.outputs.release_version }}
+        release_TIME: ${{ needs.release.outputs.release_time }}
         beta_VERSION: ${{ needs.beta.outputs.beta_version }}
+        beta_TIME: ${{ needs.beta.outputs.beta_time }}
       steps:
         - name: Clone Repository
           uses: actions/checkout@main
@@ -265,8 +271,8 @@ jobs:
             tag: AdGuardHome
             overwrite: true
             body: |
-              [AdGuardHome](https://github.com/AdguardTeam/AdGuardHome) Release 版和 Beta 版
-              更新 AdGuard Home Release 版至 ${{ env.release_VERSION }}，更新 AdGuard Home Beta 版至 ${{ env.beta_VERSION }}
+              更新 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome) Release 版至 ${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
+              更新 AdGuard Home Beta 版至 ${{ env.beta_VERSION }}，发布于 ${{ env.beta_TIME }}
             file_glob: true
             file: ./AdGuardHome/*
 

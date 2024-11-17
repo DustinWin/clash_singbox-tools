@@ -30,6 +30,7 @@ jobs:
     outputs:
       puernya_version: ${{ steps.puernya.outputs.puernya_version }}
       puernya_tags: ${{ steps.puernya.outputs.puernya_tags }}
+      puernya_time: ${{ steps.puernya.outputs.puernya_time }}
     steps:
       - name: Checkout `building`
         uses: actions/checkout@v4
@@ -49,8 +50,10 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           puernya_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          echo puernya_version=$puernya_version >> $GITHUB_OUTPUT
+          echo "puernya_version=$puernya_version" >> $GITHUB_OUTPUT
           echo puernya_tags=with_quic,with_dhcp,with_wireguard,with_shadowsocksr,with_ech,with_utls,with_clash_api,with_gvisor >> $GITHUB_OUTPUT
+          puernya_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          echo "puernya_time=$puernya_time" >> $GITHUB_OUTPUT
 
   puernya_cross:
     strategy:
@@ -91,7 +94,6 @@ jobs:
         with:
           repository: PuerNya/sing-box
           ref: building
-          fetch-depth: 1
 
       - name: Fix sniff
         run: sed -i 's/sniffHosts/sniffHost/' ./experimental/clashapi/trafficontrol/tracker.go
@@ -127,6 +129,7 @@ jobs:
     outputs:
       release_version: ${{ steps.release.outputs.release_version }}
       release_tags: ${{ steps.release.outputs.release_tags }}
+      release_time: ${{ steps.release.outputs.release_time }}
     steps:
       - name: Checkout `main`
         uses: actions/checkout@v4
@@ -146,8 +149,10 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           release_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          echo release_version=$release_version >> $GITHUB_OUTPUT
+          echo "release_version=$release_version" >> $GITHUB_OUTPUT
           echo release_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
+          release_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git describe --tags --abbrev=0 HEAD))
+          echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
     strategy:
@@ -188,7 +193,6 @@ jobs:
         with:
           repository: SagerNet/sing-box
           ref: main
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -221,6 +225,7 @@ jobs:
     outputs:
       dev_version: ${{ steps.dev.outputs.dev_version }}
       dev_tags: ${{ steps.dev.outputs.dev_tags }}
+      dev_time: ${{ steps.dev.outputs.dev_time }}
     steps:
       - name: Checkout `dev`
         uses: actions/checkout@v4
@@ -240,8 +245,10 @@ jobs:
           git remote add sekai https://github.com/SagerNet/sing-box.git
           git fetch --tags sekai
           dev_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
-          echo dev_version=$dev_version >> $GITHUB_OUTPUT
+          echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
+          dev_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git describe --tags --abbrev=0 HEAD))
+          echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
     strategy:
@@ -282,7 +289,6 @@ jobs:
         with:
           repository: SagerNet/sing-box
           ref: dev
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -320,8 +326,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       puernya_VERSION: ${{ needs.puernya.outputs.puernya_version }}
+      puernya_TIME: ${{ needs.puernya.outputs.puernya_time }}
       release_VERSION: ${{ needs.release.outputs.release_version }}
+      release_TIME: ${{ needs.release.outputs.release_time }}
       dev_VERSION: ${{ needs.dev.outputs.dev_version }}
+      dev_TIME: ${{ needs.dev.outputs.dev_time }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@main
@@ -385,8 +394,9 @@ jobs:
           tag: sing-box
           overwrite: true
           body: |
-            [sing-box](https://github.com/SagerNet/sing-box) Release 版、Dev 版和 [PuerNya 版](https://github.com/PuerNya/sing-box/tree/building)内核
-            更新 PuerNya 版至 v${{ env.puernya_VERSION }}，更新 Release 版至 v${{ env.release_VERSION }}，更新 Dev 版至 v${{ env.dev_VERSION }}
+            更新 [sing-box](https://github.com/SagerNet/sing-box) PuerNya 版至 v${{ env.puernya_VERSION }}，发布于 ${{ env.puernya_TIME }}
+            更新 sing-box Release 版至 v${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
+            更新 sing-box Dev 版至 v${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
           file_glob: true
           file: ./sing-box/*
 

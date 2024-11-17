@@ -20,16 +20,57 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Get version
+    - name: Checkout `Razord-meta`
+      uses: actions/checkout@v4
+      with:
+        repository: MetaCubeX/Razord-meta
+        fetch-depth: 0
+
+    - name: Get `Razord-meta` version and time
       run: |
-        razord_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Razord-meta/tags | grep 'name' | head -n 1 | sed -e 's/.*v/v/' -e 's/".*//')
-        echo "razord_meta_download_version=${razord_meta_download_version}" >> ${GITHUB_ENV}
-        yacd_download_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
-        echo "yacd_download_version=${yacd_download_version}" >> ${GITHUB_ENV}
-        yacd_meta_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
-        echo "yacd_meta_download_version=${yacd_meta_download_version}" >> ${GITHUB_ENV}
-        metacubexd_download_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | grep 'tag_name' | sed -e 's/.*v/v/' -e 's/".*//')
-        echo "metacubexd_download_version=${metacubexd_download_version}" >> ${GITHUB_ENV}
+        razord_meta_version=$(git describe --tags --abbrev=0 HEAD)
+        echo "razord_meta_version=$razord_meta_version" >> ${GITHUB_ENV}
+        razord_meta_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${razord_meta_version})
+        echo "razord_meta_time=$razord_meta_time" >> ${GITHUB_ENV}
+
+    - name: Checkout `yacd`
+      uses: actions/checkout@v4
+      with:
+        repository: haishanh/yacd
+        fetch-depth: 0
+
+    - name: Get `yacd` version and time
+      run: |
+        yacd_version=$(git describe --tags --abbrev=0 HEAD)
+        echo "yacd_version=$yacd_version" >> ${GITHUB_ENV}
+        yacd_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${yacd_version})
+        echo "yacd_time=$yacd_time" >> ${GITHUB_ENV}
+
+    - name: Checkout `Yacd-meta`
+      uses: actions/checkout@v4
+      with:
+        repository: MetaCubeX/Yacd-meta
+        fetch-depth: 0
+
+    - name: Get `Yacd-meta` version and time
+      run: |
+        yacd_meta_version=$(git describe --tags --abbrev=0 HEAD)
+        echo "yacd_meta_version=$yacd_meta_version" >> ${GITHUB_ENV}
+        yacd_meta_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${yacd_meta_version})
+        echo "yacd_meta_time=$yacd_meta_time" >> ${GITHUB_ENV}
+
+    - name: Checkout `metacubexd`
+      uses: actions/checkout@v4
+      with:
+        repository: MetaCubeX/metacubexd
+        fetch-depth: 0
+
+    - name: Get `metacubexd` version and time
+      run: |
+        metacubexd_version=$(git describe --tags --abbrev=0 HEAD)
+        echo "metacubexd_version=$metacubexd_version" >> ${GITHUB_ENV}
+        metacubexd_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${metacubexd_version})
+        echo "metacubexd_time=$metacubexd_time" >> ${GITHUB_ENV}
 
     - name: Download and compress `Razord-meta` dashboard
       run: |
@@ -68,11 +109,10 @@ jobs:
         tag: Dashboard
         overwrite: true
         body: |
-          Clash Dashboard，包括：[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)和 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)
-          更新 Razord-meta 面板至 ${{ env.razord_meta_download_version }}
-          更新 yacd 面板至 ${{ env.yacd_download_version }}
-          更新 Yacd-meta 面板至 ${{ env.yacd_meta_download_version }}
-          更新 metacubexd 面板至 ${{ env.metacubexd_download_version }}
+          更新 [Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)至 ${{ env.razord_meta_version }}，发布于 ${{ env.razord_meta_time }}
+          更新 [yacd 面板](https://github.com/haishanh/yacd)至 ${{ env.yacd_version }}，发布于 ${{ env.yacd_time }}
+          更新 [Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)至 ${{ env.yacd_meta_version }}，发布于 ${{ env.yacd_meta_time }}
+          更新 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)至 ${{ env.metacubexd_version }}，发布于 ${{ env.metacubexd_time }}
         file_glob: true
         file: ./Dashboard/*
 

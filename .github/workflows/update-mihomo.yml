@@ -30,6 +30,7 @@ jobs:
     outputs:
       meta_version: ${{ steps.meta.outputs.meta_version }}
       meta_tags: ${{ steps.meta.outputs.meta_tags }}
+      meta_time: ${{ steps.meta.outputs.meta_time}}
     steps:
       - name: Checkout `Meta`
         uses: actions/checkout@v4
@@ -47,8 +48,10 @@ jobs:
         id: meta
         run: |
           meta_version=$(git describe --tags --abbrev=0 HEAD)
-          echo meta_version=$meta_version >> $GITHUB_OUTPUT
+          echo "meta_version=$meta_version" >> $GITHUB_OUTPUT
           echo meta_tags=with_gvisor >> $GITHUB_OUTPUT
+          meta_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${meta_version})
+          echo "meta_time=$meta_time" >> $GITHUB_OUTPUT
 
   meta_cross:
     strategy:
@@ -89,7 +92,6 @@ jobs:
         with:
           repository: MetaCubeX/mihomo
           ref: Meta
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -119,6 +121,7 @@ jobs:
     outputs:
       alpha_version: ${{ steps.alpha.outputs.alpha_version }}
       alpha_tags: ${{ steps.alpha.outputs.alpha_tags }}
+      alpha_time:  ${{ steps.alpha.outputs.alpha_time }}
     steps:
       - name: Checkout `Alpha`
         uses: actions/checkout@v4
@@ -136,8 +139,10 @@ jobs:
         id: alpha
         run: |
           alpha_version=alpha-$(git rev-parse --short HEAD)
-          echo alpha_version=$alpha_version >> $GITHUB_OUTPUT
+          echo "alpha_version=$alpha_version" >> $GITHUB_OUTPUT
           echo alpha_tags=with_gvisor >> $GITHUB_OUTPUT
+          alpha_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          echo "alpha_time=$alpha_time" >> $GITHUB_OUTPUT
 
   alpha_cross:
     strategy:
@@ -178,7 +183,6 @@ jobs:
         with:
           repository: MetaCubeX/mihomo
           ref: Alpha
-          fetch-depth: 1
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -211,7 +215,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       meta_VERSION: ${{ needs.meta.outputs.meta_version }}
+      meta_TIME: ${{ needs.meta.outputs.meta_time }}
       alpha_VERSION: ${{ needs.alpha.outputs.alpha_version }}
+      alpha_TIME: ${{ needs.alpha.outputs.alpha_time }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@main
@@ -263,8 +269,8 @@ jobs:
           tag: mihomo
           overwrite: true
           body: |
-            [mihomo](https://github.com/MetaCubeX/mihomo) Meta 版和 Alpha 版内核
-            更新 Meta 版至 ${{ env.meta_VERSION }}，更新 Alpha 版至 ${{ env.alpha_VERSION }}
+            更新 [mihomo](https://github.com/MetaCubeX/mihomo) Meta 版至 ${{ env.meta_VERSION }}，发布于 ${{ env.meta_TIME }}
+            更新 mihomo Alpha 版至 ${{ env.alpha_VERSION }}，发布于 ${{ env.alpha_TIME }}
           file_glob: true
           file: ./mihomo/*
 
