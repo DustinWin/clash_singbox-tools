@@ -231,7 +231,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev
+          ref: dev-next
           fetch-depth: 0
 
       - name: Setup `Go`
@@ -247,7 +247,7 @@ jobs:
           dev_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          dev_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git describe --tags --abbrev=0 HEAD))
+          dev_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
           echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
@@ -288,7 +288,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev
+          ref: dev-next
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
