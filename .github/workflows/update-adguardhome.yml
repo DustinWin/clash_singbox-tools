@@ -271,8 +271,8 @@ jobs:
             tag: AdGuardHome
             overwrite: true
             body: |
-              更新 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome) Release 版至 ${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
-              更新 AdGuard Home Beta 版至 ${{ env.beta_VERSION }}，发布于 ${{ env.beta_TIME }}
+              更新 [AdGuard Home Release 版](https://github.com/AdguardTeam/AdGuardHome/tree/beta-v0.107)至 ${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
+              更新 [AdGuard Home Beta 版](https://github.com/AdguardTeam/AdGuardHome/tree/beta-v0.108)至 ${{ env.beta_VERSION }}，发布于 ${{ env.beta_TIME }}
             file_glob: true
             file: ./AdGuardHome/*
 

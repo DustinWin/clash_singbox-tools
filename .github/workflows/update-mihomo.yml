@@ -269,8 +269,8 @@ jobs:
           tag: mihomo
           overwrite: true
           body: |
-            更新 [mihomo](https://github.com/MetaCubeX/mihomo) Meta 版至 ${{ env.meta_VERSION }}，发布于 ${{ env.meta_TIME }}
-            更新 mihomo Alpha 版至 ${{ env.alpha_VERSION }}，发布于 ${{ env.alpha_TIME }}
+            更新 [mihomo Meta 版](https://github.com/MetaCubeX/mihomo/tree/Meta)至 ${{ env.meta_VERSION }}，发布于 ${{ env.meta_TIME }}
+            更新 [mihomo Alpha 版](https://github.com/MetaCubeX/mihomo/tree/Alpha)至 ${{ env.alpha_VERSION }}，发布于 ${{ env.alpha_TIME }}
           file_glob: true
           file: ./mihomo/*
 
