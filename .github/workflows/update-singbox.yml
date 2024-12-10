@@ -52,7 +52,7 @@ jobs:
           puernya_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           echo "puernya_version=$puernya_version" >> $GITHUB_OUTPUT
           echo puernya_tags=with_quic,with_dhcp,with_wireguard,with_shadowsocksr,with_ech,with_utls,with_clash_api,with_gvisor >> $GITHUB_OUTPUT
-          puernya_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          puernya_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(echo "$puernya_version" | awk -F'-' '{print $3}'))
           echo "puernya_time=$puernya_time" >> $GITHUB_OUTPUT
 
   puernya_cross:
@@ -151,7 +151,7 @@ jobs:
           release_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           echo "release_version=$release_version" >> $GITHUB_OUTPUT
           echo release_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          release_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git describe --tags --abbrev=0 HEAD))
+          release_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' v${release_version})
           echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
@@ -227,11 +227,11 @@ jobs:
       dev_tags: ${{ steps.dev.outputs.dev_tags }}
       dev_time: ${{ steps.dev.outputs.dev_time }}
     steps:
-      - name: Checkout `dev-next`
+      - name: Checkout `dev`
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev-next
+          ref: dev
           fetch-depth: 0
 
       - name: Setup `Go`
@@ -247,7 +247,7 @@ jobs:
           dev_version=$(CGO_ENABLED=0 go run ./cmd/internal/read_tag)
           echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          dev_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          dev_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' v${dev_version})
           echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
@@ -284,11 +284,11 @@ jobs:
       dev_TAGS: ${{ needs.dev.outputs.dev_tags }}
       dev_VERSION: ${{ needs.dev.outputs.dev_version }}
     steps:
-      - name: Checkout `dev-next`
+      - name: Checkout `dev`
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: dev-next
+          ref: dev
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -396,7 +396,7 @@ jobs:
           body: |
             更新 [sing-box PuerNya 版](https://github.com/PuerNya/sing-box/tree/building)至 v${{ env.puernya_VERSION }}，发布于 ${{ env.puernya_TIME }}
             更新 [sing-box Release 版](https://github.com/SagerNet/sing-box/tree/main)至 v${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
-            更新 [sing-box Dev 版](https://github.com/SagerNet/sing-box/tree/dev-next)至 v${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
+            更新 [sing-box Dev 版](https://github.com/SagerNet/sing-box/tree/dev)至 v${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
           file_glob: true
           file: ./sing-box/*
 
