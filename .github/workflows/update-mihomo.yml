@@ -50,7 +50,7 @@ jobs:
           meta_version=$(git describe --tags --abbrev=0 HEAD)
           echo "meta_version=$meta_version" >> $GITHUB_OUTPUT
           echo meta_tags=with_gvisor >> $GITHUB_OUTPUT
-          meta_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' ${meta_version})
+          meta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${meta_version})
           echo "meta_time=$meta_time" >> $GITHUB_OUTPUT
 
   meta_cross:
@@ -141,7 +141,7 @@ jobs:
           alpha_version=alpha-$(git rev-parse --short HEAD)
           echo "alpha_version=$alpha_version" >> $GITHUB_OUTPUT
           echo alpha_tags=with_gvisor >> $GITHUB_OUTPUT
-          alpha_time=$(git log -1 --format=%ad --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          alpha_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
           echo "alpha_time=$alpha_time" >> $GITHUB_OUTPUT
 
   alpha_cross:
