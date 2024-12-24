@@ -72,6 +72,19 @@ jobs:
         metacubexd_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${metacubexd_version})
         echo "metacubexd_time=$metacubexd_time" >> ${GITHUB_ENV}
 
+    - name: Checkout `zashboard`
+      uses: actions/checkout@v4
+      with:
+        repository: Zephyruso/zashboard
+        fetch-depth: 0
+
+    - name: Get `zashboard` version and time
+      run: |
+        zashboard_version=$(git describe --tags --abbrev=0 HEAD)
+        echo "zashboard_version=$zashboard_version" >> ${GITHUB_ENV}
+        zashboard_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${zashboard_version})
+        echo "zashboard_time=$zashboard_time" >> ${GITHUB_ENV}
+
     - name: Download and compress `Razord-meta` dashboard
       run: |
         mkdir -p ./Dashboard/ ./tmp/Razord-meta/
@@ -99,6 +112,13 @@ jobs:
         curl -o ./tmp/metacubexd/gh-pages.zip -L https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/metacubexd/gh-pages.zip -d ./tmp/metacubexd/
         tar -czf ./Dashboard/metacubexd.tar.gz -C ./tmp/metacubexd/metacubexd-gh-pages/ .
+
+    - name: Download and compress `zashboard` dashboard
+      run: |
+        mkdir -p ./tmp/zashboard/
+        curl -o ./tmp/zashboard/gh-pages.zip -L https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
+        unzip -o ./tmp/zashboard/gh-pages.zip -d ./tmp/zashboard/
+        tar -czf ./Dashboard/zashboard.tar.gz -C ./tmp/zashboard/zashboard-gh-pages/ .
         rm -rf ./tmp*
 
     - name: Release and upload `Dashboard` assets
@@ -113,6 +133,7 @@ jobs:
           更新 [yacd 面板](https://github.com/haishanh/yacd)至 ${{ env.yacd_version }}，发布于 ${{ env.yacd_time }}
           更新 [Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)至 ${{ env.yacd_meta_version }}，发布于 ${{ env.yacd_meta_time }}
           更新 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)至 ${{ env.metacubexd_version }}，发布于 ${{ env.metacubexd_time }}
+          更新 [zashboard 面板](https://github.com/Zephyruso/zashboard)至 ${{ env.zashboard_version }}，发布于 ${{ env.zashboard_time }}
         file_glob: true
         file: ./Dashboard/*
 
