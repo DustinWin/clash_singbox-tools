@@ -116,9 +116,9 @@ jobs:
     - name: Download and compress `zashboard` dashboard
       run: |
         mkdir -p ./tmp/zashboard/
-        curl -o ./tmp/zashboard/gh-pages.zip -L https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip
+        curl -o ./tmp/zashboard/gh-pages.zip -L https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip
         unzip -o ./tmp/zashboard/gh-pages.zip -d ./tmp/zashboard/
-        tar -czf ./Dashboard/zashboard.tar.gz -C ./tmp/zashboard/zashboard-gh-pages/ .
+        tar -czf ./Dashboard/zashboard.tar.gz -C ./tmp/zashboard/dist/ .
         rm -rf ./tmp*
 
     - name: Release and upload `Dashboard` assets
