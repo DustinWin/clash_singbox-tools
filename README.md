@@ -64,7 +64,7 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clas
 |Razord-meta 面板|`Razord-meta.tar.gz`|<https://clash.metacubex.one>|
 |yacd 面板|`yacd.tar.gz`|<https://yacd.haishan.me>|
 |Yacd-meta 面板|`Yacd-meta.tar.gz`|<https://yacd.metacubex.one>|
-|metacubexd 面板|`metacubexd.tar.gz`|<https://metacubex.github.io/metacubexd>|
+|metacubexd 面板|`metacubexd.tar.gz`|<https://metacubex.github.io/metacubexd/>|
 |zashboard 面板|`zashboard.tar.gz`|<https://board.zash.run.place>|
 
 连接 SSH 后执行如下命令：
