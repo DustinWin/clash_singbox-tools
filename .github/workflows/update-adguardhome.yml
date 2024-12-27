@@ -9,7 +9,7 @@ on:
     paths-ignore:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
-      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-dashboard.yml"
       - ".github/workflows/update-mihomo.yml"
       - ".github/workflows/update-singbox.yml"
 

@@ -10,7 +10,7 @@ on:
       - "README.md"
       - ".github/workflows/delete-old-workflows.yml"
       - ".github/workflows/update-adguardhome.yml"
-      - ".github/workflows/update-clashdashboard.yml"
+      - ".github/workflows/update-dashboard.yml"
       - ".github/workflows/update-mihomo.yml"
 
 jobs:

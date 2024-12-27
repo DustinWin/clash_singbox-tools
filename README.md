@@ -1,13 +1,13 @@
-**注意：本项目生成文件所在的分支已全部删除（包括文件历史记录），所有文件将不再发布到分支中，仅分发到 [Releases](https://github.com/DustinWin/clash_singbox-tools/releases) 中，以节省占用空间（文件历史记录过大），详细请看《[关于 GitHub 上的大文件](https://docs.github.com/zh/repositories/working-with-files/managing-large-files/about-large-files-on-github)》**
+**注意：本项目生成文件所在的分支已全部删除（包括文件历史记录），所有文件将不再发布到分支中，仅分发到 [Releases](https://github.com/DustinWin/proxy-tools/releases) 中，以节省占用空间（文件历史记录过大），详细请看《[关于 GitHub 上的大文件](https://docs.github.com/zh/repositories/working-with-files/managing-large-files/about-large-files-on-github)》**
 
-# 更新 [mihomo 内核](https://github.com/MetaCubeX/mihomo)、[sing-box 内核](https://github.com/SagerNet/sing-box)、[sing-box PuerNya 版内核](https://github.com/PuerNya/sing-box/tree/building)、Clash dashboard 面板和 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)
+# 更新 [mihomo 内核](https://github.com/MetaCubeX/mihomo)、[sing-box 内核](https://github.com/SagerNet/sing-box)、[sing-box PuerNya 版内核](https://github.com/PuerNya/sing-box/tree/building)、Dashboard 面板和 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 每天凌晨（北京时间 UTC+8）自动构建生成：
-1. Clash Premium Release 版和 Nightly 版[内核](https://github.com/DustinWin/clash_singbox-tools/releases/tag/Clash-Premium)（已停更）
+1. [Clash Premium Release 版和 Nightly 版内核](https://github.com/DustinWin/proxy-tools/releases/tag/Clash-Premium)（已停更）
 2. mihomo Meta 版和 Alpha 版内核
 3. sing-box Release 版和 Dev 版内核
 4. sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
-5. Clash dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
+5. Dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
 6. AdGuard Home Release 版和 Beta 版
 
 **注：**
@@ -27,15 +27,15 @@
 连接 SSH 后执行如下命令：
 ```
 # mihomo 内核 Meta 版
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@mihomo/mihomo-meta-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@mihomo/mihomo-meta-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 # mihomo 内核 Alpha 版
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@mihomo/mihomo-alpha-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@mihomo/mihomo-alpha-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 # sing-box 内核 PuerNya 版
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 # sing-box 内核 Release 版
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-release-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-release-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 # sing-box 内核 Dev 版
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-dev-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-dev-linux-armv8.tar.gz | tar -zx -C /tmp/ && crash
 ```
 此时脚本会自动“发现可用的内核文件”，选择 1 加载，后选择对应的内核  
 </details>
@@ -45,20 +45,20 @@ curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-
 连接 SSH 后执行如下命令：
 ```
 # mihomo 内核 Meta 版
-curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@mihomo/mihomo-meta-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
+curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@mihomo/mihomo-meta-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 # mihomo 内核 Alpha 版
-curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@mihomo/mihomo-alpha-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
+curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@mihomo/mihomo-alpha-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 # sing-box 内核 PuerNya 版
-curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
+curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 # sing-box 内核 Release 版
-curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools/@sing-box/sing-box-release-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
+curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools/@sing-box/sing-box-release-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 # sing-box 内核 Dev 版
-curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-dev-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
+curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-dev-linux-armv8.tar.gz && $CRASHDIR/start.sh restart
 ```
 </details>
 
-## 2. 安装 Clash Dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
-**Clash Dashboard 面板对应文件名和在线地址关系如下表：**
+## 2. 安装 Dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
+**Dashboard 面板对应文件名和在线地址关系如下表：**
 |面板类型|文件名|在线地址|
 |-----|-----|-----|
 |yacd 面板|`yacd.tar.gz`|<https://yacd.haishan.me>|
@@ -68,7 +68,7 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clas
 
 连接 SSH 后执行如下命令：
 ```
-curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@Dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && $CRASHDIR/start.sh restart
+curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@Dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && $CRASHDIR/start.sh restart
 ```
 ## 3. 安装 AdGuard Home
 **AdGuard Home Linux 版 CPU 架构和链接后缀对应关系如下表：**
@@ -83,9 +83,9 @@ curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@Dashboard/meta
 ```
 mkdir -p /data/AdGuardHome
 # AdGuard Home Release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@AdGuardHome/AdGuardHome_release_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@AdGuardHome/AdGuardHome_release_linux_armv8
 # AdGuard Home Beta 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@AdGuardHome/AdGuardHome_beta_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@AdGuardHome/AdGuardHome_beta_linux_armv8
 chmod +x /data/AdGuardHome/AdGuardHome
 /data/AdGuardHome/AdGuardHome -s install
 /data/AdGuardHome/AdGuardHome -s start
@@ -97,9 +97,9 @@ chmod +x /data/AdGuardHome/AdGuardHome
 连接 SSH 后执行如下命令：
 ```
 # AdGuard Home Release 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/DustinWin/clash_singbox-tools/releases/download/AdGuardHome/AdGuardHome_release_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/DustinWin/proxy-tools/releases/download/AdGuardHome/AdGuardHome_release_linux_armv8
 # AdGuard Home Beta 版
-curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/DustinWin/clash_singbox-tools/releases/download/AdGuardHome/AdGuardHome_beta_linux_armv8
+curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/DustinWin/proxy-tools/releases/download/AdGuardHome/AdGuardHome_beta_linux_armv8
 /data/AdGuardHome/AdGuardHome -s restart
 ```
 </details>
@@ -112,11 +112,11 @@ curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/Dus
 - 2. ShellCrash 安装路径为 */data/ShellCrash*
 
 ```
-201#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@mihomo/mihomo-meta-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新mihomo内核
-202#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新sing-box_PuerNya版内核
-203#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@sing-box/sing-box-release-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新sing-box内核
-204#curl -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@Dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
-205#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/clash_singbox-tools@AdGuardHome/AdGuardHome_beta_linux_armv8 && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
+201#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@mihomo/mihomo-meta-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新mihomo内核
+202#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-puernya-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新sing-box_PuerNya版内核
+203#curl -o /data/ShellCrash/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@sing-box/sing-box-release-linux-armv8.tar.gz && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新sing-box内核
+204#curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@Dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && /data/ShellCrash/start.sh restart >/dev/null 2>&1#更新metacubexd面板
+205#curl -o /data/AdGuardHome/AdGuardHome -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@AdGuardHome/AdGuardHome_beta_linux_armv8 && /data/AdGuardHome/AdGuardHome -s restart >/dev/null 2>&1#更新AdGuardHome
 ```
 2. 按一下 Esc 键（退出键），输入英文冒号 `:`，继续输入 `wq` 并回车
 3. 执行 `crash`，进入 ShellCrash -> 5 配置自动任务 -> 1 添加自动任务，可以看到末尾就有添加的定时任务，输入对应的数字并回车后可设置执行条件
