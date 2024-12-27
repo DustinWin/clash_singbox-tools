@@ -20,19 +20,6 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Checkout `Razord-meta`
-      uses: actions/checkout@v4
-      with:
-        repository: MetaCubeX/Razord-meta
-        fetch-depth: 0
-
-    - name: Get `Razord-meta` version and time
-      run: |
-        razord_meta_version=$(git describe --tags --abbrev=0 HEAD)
-        echo "razord_meta_version=$razord_meta_version" >> ${GITHUB_ENV}
-        razord_meta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${razord_meta_version})
-        echo "razord_meta_time=$razord_meta_time" >> ${GITHUB_ENV}
-
     - name: Checkout `yacd`
       uses: actions/checkout@v4
       with:
@@ -85,13 +72,6 @@ jobs:
         zashboard_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${zashboard_version})
         echo "zashboard_time=$zashboard_time" >> ${GITHUB_ENV}
 
-    - name: Download and compress `Razord-meta` dashboard
-      run: |
-        mkdir -p ./Dashboard/ ./tmp/Razord-meta/
-        curl -o ./tmp/Razord-meta/gh-pages.zip -L https://github.com/MetaCubeX/Razord-meta/archive/refs/heads/gh-pages.zip
-        unzip -o ./tmp/Razord-meta/gh-pages.zip -d ./tmp/Razord-meta/
-        tar -czf ./Dashboard/Razord-meta.tar.gz -C ./tmp/Razord-meta/Razord-meta-gh-pages/ .
-
     - name: Download and compress `yacd` dashboard
       run: |
         mkdir -p ./tmp/yacd/
@@ -129,7 +109,6 @@ jobs:
         tag: Dashboard
         overwrite: true
         body: |
-          更新 [Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)至 ${{ env.razord_meta_version }}，发布于 ${{ env.razord_meta_time }}
           更新 [yacd 面板](https://github.com/haishanh/yacd)至 ${{ env.yacd_version }}，发布于 ${{ env.yacd_time }}
           更新 [Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)至 ${{ env.yacd_meta_version }}，发布于 ${{ env.yacd_meta_time }}
           更新 [metacubexd 面板](https://github.com/MetaCubeX/metacubexd)至 ${{ env.metacubexd_version }}，发布于 ${{ env.metacubexd_time }}

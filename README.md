@@ -7,7 +7,7 @@
 2. mihomo Meta 版和 Alpha 版内核
 3. sing-box Release 版和 Dev 版内核
 4. sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
-5. Clash dashboard 面板：[Razord-meta 面板](https://github.com/MetaCubeX/Razord-meta)、[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
+5. Clash dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
 6. AdGuard Home Release 版和 Beta 版
 
 **注：**
@@ -61,7 +61,6 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/clas
 **Clash Dashboard 面板对应文件名和在线地址关系如下表：**
 |面板类型|文件名|在线地址|
 |-----|-----|-----|
-|Razord-meta 面板|`Razord-meta.tar.gz`|<https://clash.metacubex.one>|
 |yacd 面板|`yacd.tar.gz`|<https://yacd.haishan.me>|
 |Yacd-meta 面板|`Yacd-meta.tar.gz`|<https://yacd.metacubex.one>|
 |metacubexd 面板|`metacubexd.tar.gz`|<https://metacubex.github.io/metacubexd/>|
