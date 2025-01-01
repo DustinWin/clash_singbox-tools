@@ -5,10 +5,9 @@
 每天凌晨（北京时间 UTC+8）自动构建生成：
 1. [Clash Premium Release 版和 Nightly 版内核](https://github.com/DustinWin/proxy-tools/releases/tag/Clash-Premium)（已停更）
 2. mihomo Meta 版和 Alpha 版内核
-3. sing-box Release 版和 Dev 版内核
-4. sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
-5. Dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
-6. AdGuard Home Release 版和 Beta 版
+3. sing-box Release 版、Dev 版内核和 sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
+4. Dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
+5. AdGuard Home Release 版和 Beta 版
 
 **注：**
 - 1. 本教程中的下载链接以 CPU 架构 ARMv8 为例，请注意修改链接后缀

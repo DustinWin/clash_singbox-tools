@@ -22,11 +22,10 @@ jobs:
       - name: Get `Go` latest version
         id: go
         run: |
-          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep '"version"' | head -1 | awk -F'"' '{print $4}') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://api.github.com/repos/actions/go-versions/releases/latest | jq -r '.tag_name | split("-")[0]') >> $GITHUB_OUTPUT
 
   meta:
     runs-on: ubuntu-latest
-    needs: go
     outputs:
       meta_version: ${{ steps.meta.outputs.meta_version }}
       meta_tags: ${{ steps.meta.outputs.meta_tags }}
@@ -39,15 +38,10 @@ jobs:
           ref: Meta
           fetch-depth: 0
 
-      - name: Setup `Go`
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go.outputs.version }}
-
-      - name: Get `mihomo Meta` version
+      - name: Get `mihomo Meta` version and time
         id: meta
         run: |
-          meta_version=$(git describe --tags --abbrev=0 HEAD)
+          meta_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | jq -r '.tag_name')
           echo "meta_version=$meta_version" >> $GITHUB_OUTPUT
           echo meta_tags=with_gvisor >> $GITHUB_OUTPUT
           meta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${meta_version})
@@ -117,9 +111,8 @@ jobs:
 
   alpha:
     runs-on: ubuntu-latest
-    needs: go
     outputs:
-      alpha_version: ${{ steps.alpha.outputs.alpha_version }}
+      alpha_version: alpha-${{ steps.alpha.outputs.alpha_version }}
       alpha_tags: ${{ steps.alpha.outputs.alpha_tags }}
       alpha_time:  ${{ steps.alpha.outputs.alpha_time }}
     steps:
@@ -130,18 +123,13 @@ jobs:
           ref: Alpha
           fetch-depth: 0
 
-      - name: Setup `Go`
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go.outputs.version }}
-
-      - name: Get `mihomo Alpha` version
+      - name: Get `mihomo Alpha` version and time
         id: alpha
         run: |
-          alpha_version=alpha-$(git rev-parse --short HEAD)
+          alpha_version=$(curl -sSL https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt | sed 's/.*-//')
           echo "alpha_version=$alpha_version" >> $GITHUB_OUTPUT
           echo alpha_tags=with_gvisor >> $GITHUB_OUTPUT
-          alpha_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' $(git rev-parse --short HEAD))
+          alpha_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${alpha_version})
           echo "alpha_time=$alpha_time" >> $GITHUB_OUTPUT
 
   alpha_cross:

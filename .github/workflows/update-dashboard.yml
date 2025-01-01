@@ -74,7 +74,7 @@ jobs:
 
     - name: Download and compress `yacd` dashboard
       run: |
-        mkdir -p ./tmp/yacd/
+        mkdir -p ./Dashboard/ ./tmp/yacd/
         curl -o ./tmp/yacd/gh-pages.zip -L https://github.com/haishanh/yacd/archive/refs/heads/gh-pages.zip
         unzip -o ./tmp/yacd/gh-pages.zip -d ./tmp/yacd/
         tar -czf ./Dashboard/yacd.tar.gz -C ./tmp/yacd/yacd-gh-pages/ .

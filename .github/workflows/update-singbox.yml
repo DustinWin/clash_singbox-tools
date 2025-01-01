@@ -22,7 +22,7 @@ jobs:
       - name: Get `Go` latest version
         id: go
         run: |
-          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | grep '"version"' | head -1 | awk -F'"' '{print $4}') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://api.github.com/repos/actions/go-versions/releases/latest | jq -r '.tag_name | split("-")[0]') >> $GITHUB_OUTPUT
 
   puernya:
     runs-on: ubuntu-latest
@@ -125,7 +125,6 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    needs: go
     outputs:
       release_version: ${{ steps.release.outputs.release_version }}
       release_tags: ${{ steps.release.outputs.release_tags }}
@@ -138,20 +137,13 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Setup `Go`
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go.outputs.version }}
-
-      - name: Get `sing-box Release` version
+      - name: Get `sing-box Release` version and time
         id: release
         run: |
-          git remote add sekai https://github.com/SagerNet/sing-box.git
-          git fetch --tags sekai
-          release_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name"' | head -n 1 | awk -F'"' '{print $4}' | sed 's/^v//')
+          release_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | jq -r '.tag_name')
           echo "release_version=$release_version" >> $GITHUB_OUTPUT
           echo release_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          release_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' v${release_version})
+          release_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${release_version})
           echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
@@ -221,7 +213,6 @@ jobs:
 
   dev:
     runs-on: ubuntu-latest
-    needs: go
     outputs:
       dev_version: ${{ steps.dev.outputs.dev_version }}
       dev_tags: ${{ steps.dev.outputs.dev_tags }}
@@ -234,20 +225,13 @@ jobs:
           ref: dev
           fetch-depth: 0
 
-      - name: Setup `Go`
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ needs.go.outputs.version }}
-
-      - name: Get `sing-box Dev` version
+      - name: Get `sing-box Dev` version and time
         id: dev
         run: |
-          git remote add sekai https://github.com/SagerNet/sing-box.git
-          git fetch --tags sekai
-          dev_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | grep '"tag_name"' | grep -E 'beta|alpha' | head -n 1 | awk -F'"' '{print $4}' | sed 's/^v//')
+          dev_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta"))][0].tag_name')
           echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          dev_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' v${dev_version})
+          dev_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${dev_version})
           echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
@@ -395,8 +379,8 @@ jobs:
           overwrite: true
           body: |
             更新 [sing-box PuerNya 版](https://github.com/PuerNya/sing-box/tree/building)至 v${{ env.puernya_VERSION }}，发布于 ${{ env.puernya_TIME }}
-            更新 [sing-box Release 版](https://github.com/SagerNet/sing-box/tree/main)至 v${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
-            更新 [sing-box Dev 版](https://github.com/SagerNet/sing-box/tree/dev)至 v${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
+            更新 [sing-box Release 版](https://github.com/SagerNet/sing-box/tree/main)至 ${{ env.release_VERSION }}，发布于 ${{ env.release_TIME }}
+            更新 [sing-box Dev 版](https://github.com/SagerNet/sing-box/tree/dev)至 ${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
           file_glob: true
           file: ./sing-box/*
 
