@@ -1,5 +1,3 @@
-**注意：本项目生成文件所在的分支已全部删除（包括文件历史记录），所有文件将不再发布到分支中，仅分发到 [Releases](https://github.com/DustinWin/proxy-tools/releases) 中，以节省占用空间（文件历史记录过大），详细请看《[关于 GitHub 上的大文件](https://docs.github.com/zh/repositories/working-with-files/managing-large-files/about-large-files-on-github)》**
-
 # 更新 [mihomo 内核](https://github.com/MetaCubeX/mihomo)、[sing-box 内核](https://github.com/SagerNet/sing-box)、[sing-box PuerNya 版内核](https://github.com/PuerNya/sing-box/tree/building)、Dashboard 面板和 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)
 # 一、 说明
 每天凌晨（北京时间 UTC+8）自动构建生成：
@@ -12,6 +10,7 @@
 **注：**
 - 1. 本教程中的下载链接以 CPU 架构 ARMv8 为例，请注意修改链接后缀
 - 2. 查看 CPU 架构可连接 SSH 后执行命令 `uname -ms`，若执行结果是“linux aarch64”，就是搭载的 ARMv8 架构
+- 3. 对下载源的说明，可[点此](https://proxy-tutorials.dustinwin.top/about/#%E5%AF%B9%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%9A%84%E8%AF%B4%E6%98%8E)了解
 
 # 二、 使用方法
 ## 1. 导入内核（以 [ShellCrash](https://github.com/juewuy/ShellCrash) 导入内核为例）
