@@ -2,10 +2,10 @@
 # 一、 说明
 每天凌晨（北京时间 UTC+8）自动构建生成：
 1. [Clash Premium Release 版和 Nightly 版内核](https://github.com/DustinWin/proxy-tools/releases/tag/Clash-Premium)（已停更）
-2. mihomo Meta 版和 Alpha 版内核
-3. sing-box Release 版、Dev 版内核和 sing-box PuerNya 版内核（支持 `outbound_providers` 代理集合）
+2. mihomo [Meta 版](https://github.com/MetaCubeX/mihomo/tree/Meta)和 [Alpha 版](https://github.com/MetaCubeX/mihomo/tree/Alpha)内核
+3. sing-box [Release 版](https://github.com/SagerNet/sing-box/tree/main)、[Dev 版](https://github.com/SagerNet/sing-box/tree/dev)和 [PuerNya 版](https://github.com/PuerNya/sing-box/tree/building)（支持[出站提供者](https://sing-boxp.dustinwin.top/zh/configuration/provider/) `outbound_providers`，类似于 mihomo 内核的[代理集合](https://wiki.metacubex.one/config/proxy-providers/) `proxy-providers`）内核
 4. Dashboard 面板：[yacd 面板](https://github.com/haishanh/yacd)、[Yacd-meta 面板](https://github.com/MetaCubeX/Yacd-meta)、[metacubexd 面板](https://github.com/MetaCubeX/metacubexd)和 [zashboard 面板](https://github.com/Zephyruso/zashboard)
-5. AdGuard Home Release 版和 Beta 版
+5. AdGuard Home [Release 版](https://github.com/AdguardTeam/AdGuardHome/tree/beta-v0.107)和 [Beta 版](https://github.com/AdguardTeam/AdGuardHome/tree/beta-v0.108)
 
 **注：**
 - 1. 本教程中的下载链接以 CPU 架构 ARMv8 为例，请注意修改链接后缀
@@ -56,8 +56,8 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/prox
 </details>
 
 ## 2. 安装 Dashboard 面板（以 ShellCrash 安装 metacubexd 面板为例）
-**Dashboard 面板对应文件名和在线地址关系如下表：**
-|面板类型|文件名|在线地址|
+**Dashboard 面板对应文件名和网址关系如下表：**
+|面板名称|文件名|网址|
 |-----|-----|-----|
 |yacd 面板|`yacd.tar.gz`|<https://yacd.haishan.me>|
 |Yacd-meta 面板|`Yacd-meta.tar.gz`|<https://yacd.metacubex.one>|
@@ -68,6 +68,9 @@ curl -o $CRASHDIR/CrashCore.tar.gz -L https://cdn.jsdelivr.net/gh/DustinWin/prox
 ```
 curl -L https://cdn.jsdelivr.net/gh/DustinWin/proxy-tools@Dashboard/metacubexd.tar.gz | tar -zx -C $CRASHDIR/ui/ && $CRASHDIR/start.sh restart
 ```
+- 注：若使用基于 [Chromium 项目](https://www.chromium.org/Home/)开发的浏览器打开网址去访问 Dashboard 面板时，以 [Chrome 浏览器](https://www.google.com/chrome/)为例，需要设置该网址域名“允许显示不安全内容”。方法如下：  
+进入设置 -> 隐私和安全 -> 网站设置 -> 更多内容设置 -> 不安全内容（或者地址栏直接打开 chrome://settings/content/insecureContent 进行设置），在“允许显示不安全内容”内添加网址域名如：`metacubex.github.io`
+
 ## 3. 安装 AdGuard Home
 **AdGuard Home Linux 版 CPU 架构和链接后缀对应关系如下表：**
 |CPU 架构|AMD64|ARMv5|ARMv6|ARMv7|ARMv8|mips-softfloat|mipsle-softfloat|
