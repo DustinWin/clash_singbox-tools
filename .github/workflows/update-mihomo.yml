@@ -261,10 +261,3 @@ jobs:
             更新 [mihomo Alpha 版](https://github.com/MetaCubeX/mihomo/tree/Alpha)至 ${{ env.alpha_VERSION }}，发布于 ${{ env.alpha_TIME }}
           file_glob: true
           file: ./mihomo/*
-
-      - name: Purge jsDelivr CDN
-        run: |
-          cd ./mihomo/ || exit 1
-          for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@mihomo/${file}"
-          done

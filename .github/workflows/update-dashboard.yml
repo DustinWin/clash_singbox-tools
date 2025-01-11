@@ -115,10 +115,3 @@ jobs:
           更新 [zashboard 面板](https://github.com/Zephyruso/zashboard)至 ${{ env.zashboard_version }}，发布于 ${{ env.zashboard_time }}
         file_glob: true
         file: ./Dashboard/*
-
-    - name: Purge jsDelivr CDN
-      run: |
-        cd ./Dashboard/ || exit 1
-        for file in $(ls); do
-          curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@Dashboard/${file}"
-        done

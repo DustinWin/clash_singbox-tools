@@ -383,10 +383,3 @@ jobs:
             更新 [sing-box Dev 版](https://github.com/SagerNet/sing-box/tree/dev)至 ${{ env.dev_VERSION }}，发布于 ${{ env.dev_TIME }}
           file_glob: true
           file: ./sing-box/*
-
-      - name: Purge jsDelivr CDN
-        run: |
-          cd ./sing-box/ || exit 1
-          for file in $(ls); do
-            curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@sing-box/${file}"
-          done

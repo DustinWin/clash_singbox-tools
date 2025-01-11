@@ -263,10 +263,3 @@ jobs:
               更新 [AdGuard Home Beta 版](https://github.com/AdguardTeam/AdGuardHome/tree/beta-v0.108)至 ${{ env.beta_VERSION }}，发布于 ${{ env.beta_TIME }}
             file_glob: true
             file: ./AdGuardHome/*
-
-        - name: Purge jsDelivr CDN
-          run: |
-            cd ./AdGuardHome/ || exit 1
-            for file in $(ls); do
-              curl -i "https://purge.jsdelivr.net/gh/${{ github.repository }}@AdGuardHome/${file}"
-            done
