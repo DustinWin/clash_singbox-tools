@@ -31,20 +31,13 @@ jobs:
       meta_tags: ${{ steps.meta.outputs.meta_tags }}
       meta_time: ${{ steps.meta.outputs.meta_time}}
     steps:
-      - name: Checkout `Meta`
-        uses: actions/checkout@v4
-        with:
-          repository: MetaCubeX/mihomo
-          ref: Meta
-          fetch-depth: 0
-
       - name: Get `mihomo Meta` version and time
         id: meta
         run: |
           meta_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | jq -r '.tag_name')
           echo "meta_version=$meta_version" >> $GITHUB_OUTPUT
           echo meta_tags=with_gvisor >> $GITHUB_OUTPUT
-          meta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${meta_version})
+          meta_time=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "meta_time=$meta_time" >> $GITHUB_OUTPUT
 
   meta_cross:
@@ -112,24 +105,17 @@ jobs:
   alpha:
     runs-on: ubuntu-latest
     outputs:
-      alpha_version: alpha-${{ steps.alpha.outputs.alpha_version }}
+      alpha_version: ${{ steps.alpha.outputs.alpha_version }}
       alpha_tags: ${{ steps.alpha.outputs.alpha_tags }}
       alpha_time:  ${{ steps.alpha.outputs.alpha_time }}
     steps:
-      - name: Checkout `Alpha`
-        uses: actions/checkout@v4
-        with:
-          repository: MetaCubeX/mihomo
-          ref: Alpha
-          fetch-depth: 0
-
       - name: Get `mihomo Alpha` version and time
         id: alpha
         run: |
-          alpha_version=$(curl -sSL https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt | sed 's/.*-//')
+          alpha_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases | jq -r '[.[] | select(.tag_name=="Prerelease-Alpha")][0].assets[].name' | head -n 1 | sed 's/.*-\(alpha-[^-]*\)\..*/\1/')
           echo "alpha_version=$alpha_version" >> $GITHUB_OUTPUT
           echo alpha_tags=with_gvisor >> $GITHUB_OUTPUT
-          alpha_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${alpha_version})
+          alpha_time=$(curl -sSL https://api.github.com/repos/MetaCubeX/mihomo/releases | jq -r '[.[] | select(.tag_name=="Prerelease-Alpha")][0].created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "alpha_time=$alpha_time" >> $GITHUB_OUTPUT
 
   alpha_cross:
