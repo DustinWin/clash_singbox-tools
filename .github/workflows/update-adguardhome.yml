@@ -32,7 +32,7 @@ jobs:
       - name: Get `Node` latest version (LTS)
         id: node
         run: |
-          echo version=$(curl -sSL https://nodejs.org/dist/index.json | jq -r 'map(select(.lts != false)) | .[0].version') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://nodejs.org/dist/index.json | jq -r 'map(select(.lts)) | .[0].version[1:]') >> $GITHUB_OUTPUT
 
   release:
     runs-on: ubuntu-latest
@@ -40,19 +40,12 @@ jobs:
       release_version: ${{ steps.release.outputs.release_version }}
       release_time: ${{ steps.release.outputs.release_time }}
     steps:
-      - name: Checkout `beta-v0.107`
-        uses: actions/checkout@v4
-        with:
-          repository: AdguardTeam/AdGuardHome
-          ref: beta-v0.107
-          fetch-depth: 0
-
       - name: Get `AdGuard Home Release` version and time
         id: release
         run: |
           release_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | jq -r '.tag_name')
           echo "release_version=$release_version" >> $GITHUB_OUTPUT
-          release_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${release_version})
+          release_time=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
@@ -80,11 +73,10 @@ jobs:
     env:
       release_VERSION: ${{ needs.release.outputs.release_version }}
     steps:
-      - name: Checkout `beta-v0.107`
+      - name: Checkout `AdguardTeam/AdGuardHome`
         uses: actions/checkout@v4
         with:
           repository: AdguardTeam/AdGuardHome
-          ref: beta-v0.107
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -103,7 +95,7 @@ jobs:
 
       - name: Setup `Snapcraft`
         run: |
-          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+          sudo snap install snapcraft --classic
 
       - name: Build `AdGuard Home Release`
         id: build
@@ -123,19 +115,12 @@ jobs:
       beta_version: ${{ steps.beta.outputs.beta_version }}
       beta_time: ${{ steps.beta.outputs.beta_time }}
     steps:
-      - name: Checkout `beta-v0.108`
-        uses: actions/checkout@v4
-        with:
-          repository: AdguardTeam/AdGuardHome
-          ref: beta-v0.108
-          fetch-depth: 0
-
       - name: Get `AdGuard Home Beta` version and time
         id: beta
         run: |
-          beta_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | jq -r '[.[] | select(.tag_name | test("b"))][0].tag_name')
+          beta_version=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | jq -r '[.[] | select(.tag_name | contains("b"))][0].tag_name')
           echo "beta_version=$beta_version" >> $GITHUB_OUTPUT
-          beta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${beta_version})
+          beta_time=$(curl -sSL https://api.github.com/repos/AdguardTeam/AdGuardHome/releases | jq -r '[.[] | select(.tag_name | contains("b"))][0].created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "beta_time=$beta_time" >> $GITHUB_OUTPUT
 
   beta_cross:
@@ -163,11 +148,10 @@ jobs:
     env:
       beta_VERSION: ${{ needs.beta.outputs.beta_version }}
     steps:
-      - name: Checkout `beta-v0.108`
+      - name: Checkout `AdguardTeam/AdGuardHome`
         uses: actions/checkout@v4
         with:
           repository: AdguardTeam/AdGuardHome
-          ref: beta-v0.108
 
       - name: Setup `Go`
         uses: actions/setup-go@v5
@@ -186,7 +170,7 @@ jobs:
 
       - name: Setup `Snapcraft`
         run: |
-          sudo apt-get -yq --no-install-suggests --no-install-recommends install snapcraft
+          sudo snap install snapcraft --classic
 
       - name: Build `AdGuard Home Beta`
         id: build
