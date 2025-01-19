@@ -130,20 +130,13 @@ jobs:
       release_tags: ${{ steps.release.outputs.release_tags }}
       release_time: ${{ steps.release.outputs.release_time }}
     steps:
-      - name: Checkout `main`
-        uses: actions/checkout@v4
-        with:
-          repository: SagerNet/sing-box
-          ref: main
-          fetch-depth: 0
-
       - name: Get `sing-box Release` version and time
         id: release
         run: |
           release_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | jq -r '.tag_name')
           echo "release_version=$release_version" >> $GITHUB_OUTPUT
           echo release_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          release_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${release_version})
+          release_time=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "release_time=$release_time" >> $GITHUB_OUTPUT
 
   release_cross:
@@ -218,20 +211,13 @@ jobs:
       dev_tags: ${{ steps.dev.outputs.dev_tags }}
       dev_time: ${{ steps.dev.outputs.dev_time }}
     steps:
-      - name: Checkout `dev`
-        uses: actions/checkout@v4
-        with:
-          repository: SagerNet/sing-box
-          ref: dev
-          fetch-depth: 0
-
       - name: Get `sing-box Dev` version and time
         id: dev
         run: |
           dev_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta"))][0].tag_name')
           echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          dev_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${dev_version})
+          dev_time=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta"))][0].created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
