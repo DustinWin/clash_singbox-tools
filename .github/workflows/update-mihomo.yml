@@ -22,7 +22,7 @@ jobs:
       - name: Get `Go` latest version
         id: go
         run: |
-          echo version=$(curl -sSL https://api.github.com/repos/actions/go-versions/releases/latest | jq -r '.tag_name | split("-")[0]') >> $GITHUB_OUTPUT
+          echo version=$(curl -sSL https://raw.githubusercontent.com/actions/go-versions/update-versions-manifest-file/versions-manifest.json | jq -r 'map(.version) | sort_by(split(".") | map(tonumber)) | last') >> $GITHUB_OUTPUT
 
   meta:
     runs-on: ubuntu-latest
