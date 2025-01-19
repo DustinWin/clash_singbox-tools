@@ -20,56 +20,32 @@ jobs:
     - name: Clone Repository
       uses: actions/checkout@main
 
-    - name: Checkout `yacd`
-      uses: actions/checkout@v4
-      with:
-        repository: haishanh/yacd
-        fetch-depth: 0
-
     - name: Get `yacd` version and time
       run: |
-        yacd_version=$(git describe --tags --abbrev=0 HEAD)
+        yacd_version=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | jq -r '.tag_name')
         echo "yacd_version=$yacd_version" >> ${GITHUB_ENV}
-        yacd_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${yacd_version})
+        yacd_time=$(curl -sSL https://api.github.com/repos/haishanh/yacd/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
         echo "yacd_time=$yacd_time" >> ${GITHUB_ENV}
-
-    - name: Checkout `Yacd-meta`
-      uses: actions/checkout@v4
-      with:
-        repository: MetaCubeX/Yacd-meta
-        fetch-depth: 0
 
     - name: Get `Yacd-meta` version and time
       run: |
-        yacd_meta_version=$(git describe --tags --abbrev=0 HEAD)
+        yacd_meta_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | jq -r '.tag_name')
         echo "yacd_meta_version=$yacd_meta_version" >> ${GITHUB_ENV}
-        yacd_meta_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${yacd_meta_version})
+        yacd_meta_time=$(curl -sSL https://api.github.com/repos/MetaCubeX/Yacd-meta/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
         echo "yacd_meta_time=$yacd_meta_time" >> ${GITHUB_ENV}
-
-    - name: Checkout `metacubexd`
-      uses: actions/checkout@v4
-      with:
-        repository: MetaCubeX/metacubexd
-        fetch-depth: 0
 
     - name: Get `metacubexd` version and time
       run: |
-        metacubexd_version=$(git describe --tags --abbrev=0 HEAD)
+        metacubexd_version=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | jq -r '.tag_name')
         echo "metacubexd_version=$metacubexd_version" >> ${GITHUB_ENV}
-        metacubexd_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${metacubexd_version})
+        metacubexd_time=$(curl -sSL https://api.github.com/repos/MetaCubeX/metacubexd/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
         echo "metacubexd_time=$metacubexd_time" >> ${GITHUB_ENV}
-
-    - name: Checkout `zashboard`
-      uses: actions/checkout@v4
-      with:
-        repository: Zephyruso/zashboard
-        fetch-depth: 0
 
     - name: Get `zashboard` version and time
       run: |
-        zashboard_version=$(git describe --tags --abbrev=0 HEAD)
+        zashboard_version=$(curl -sSL https://api.github.com/repos/Zephyruso/zashboard/releases/latest | jq -r '.tag_name')
         echo "zashboard_version=$zashboard_version" >> ${GITHUB_ENV}
-        zashboard_time=$(git log -1 --format=%cd --date=format:'%Y-%m-%d' ${zashboard_version})
+        zashboard_time=$(curl -sSL https://api.github.com/repos/Zephyruso/zashboard/releases/latest | jq -r '.created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
         echo "zashboard_time=$zashboard_time" >> ${GITHUB_ENV}
 
     - name: Download and compress `yacd` dashboard
