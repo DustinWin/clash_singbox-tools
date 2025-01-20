@@ -107,7 +107,7 @@ curl -o /data/AdGuardHome/AdGuardHome -L https://ghgo.xyz/https://github.com/Dus
 
 # 三、 扩展（以 ShellCrash 配置定时任务为例）
 可在 ShellCrash 里添加定时更新 mihomo 内核、sing-box 内核、metacubexd 面板和 AdGuard Home 的任务
-1. 连接 SSH 后执行 `vi $CRASHDIR/task/task.user`，按一下 Ins 键（Insert 键），粘贴如下内容：
+1. 连接 SSH 后执行 `vi $CRASHDIR/task/task.user`，按一下 Ins 键（Insert 键），粘贴如下内容：  
 注：
 - 1. 留意链接后缀是否与 CPU 架构匹配
 - 2. ShellCrash 安装路径为 */data/ShellCrash*
