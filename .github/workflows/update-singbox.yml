@@ -205,10 +205,10 @@ jobs:
       - name: Get `sing-box Dev` version and time
         id: dev
         run: |
-          dev_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta"))][0].tag_name')
+          dev_version=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta|rc"))][0].tag_name')
           echo "dev_version=$dev_version" >> $GITHUB_OUTPUT
           echo dev_tags=with_gvisor,with_dhcp,with_wireguard,with_clash_api,with_quic,with_utls,with_ech >> $GITHUB_OUTPUT
-          dev_time=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta"))][0].created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
+          dev_time=$(curl -sSL https://api.github.com/repos/SagerNet/sing-box/releases | jq -r '[.[] | select(.tag_name | test("alpha|beta|rc"))][0].created_at' | xargs -I {} date -d '{} +8 hours' '+%Y-%m-%d')
           echo "dev_time=$dev_time" >> $GITHUB_OUTPUT
 
   dev_cross:
