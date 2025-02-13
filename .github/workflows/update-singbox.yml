@@ -103,15 +103,6 @@ jobs:
         with:
           go-version: ${{ needs.go.outputs.version }}
 
-      - name: Revert golang1.23 commit for Windows 7/8
-        if: ${{ matrix.goos == 'windows' }}
-        run: |
-          cd $(go env GOROOT)
-          curl https://github.com/MetaCubeX/go/commit/9ac42137ef6730e8b7daca016ece831297a1d75b.diff | patch --verbose -p 1
-          curl https://github.com/MetaCubeX/go/commit/21290de8a4c91408de7c2b5b68757b1e90af49dd.diff | patch --verbose -p 1
-          curl https://github.com/MetaCubeX/go/commit/6a31d3fa8e47ddabc10bd97bff10d9a85f4cfb76.diff | patch --verbose -p 1
-          curl https://github.com/MetaCubeX/go/commit/69e2eed6dd0f6d815ebf15797761c13f31213dd6.diff | patch --verbose -p 1
-
       - name: Build `sing-box PuerNya` core
         id: build
         run: go build -v -trimpath -ldflags "-checklinkname=0 -X 'github.com/sagernet/sing-box/constant.Version=${puernya_VERSION}' -s -w -buildid=" -tags "${puernya_TAGS}" ./cmd/sing-box
